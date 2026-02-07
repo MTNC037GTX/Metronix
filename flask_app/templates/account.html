@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metronix | Account</title>
+  <link rel="icon" href="/static/images/logo.ico">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind Config -->
+    <script>
+    tailwind.config = {
+        theme: {
+        extend: {
+            colors: {
+            'bg-main':'#030112',
+            'bg-sidebar':'#0A0621',
+            'accent':'#575AD0',
+            'income':'#00C896',
+            'expense':'#FF5757',
+            'text-primary':'#E2E8F0',
+            'text-secondary':'#94A3B8',
+            'card-bg':'rgba(255,255,255,0.05)',
+            'card-border':'rgba(255,255,255,0.1)',
+            'glass':'rgba(97,93,161,0.15)'
+            },
+            fontFamily:{'dm-sans':['"DM Sans"','sans-serif']},
+            spacing:{'18':'4.5rem','22':'5.5rem'},
+            boxShadow:{'card':'0 8px 32px rgba(0,0,0,0.2)','card-hover':'0 12px 40px rgba(87,90,208,0.15)'},
+            borderRadius:{'xl':'1rem','2xl':'1.5rem'}
+        }
+        }
+    };
+    </script>
+
+    <!-- Scrollbar -->
+    <style>
+    /* Modal and main scrollable containers */
+    .scrollbar-custom::-webkit-scrollbar {
+        width: 8px;
+    }
+    .scrollbar-custom::-webkit-scrollbar-track {
+        background: #0a0721;
+        border-radius: 4px;
+    }
+    .scrollbar-custom::-webkit-scrollbar-thumb {
+        background-color: #1e1d42;
+        border-radius: 4px;
+        border: 2px solid #0a0721;
+    }
+    .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+        background-color: #35325f;
+    }
+    .scrollbar-custom {
+        scrollbar-width: thin;
+        scrollbar-color: #1e1d42 #0a0721;
+    }
+
+    /* Global page scrollbar */
+    body::-webkit-scrollbar {
+        width: 8px;
+    }
+    body::-webkit-scrollbar-track {
+        background: #0a0721;
+        border-radius: 4px;
+    }
+    body::-webkit-scrollbar-thumb {
+        background-color: #1e1d42;
+        border-radius: 4px;
+        border: 2px solid #0a0721;
+    }
+    body::-webkit-scrollbar-thumb:hover {
+        background-color: #35325f;
+    }
+
+    /* Firefox support for global scrollbar */
+    body {
+        scrollbar-width: thin;
+        scrollbar-color: #1e1d42 #0a0721;
+    }
+    </style>
+
+
+  <style type="text/tailwindcss">
+  @layer utilities {
+    .glass-effect { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    
+    /* Sidebar items */
+    .sidebar-item { 
+      @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 cursor-pointer text-text-secondary; 
+    }
+    .sidebar-item.active { 
+      @apply bg-accent/20 text-accent; 
+    }
+    .sidebar-item:not(.active):hover { 
+      @apply bg-white/5; 
+    }
+
+    /* Other dashboard styles */
+    .card { @apply bg-card-bg rounded-xl p-6 shadow-card border border-card-border transition-all duration-300 hover:shadow-card-hover; }
+    .progress-bar { @apply h-2 rounded-full overflow-hidden bg-white/10; }
+    .progress-value { @apply h-full rounded-full bg-accent transition-all duration-1000 ease-out; }
+  }
+  </style>
+
+
+  <!-- Global styles -->
+  <style>
+    body { font-family: 'DM Sans', sans-serif; }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;      /* same as dashboard */
+      border-radius: 1rem;        /* same as dashboard */
+      color: #94A3B8;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-item:hover {
+      background-color: rgba(87, 90, 208, 0.12);
+      color: #ffffff;
+    }
+
+    .sidebar-item.active {
+      background-color: rgba(87, 90, 208, 0.18);
+      color: #ffffff;
+    }
+
+    .sidebar-item i {
+      width: 1.25rem;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body class="bg-bg-main font-dm-sans text-text-primary min-h-screen flex overflow-hidden">
+
+  <!-- Sidebar -->
+    <aside class="bg-bg-sidebar w-64 flex flex-col h-screen fixed left-0 top-0 z-10">
+
+        <!-- Logo -->
+        <div class="p-4 border-b border-white/10 flex justify-center">
+        <img src="../static/images/logo.png" alt="Metronix Logo" class="w-40 object-contain">
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6 px-3">
+            <ul class="space-y-1">
+                {% set sidebar_items = [
+                {'icon':'fas fa-chart-line','label':'Dashboard','page':'dashboard'},
+                {'icon':'fas fa-exchange-alt','label':'Transaction','page':'transaction'},
+                {'icon':'fas fa-credit-card','label':'Account','page':'account'},
+                {'icon':'fas fa-piggy-bank','label':'Budget','page':'budget'},
+                {'icon':'fas fa-bullseye','label':'Goals','page':'goals'},
+                {'icon':'fas fa-balance-scale','label':'Balance','page':'balance'},
+                {'icon':'fas fa-chart-pie','label':'Investment','page':'investment'},
+                {'icon':'fas fa-chart-bar','label':'Analytics','page':'analytics'},
+                {'icon':'fas fa-file-alt','label':'Report','page':'report'}
+                ] %}
+
+                {% set existing_pages = {
+                    'dashboard': 'dashboard.dashboard',
+                    'transaction': 'transaction.transaction_page',
+                    'account': 'account.account_dashboard',
+                    'budget': 'budget.budget_page',
+                    'goals': 'goals.goals_page',
+                    'balance': 'balance.balance_page'
+                } %}
+
+                {% for item in sidebar_items %}
+                <li>
+                {% if item.page in existing_pages %}
+                    <a href="{{ url_for(existing_pages[item.page]) }}" 
+                    class="sidebar-item {% if current_page == item.page %}active{% endif %}" 
+                    style="color: #E2E8F0;">
+                    <i class="{{ item.icon }} w-5 text-center"></i>
+                    <span>{{ item.label }}</span>
+                    </a>
+                {% else %}
+                    <div class="sidebar-item" style="color: #A0AEC0; cursor: default;">
+                    <i class="{{ item.icon }} w-5 text-center"></i>
+                    <span>{{ item.label }}</span>
+                    </div>
+                {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <!-- Logout -->
+        <div class="p-4 border-t border-white/10 mt-auto">
+            <a href="{{ url_for('auth.logout') }}" class="sidebar-item">
+                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+
+    </aside>
+
+  <!-- Main -->
+    <main class="flex-1 ml-64 p-8 overflow-y-auto h-screen">
+        <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            
+            <!-- Title -->
+            <div>
+                <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-white mb-1">
+                    Accounts
+                </h1>
+                <p class="text-text-secondary">
+                    Overview of where your money is stored
+                </p>
+            </div>
+
+            <!-- Action -->
+            <button class="bg-accent hover:bg-accent/90 text-white font-medium py-2 px-6 rounded-lg flex items-center transition-all shadow-card hover:shadow-card-hover"
+                id="add-account-btn"
+            >
+            <i class="fas fa-plus mr-2"></i>
+            <span>Add Account</span>
+            </button>
+
+        </div>
+
+    <!-- Account Overview Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+
+        <!-- Total Accounts -->
+        <div class="card transform hover:-translate-y-0.5">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-gray-400 font-medium">Total Accounts</h3>
+                <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                    <i class="fas fa-sitemap text-accent"></i>
+                </div>
+            </div>
+
+            <p class="text-3xl font-bold text-white">{{ total_accounts }}</p>
+        </div>
+
+        <!-- Total Liquid Assets -->
+        <div class="card transform hover:-translate-y-0.5">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-gray-400 font-medium">Total Liquid Assets</h3>
+                <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+                    <i class="fas fa-wallet text-accent"></i>
+                </div>
+            </div>
+
+            <p class="text-3xl font-bold text-white">RM {{ "{:,.2f}".format(total_active_balance | float) }}</p>
+
+            <p class="text-income text-sm mt-2 flex items-center">
+                <i class="fas fa-arrow-up mr-1"></i>
+                RM {{ "{:,.2f}".format(total_active_balance - prev_month_balance) }} from last month
+            </p>
+        </div>
+    </div>
+
+
+    <!-- Dynamic Account Sections -->
+    <div class="space-y-10">
+        {% set type_order = [
+            'Cash',
+            'Savings',
+            'E-wallet',
+            'Investment',
+            'Real Estate',
+            'Property',
+            'Other Assets',
+            'Credit',
+            'Short-Term Loan',
+            'Long-Term Loan'
+        ] %}
+
+        {% for type in type_order %}
+            {% if accounts_by_type[type] is defined and accounts_by_type[type]|length > 0 %}
+            <section>
+                <!-- Section Header -->
+                <div class="flex items-center mb-6">
+                    {% set first_acct = accounts_by_type[type][0] %}
+                    <div class="w-10 h-10 rounded-lg {{ first_acct.bg_color }} flex items-center justify-center mr-3">
+                        <i class="{{ first_acct.icon }} {{ first_acct.icon_color }} text-xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-white">
+                        {{ type }}
+                    </h2>
+                </div>
+
+                <!-- Accounts Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 {% if type == 'Investment' %}lg:grid-cols-4{% endif %} gap-6">
+                    {% for acct in accounts_by_type[type] %}
+                    <!-- Account Card -->
+                    <div
+                        class="card account-card cursor-pointer"
+                        onclick="
+                            document.getElementById('accountDetailModal-{{ acct.id }}').classList.remove('hidden');
+                            document.getElementById('detailModalContent-{{ acct.id }}').classList.remove('scale-95','opacity-0')
+                        "
+                    >
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 rounded-lg {{ acct.bg_color }} flex items-center justify-center mr-4">
+                                    <i class="{{ acct.icon }} {{ acct.icon_color }} text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-white font-semibold">{{ acct.name }}</h3>
+                                    <!-- <span class="text-gray-400 text-sm">{{ acct.type }}</span> -->
+                                </div>
+                            </div>
+                            <span class="bg-green-500/20 text-green-500 text-xs px-2 py-1 rounded-full">
+                                {% if acct.is_active %}Active{% else %}Archived{% endif %}
+                            </span>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="text-gray-400 text-sm mb-1">Current Balance</p>
+                            <p class="text-2xl font-bold text-white">
+                                RM {{ "{:,.2f}".format(acct.balance) }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Account Modal -->
+                    <div
+                        class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden"
+                        id="accountDetailModal-{{ acct.id }}"
+                    >
+                        <div
+                            class="rounded-xl w-full max-w-4xl mx-4 shadow-2xl border border-gray-700 transform transition-all duration-300 scale-95 opacity-0"
+                            id="detailModalContent-{{ acct.id }}"
+                            style="background-color: #0a0721;"
+                        >
+                            <!-- Modal Header -->
+                            <div class="p-6 border-b border-gray-800 flex justify-between items-center">
+                                <div>
+                                    <h2 class="text-xl font-bold text-white">{{ acct.name }}</h2>
+                                    <p class="text-gray-400 text-sm">{{ acct.type }}</p>
+                                </div>
+                                <button
+                                    class="text-gray-400 hover:text-white"
+                                    onclick="
+                                        document.getElementById('accountDetailModal-{{ acct.id }}').classList.add('hidden');
+                                        document.getElementById('detailModalContent-{{ acct.id }}').classList.add('scale-95','opacity-0')
+                                    "
+                                >
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+
+                            <!-- Modal Body -->
+                            <div class="p-6">
+                                <p class="text-gray-400 text-sm mb-1">Current Balance</p>
+                                <p class="text-3xl font-bold text-white mb-6">
+                                    RM {{ "{:,.2f}".format(acct.balance) }}
+                                </p>
+
+                                <h3 class="text-lg font-semibold text-white mb-4">
+                                    Recent Transactions
+                                </h3>
+
+                                <div class="space-y-4 max-h-64 overflow-y-auto scrollbar-custom">
+                                    {% if acct.transactions %}
+                                        {% for txn in acct.transactions %}
+                                        <div class="flex justify-between items-center p-3 bg-gray-800 rounded-lg border border-gray-700 shadow-md">
+                                            <div>
+                                                <p class="text-white font-medium">{{ txn.description }}</p>
+                                                <p class="text-gray-400 text-sm">{{ txn.created_at }}</p>
+                                            </div>
+
+                                            {% if txn.direction == 'in' or txn.type == 'income' %}
+                                                <p class="text-green-500 font-semibold">
+                                                    + RM {{ "{:,.2f}".format(txn.amount|abs) }}
+                                                </p>
+                                            {% else %}
+                                                <p class="text-red-500 font-semibold">
+                                                    - RM {{ "{:,.2f}".format(txn.amount|abs) }}
+                                                </p>
+                                            {% endif %}
+                                        </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <p class="text-gray-400 text-sm">
+                                            No recent transactions.
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+
+
+    <!-- Add Account Popup -->
+    <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden" id="addAccountModal">
+        <div
+            class="rounded-xl shadow-2xl border border-gray-700 w-full max-w-md max-h-[90vh] overflow-y-auto transform transition-all-300 scale-95 opacity-0"
+            id="modalContent"
+            style="background-color:#0a0721;"
+        >
+
+            <!-- Header -->
+            <div class="p-6 border-b border-gray-800">
+                <h2 class="text-xl font-bold text-white">Add New Account</h2>
+                <p class="text-text-secondary text-sm">Create a new financial account</p>
+            </div>
+
+            <!-- Body -->
+            <div class="p-6">
+                <form id="addAccountForm" method="POST" action="{{ url_for('account.add_account') }}">
+
+                    <!-- Account Name -->
+                    <div class="mb-5">
+                        <label class="block text-sm font-medium text-text-secondary mb-2">
+                            Account Name
+                        </label>
+                        <input
+                            name="name"
+                            type="text"
+                            required
+                            placeholder="Enter account name"
+                            style="background-color:#030112;"
+                            autocomplete="false"
+                            class="w-full border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300"
+                        >
+                    </div>
+
+                    <!-- Account Type -->
+                    <div class="mb-5">
+                        <label class="block text-sm font-medium text-text-secondary mb-2">
+                            Account Type
+                        </label>
+                        <select
+                            name="type"
+                            required
+                            style="background-color:#030112;"
+                            class="w-full border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300"
+                        >
+                            <option value="">Select account type</option>
+                            <option value="cash">Cash</option>
+                            <option value="ewallet">E-Wallet</option>
+                            <option value="savings">Savings</option>
+                            <option value="investment">Investment</option>
+                            <option value="property">Property</option>
+                            <option value="real estate">Real Estate</option>
+                            <option value="credit">Credit Card</option>
+                            <option value="short-term loan">Short-Term Loan</option>
+                            <option value="long-term loan">Long-Term Loan</option>
+                            <option value="other assets">Other Assets</option>
+                        </select>
+                    </div>
+
+                    <!-- Opening Balance -->
+                    <div class="mb-5">
+                        <label class="block text-sm font-medium text-text-secondary mb-2">
+                            Opening Balance
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-text-secondary">
+                                RM
+                            </span>
+                            <input
+                                name="opening_balance"
+                                type="number"
+                                step="0.01"
+                                required
+                                placeholder="0.00"
+                                style="background-color:#030112;"
+                                class="w-full border border-gray-700 text-text-primary rounded-lg py-2 pl-14 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300"
+                            >
+                        </div>
+                        <p class="text-xs text-text-secondary mt-1">
+                            Loan accounts will be stored as negative balances automatically.
+                        </p>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Footer -->
+            <div class="p-6 border-t border-gray-800 flex justify-end space-x-4">
+                <button
+                    class="px-6 py-2 border border-gray-700 text-text-secondary rounded-lg hover:text-white transition-all-300"
+                    style="background-color:#030112;"
+                    id="cancel-add-account-btn"
+                >
+                    Cancel
+                </button>
+                <button
+                    type="submit"
+                    form="addAccountForm"
+                    class="px-6 py-2 rounded-lg text-white transition-all-300"
+                    style="background-color:#4f52bf;"
+                    id="saveAccountBtn"
+                >
+                    Create Account
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Script for Account Details Popup -->
+    <script>
+        document.querySelectorAll('[id^="accountDetailModal-"]').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if(e.target === modal) {
+                    const content = modal.querySelector('[id^="detailModalContent-"]');
+                    content.classList.add('scale-95','opacity-0');
+                    setTimeout(()=>modal.classList.add('hidden'), 300);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const content = modal.querySelector('div');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95', 'opacity-0');
+            }, 10);
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const content = modal.querySelector('div');
+            content.classList.add('scale-95','opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+    </script>
+
+    <!-- Script for add new popup -->
+    <script>
+        const addAccountBtn = document.getElementById('add-account-btn');
+        const addAccountModal = document.getElementById('addAccountModal');
+        const cancelAddBtn = document.getElementById('cancel-add-account-btn');
+        const modalContent = document.getElementById('modalContent');
+
+        function openAddAccountModal() {
+            addAccountModal.classList.remove('hidden');
+
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeAddAccountModal() {
+            modalContent.classList.add('scale-95', 'opacity-0');
+
+            setTimeout(() => {
+                addAccountModal.classList.add('hidden');
+            }, 300);
+        }
+
+        addAccountBtn.addEventListener('click', openAddAccountModal);
+
+        // Close when clicking backdrop
+        addAccountModal.addEventListener('click', function (e) {
+            if (e.target === addAccountModal) {
+                closeAddAccountModal();
+            }
+        });
+
+        // ✅ Fixed: Cancel button
+        cancelAddBtn.addEventListener('click', () => {
+            closeAddAccountModal();
+        });
+    </script>
+
+
+</body>
+</html>

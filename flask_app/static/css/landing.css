@@ -1,0 +1,140 @@
+body {
+    margin: 0;
+    font-family: 'DM Sans', sans-serif;
+    background-color: #030112;
+    color: #E2E2FF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.background .float-circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(50px);
+    animation: float 6s ease-in-out infinite;
+}
+
+.primary { width: 200px; height: 200px; background: rgba(87, 90, 208, 0.1); top: 20%; left: 20%; }
+.secondary { width: 300px; height: 300px; background: rgba(138, 140, 217, 0.05); bottom: 30%; right: 25%; animation-delay: 1s; }
+.primary-light { width: 250px; height: 250px; background: rgba(87, 90, 208, 0.05); top: 60%; left: 35%; animation-delay: 2s; }
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Main container: two columns */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 100px; /* space between brand and card */
+    z-index: 10;
+}
+
+/* Brand styling */
+.brand {
+    width: 300px;
+}
+.text-gradient {
+    background: linear-gradient(90deg, #575AD0, #8A8CD9);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.brand p {
+    margin: 5px 0;
+    color: #9CA3AF;
+}
+.trusted {
+    margin-top: 30px;
+    font-size: 0.9rem;
+}
+
+/* Card styling */
+.card {
+    background: #0A0721;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.05);
+    width: 350px;
+    box-shadow: 0 10px 30px -5px rgba(87, 90, 208, 0.15);
+}
+
+input {
+    width: 100%;
+    padding: 12px 10px 12px 35px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: #141230;
+    color: #E2E2FF;
+}
+
+.input-group { position: relative; }
+.input-group .icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9CA3AF;
+}
+#togglePassword {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #9CA3AF;
+    cursor: pointer;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #575AD0, #8A8CD9);
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.error {
+    background: rgba(255, 82, 82, 0.1);
+    border: 1px solid rgba(255, 82, 82, 0.2);
+    color: #FF5252;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.hidden { display: none; }
+
+/* Animations */
+.animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+.animate-card-rise { animation: cardRise 0.6s ease-out forwards; }
+@keyframes fadeIn { from { opacity:0; transform: translateY(10px);} to { opacity:1; transform: translateY(0); } }
+@keyframes cardRise { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+
+.animate-shake { animation: shake 0.5s ease-in-out; }
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}

@@ -1,0 +1,728 @@
+<html lang='en'>
+        <head >
+        <meta charset='UTF-8'/>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+<title >Personal Balance | Finance System</title>
+<link href='https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css' rel='stylesheet'/>
+<script src='https://res.gemcoder.com/js/reload.js'></script>
+<script src='https://cdn.tailwindcss.com'></script>
+<script src='https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js'></script>
+<link href='https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap' rel='stylesheet'/>
+<script >tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#575AD0',
+        secondary: '#7B61FF',
+        accent: '#4A3AFF',
+        danger: '#FF5757',
+        dark: '#030112',
+        'dark-card': '#0A0721',
+        'dark-hover': '#120E33',
+        'dark-border': '#1E1A47',
+        'text-primary': '#E2E8F0',
+        'text-secondary': '#94A3B8'
+      },
+      fontFamily: {
+        'dm-sans': ['"DM Sans"', 'sans-serif']
+      },
+      spacing: {
+        '18': '4.5rem',
+        '22': '5.5rem'
+      },
+      boxShadow: {
+        'card': '0 4px 20px rgba(0, 0, 0, 0.25)'
+      }
+    }
+  }
+};</script>
+<style type='text/tailwindcss'>
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-gradient {
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .bg-glass {
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        }
+    </style>
+    </head>
+<body class='bg-dark font-dm-sans text-text-primary min-h-screen flex flex-col'>
+        <!-- [MODULE] a1b_主内容区域 -->
+<div class='flex flex-1 overflow-hidden'>
+        <!-- [MODULE] c2d_左侧侧边导航栏 -->
+<aside class='w-64 bg-dark-card border-r border-dark-border flex-shrink-0 hidden md:flex flex-col transition-all duration-300 ease-in-out'>
+        <div class='p-6 border-b border-dark-border'>
+        <h1 class='text-2xl font-bold bg-gradient-to-r from-primary to-secondary text-gradient'>
+        FinTrack
+    </h1>
+    </div>
+<nav class='flex-1 overflow-y-auto scrollbar-hide p-4'>
+        <ul class='space-y-1'>
+        <li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 rounded-lg text-text-secondary hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-tachometer-alt w-5 h-5 mr-3'>
+        </i>
+<span >
+        Dashboard
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 rounded-lg text-text-secondary hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-exchange-alt w-5 h-5 mr-3'>
+        </i>
+<span >
+        Transaction
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 rounded-lg text-text-secondary hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-wallet w-5 h-5 mr-3'>
+        </i>
+<span >
+        Account
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 rounded-lg text-text-secondary hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-chart-pie w-5 h-5 mr-3'>
+        </i>
+<span >
+        Budget
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 rounded-lg text-text-secondary hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-bullseye w-5 h-5 mr-3'>
+        </i>
+<span >
+        Goals
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 rounded-lg bg-primary/10 text-primary border-l-2 border-primary'>
+        <i class='fas fa-balance-scale w-5 h-5 mr-3'>
+        </i>
+<span >
+        Balance
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 rounded-lg text-text-secondary hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-chart-line w-5 h-5 mr-3'>
+        </i>
+<span >
+        Investment
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 rounded-lg text-text-secondary hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-chart-bar w-5 h-5 mr-3'>
+        </i>
+<span >
+        Analytics
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 rounded-lg text-text-secondary hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-file-alt w-5 h-5 mr-3'>
+        </i>
+<span >
+        Report
+    </span>
+    </a>
+    </li>
+    </ul>
+    </nav>
+<div class='p-4 border-t border-dark-border'>
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 rounded-lg text-text-secondary hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-sign-out-alt w-5 h-5 mr-3'>
+        </i>
+<span >
+        Logout
+    </span>
+    </a>
+    </div>
+    </aside>
+<!-- [MODULE] e3f_主内容区域 -->
+<div class='flex-1 flex flex-col overflow-hidden'>
+        <!-- [MODULE] g4h_顶部导航栏 -->
+<header class='bg-dark-card border-b border-dark-border py-4 px-6 flex items-center justify-between'>
+        <div class='flex items-center'>
+        <button id='mobile-menu-button' class='md:hidden mr-4 text-text-secondary hover:text-primary'>
+        <i class='fas fa-bars text-xl'>
+        </i>
+    </button>
+<h2 class='text-xl font-semibold'>
+        Personal Balance
+    </h2>
+    </div>
+<div class='flex items-center space-x-4'>
+        <button class='text-text-secondary hover:text-primary transition-colors'>
+        <i class='fas fa-bell text-xl'>
+        </i>
+    </button>
+<div class='flex items-center'>
+        <img src='https://design.gemcoder.com/staticResource/echoAiSystemImages/2c547aaa71436cccbf2fb7bcb4084dd0.png' alt='User Profile' class='w-10 h-10 rounded-full object-cover border-2 border-primary'/>
+    </div>
+    </div>
+    </header>
+<!-- [/MODULE] g4h_顶部导航栏 -- 包含移动端菜单按钮、页面标题和用户信息 -->
+<!-- [MODULE] i5j_页面内容区域 -->
+<main class='flex-1 overflow-y-auto p-6 scrollbar-hide'>
+        <!-- [MODULE] k6l_页面标题区域 -->
+<div class='mb-8'>
+        <h1 class='text-[clamp(1.75rem,3vw,2.5rem)] font-bold mb-2'>
+        Personal Balance
+    </h1>
+<p class='text-text-secondary text-lg'>
+        Assets, Liabilities and Net Worth Overview
+    </p>
+    </div>
+<!-- [/MODULE] k6l_页面标题区域 -- 包含页面标题和副标题 -->
+<!-- [MODULE] m7n_Balance Sheet 主表格 -->
+<div class='bg-dark-card rounded-xl shadow-card p-6 mb-8 border border-dark-border'>
+        <div class='overflow-x-auto'>
+        <table class='w-full min-w-[800px]'>
+        <thead >
+        <tr class='border-b border-dark-border'>
+        <th class='text-left py-4 px-2 font-semibold text-text-secondary'>
+        Assets
+    </th>
+<th class='text-right py-4 px-2 font-semibold text-text-secondary'>
+        Amount
+    </th>
+<th class='text-left py-4 px-2 font-semibold text-text-secondary'>
+        Liabilities
+    </th>
+<th class='text-right py-4 px-2 font-semibold text-text-secondary'>
+        Amount
+    </th>
+    </tr>
+    </thead>
+<tbody >
+        <!-- Assets Group -->
+<tr >
+        <td class='py-4 px-2 font-medium'>
+        Short Term Assets
+    </td>
+<td class='py-4 px-2'>
+        </td>
+<td class='py-4 px-2 font-medium'>
+        Loans
+    </td>
+<td class='py-4 px-2 text-right'>
+        $15,200.00
+    </td>
+    </tr>
+<tr >
+        <td class='py-3 px-6 text-text-secondary'>
+        Cash
+    </td>
+<td class='py-3 px-2 text-right'>
+        $3,250.00
+    </td>
+<td class='py-3 px-6 text-text-secondary'>
+        Credit Cards
+    </td>
+<td class='py-3 px-2 text-right'>
+        $4,850.00
+    </td>
+    </tr>
+<tr >
+        <td class='py-3 px-6 text-text-secondary'>
+        Accounts
+    </td>
+<td class='py-3 px-2 text-right'>
+        $8,750.00
+    </td>
+<td class='py-3 px-6 text-text-secondary'>
+        Personal Debt
+    </td>
+<td class='py-3 px-2 text-right'>
+        $2,750.00
+    </td>
+    </tr>
+<tr >
+        <td class='py-3 px-6 text-text-secondary'>
+        Savings
+    </td>
+<td class='py-3 px-2 text-right'>
+        $12,500.00
+    </td>
+<td class='py-3 px-6'>
+        </td>
+<td class='py-3 px-2'>
+        </td>
+    </tr>
+<tr >
+        <td class='py-3 px-6 text-text-secondary'>
+        Investments
+    </td>
+<td class='py-3 px-2 text-right'>
+        $7,800.00
+    </td>
+<td class='py-3 px-6'>
+        </td>
+<td class='py-3 px-2'>
+        </td>
+    </tr>
+<tr >
+        <td class='py-4 px-2 font-medium'>
+        Long Term Assets
+    </td>
+<td class='py-4 px-2'>
+        </td>
+<td class='py-4 px-2'>
+        </td>
+<td class='py-4 px-2'>
+        </td>
+    </tr>
+<tr >
+        <td class='py-3 px-6 text-text-secondary'>
+        Property
+    </td>
+<td class='py-3 px-2 text-right'>
+        $285,000.00
+    </td>
+<td class='py-3 px-6'>
+        </td>
+<td class='py-3 px-2'>
+        </td>
+    </tr>
+<tr >
+        <td class='py-3 px-6 text-text-secondary'>
+        Retirement Plan
+    </td>
+<td class='py-3 px-2 text-right'>
+        $42,500.00
+    </td>
+<td class='py-3 px-6'>
+        </td>
+<td class='py-3 px-2'>
+        </td>
+    </tr>
+<tr >
+        <td class='py-3 px-6 text-text-secondary'>
+        Other Long Term Assets
+    </td>
+<td class='py-3 px-2 text-right'>
+        $12,800.00
+    </td>
+<td class='py-3 px-6'>
+        </td>
+<td class='py-3 px-2'>
+        </td>
+    </tr>
+<tr class='border-t border-dark-border'>
+        <td class='py-4 px-2 font-bold'>
+        Total Assets
+    </td>
+<td class='py-4 px-2 text-right font-bold'>
+        $372,600.00
+    </td>
+<td class='py-4 px-2 font-bold'>
+        Total Liabilities
+    </td>
+<td class='py-4 px-2 text-right font-bold'>
+        $22,800.00
+    </td>
+    </tr>
+<tr class='border-t-2 border-primary/30'>
+        <td class='py-5 px-2 font-bold text-primary' colspan='2'>
+        Net Worth
+    </td>
+<td class='py-5 px-2'>
+        </td>
+<td class='py-5 px-2 text-right font-bold text-primary text-xl'>
+        $349,800.00
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+    </div>
+<!-- [/MODULE] m7n_Balance Sheet 主表格 -- 展示资产与负债的详细信息，左侧为资产分类，右侧为负债分类，底部显示总资产、总负债和净资产 -->
+<!-- [MODULE] o8p_趋势分析模块 -->
+<div class='bg-dark-card rounded-xl shadow-card p-6 mb-8 border border-dark-border'>
+        <h2 class='text-xl font-semibold mb-6'>
+        Financial Trend Analysis
+    </h2>
+<div class='h-[400px]'>
+        <canvas id='trendChart'>
+        </canvas>
+    </div>
+    </div>
+<!-- [/MODULE] o8p_趋势分析模块 -- 使用折线图展示总资产、总负债和净资产随时间的变化趋势 -->
+<!-- [MODULE] q9r_结构分布模块 -->
+<div class='grid grid-cols-1 md:grid-cols-2 gap-6'>
+        <!-- [MODULE] s0t_Asset Breakdown -->
+<div class='bg-dark-card rounded-xl shadow-card p-6 border border-dark-border'>
+        <h2 class='text-xl font-semibold mb-6'>
+        Asset Breakdown
+    </h2>
+<div class='h-[300px]'>
+        <canvas id='assetChart'>
+        </canvas>
+    </div>
+    </div>
+<!-- [/MODULE] s0t_Asset Breakdown -- 使用饼图展示资产构成比例 -->
+<!-- [MODULE] u1v_Liability Breakdown -->
+<div class='bg-dark-card rounded-xl shadow-card p-6 border border-dark-border'>
+        <h2 class='text-xl font-semibold mb-6'>
+        Liability Breakdown
+    </h2>
+<div class='h-[300px]'>
+        <canvas id='liabilityChart'>
+        </canvas>
+    </div>
+    </div>
+<!-- [/MODULE] u1v_Liability Breakdown -- 使用饼图展示负债构成比例 -->
+    </div>
+<!-- [/MODULE] q9r_结构分布模块 -- 包含两个并排的卡片，分别展示资产和负债的构成比例 -->
+    </main>
+<!-- [/MODULE] i5j_页面内容区域 -- 包含页面标题、资产负债表、趋势分析和结构分布模块 -->
+    </div>
+<!-- [/MODULE] e3f_主内容区域 -- 包含顶部导航栏和页面内容区域 -->
+    </div>
+<!-- [/MODULE] a1b_主内容区域 -- 包含左侧侧边导航栏和主内容区域 -->
+<!-- [JSMOD] w2x_图表初始化 -->
+<script id='chart-initialization'>window.addEventListener('load', function () {
+  // Initialize trend chart
+  var trendChart = echarts.init(document.getElementById('trendChart'));
+  var trendOption = {
+    backgroundColor: 'transparent',
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      },
+      formatter: '{b}: ${c}'
+    },
+    legend: {
+      data: ['Total Assets', 'Total Liabilities', 'Net Worth'],
+      textStyle: {
+        color: '#94A3B8'
+      },
+      top: 0
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      boundaryGap: false,
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      axisLine: {
+        lineStyle: {
+          color: '#1E1A47'
+        }
+      },
+      axisLabel: {
+        color: '#94A3B8'
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: {
+        lineStyle: {
+          color: '#1E1A47'
+        }
+      },
+      axisLabel: {
+        color: '#94A3B8',
+        formatter: '${value}'
+      },
+      splitLine: {
+        lineStyle: {
+          color: '#1E1A47'
+        }
+      }
+    },
+    series: [{
+      name: 'Total Assets',
+      type: 'line',
+      data: [350000, 352000, 355000, 358000, 360000, 362000, 365000, 367000, 369000, 371000, 372000, 372600],
+      lineStyle: {
+        color: '#575AD0',
+        width: 2
+      },
+      symbol: 'circle',
+      symbolSize: 6,
+      itemStyle: {
+        color: '#575AD0'
+      },
+      areaStyle: {
+        color: {
+          type: 'linear',
+          x: 0,
+          y: 0,
+          x2: 0,
+          y2: 1,
+          colorStops: [{
+            offset: 0,
+            color: 'rgba(87, 90, 208, 0.2)'
+          }, {
+            offset: 1,
+            color: 'rgba(87, 90, 208, 0)'
+          }]
+        }
+      }
+    }, {
+      name: 'Total Liabilities',
+      type: 'line',
+      data: [25000, 24800, 24500, 24200, 24000, 23800, 23500, 23200, 23000, 22900, 22850, 22800],
+      lineStyle: {
+        color: '#FF5757',
+        width: 2
+      },
+      symbol: 'circle',
+      symbolSize: 6,
+      itemStyle: {
+        color: '#FF5757'
+      },
+      areaStyle: {
+        color: {
+          type: 'linear',
+          x: 0,
+          y: 0,
+          x2: 0,
+          y2: 1,
+          colorStops: [{
+            offset: 0,
+            color: 'rgba(255, 87, 87, 0.2)'
+          }, {
+            offset: 1,
+            color: 'rgba(255, 87, 87, 0)'
+          }]
+        }
+      }
+    }, {
+      name: 'Net Worth',
+      type: 'line',
+      data: [325000, 327200, 330500, 333800, 336000, 338200, 341500, 343800, 346000, 348100, 349150, 349800],
+      lineStyle: {
+        color: '#7B61FF',
+        width: 2
+      },
+      symbol: 'circle',
+      symbolSize: 6,
+      itemStyle: {
+        color: '#7B61FF'
+      },
+      areaStyle: {
+        color: {
+          type: 'linear',
+          x: 0,
+          y: 0,
+          x2: 0,
+          y2: 1,
+          colorStops: [{
+            offset: 0,
+            color: 'rgba(123, 97, 255, 0.2)'
+          }, {
+            offset: 1,
+            color: 'rgba(123, 97, 255, 0)'
+          }]
+        }
+      }
+    }]
+  };
+  trendChart.setOption(trendOption);
+
+  // Initialize asset breakdown chart
+  var assetChart = echarts.init(document.getElementById('assetChart'));
+  var assetOption = {
+    backgroundColor: 'transparent',
+    tooltip: {
+      trigger: 'item',
+      formatter: '{a} <br/>{b}: ${c} ({d}%)'
+    },
+    legend: {
+      orient: 'vertical',
+      left: 10,
+      textStyle: {
+        color: '#94A3B8'
+      },
+      top: 'center'
+    },
+    series: [{
+      name: 'Assets',
+      type: 'pie',
+      radius: ['40%', '70%'],
+      avoidLabelOverlap: false,
+      itemStyle: {
+        borderRadius: 10,
+        borderColor: '#0A0721',
+        borderWidth: 2
+      },
+      label: {
+        show: false,
+        position: 'center'
+      },
+      emphasis: {
+        label: {
+          show: true,
+          fontSize: '16',
+          fontWeight: 'bold',
+          color: '#E2E8F0'
+        }
+      },
+      labelLine: {
+        show: false
+      },
+      data: [{
+        value: 3250,
+        name: 'Cash',
+        itemStyle: {
+          color: '#575AD0'
+        }
+      }, {
+        value: 8750,
+        name: 'Accounts',
+        itemStyle: {
+          color: '#7B61FF'
+        }
+      }, {
+        value: 12500,
+        name: 'Savings',
+        itemStyle: {
+          color: '#4A3AFF'
+        }
+      }, {
+        value: 7800,
+        name: 'Investments',
+        itemStyle: {
+          color: '#8A75FF'
+        }
+      }, {
+        value: 285000,
+        name: 'Property',
+        itemStyle: {
+          color: '#3A2AE0'
+        }
+      }, {
+        value: 42500,
+        name: 'Retirement',
+        itemStyle: {
+          color: '#6A61E8'
+        }
+      }, {
+        value: 12800,
+        name: 'Other',
+        itemStyle: {
+          color: '#9A90FF'
+        }
+      }]
+    }]
+  };
+  assetChart.setOption(assetOption);
+
+  // Initialize liability breakdown chart
+  var liabilityChart = echarts.init(document.getElementById('liabilityChart'));
+  var liabilityOption = {
+    backgroundColor: 'transparent',
+    tooltip: {
+      trigger: 'item',
+      formatter: '{a} <br/>{b}: ${c} ({d}%)'
+    },
+    legend: {
+      orient: 'vertical',
+      left: 10,
+      textStyle: {
+        color: '#94A3B8'
+      },
+      top: 'center'
+    },
+    series: [{
+      name: 'Liabilities',
+      type: 'pie',
+      radius: ['40%', '70%'],
+      avoidLabelOverlap: false,
+      itemStyle: {
+        borderRadius: 10,
+        borderColor: '#0A0721',
+        borderWidth: 2
+      },
+      label: {
+        show: false,
+        position: 'center'
+      },
+      emphasis: {
+        label: {
+          show: true,
+          fontSize: '16',
+          fontWeight: 'bold',
+          color: '#E2E8F0'
+        }
+      },
+      labelLine: {
+        show: false
+      },
+      data: [{
+        value: 15200,
+        name: 'Loans',
+        itemStyle: {
+          color: '#FF5757'
+        }
+      }, {
+        value: 4850,
+        name: 'Credit Cards',
+        itemStyle: {
+          color: '#FF7A7A'
+        }
+      }, {
+        value: 2750,
+        name: 'Personal Debt',
+        itemStyle: {
+          color: '#FF9A9A'
+        }
+      }]
+    }]
+  };
+  liabilityChart.setOption(liabilityOption);
+
+  // Handle window resize
+  window.addEventListener('resize', function () {
+    trendChart.resize();
+    assetChart.resize();
+    liabilityChart.resize();
+  });
+});</script>
+<!-- [/JSMOD] w2x_图表初始化 -- 初始化趋势分析图表、资产分布图表和负债分布图表，并处理窗口大小变化事件 -->
+<!-- [JSMOD] y3z_移动端菜单交互 -->
+<script id='mobile-menu-script'>document.getElementById('mobile-menu-button').addEventListener('click', function () {
+  var sidebar = document.querySelector('aside');
+  sidebar.classList.toggle('hidden');
+  sidebar.classList.toggle('fixed');
+  sidebar.classList.toggle('inset-y-0');
+  sidebar.classList.toggle('left-0');
+  sidebar.classList.toggle('z-50');
+});</script>
+<!-- [/JSMOD] y3z_移动端菜单交互 -- 处理移动端侧边栏的显示和隐藏 -->
+    </body>
+    </html>

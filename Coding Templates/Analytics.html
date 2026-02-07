@@ -1,0 +1,2703 @@
+<html lang='en'>
+        <head >
+        <meta charset='UTF-8'/>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+<title >Financial Analytics</title>
+<link href='https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css' rel='stylesheet'/>
+<script src='https://res.gemcoder.com/js/reload.js'></script>
+<script src='https://cdn.tailwindcss.com'></script>
+<script src='https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js'></script>
+<link href='https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap' rel='stylesheet'/>
+<script >tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#575AD0',
+        secondary: '#6B6EDD',
+        tertiary: '#8A8CD9',
+        dark: '#030112',
+        card: '#0A0721',
+        'card-hover': '#110E2D',
+        success: '#36D399',
+        warning: '#FBBD23',
+        danger: '#F87272',
+        'neutral-100': '#F3F4F6',
+        'neutral-200': '#E5E7EB',
+        'neutral-300': '#D1D5DB',
+        'neutral-400': '#9CA3AF',
+        'neutral-500': '#6B7280',
+        'neutral-600': '#4B5563',
+        'neutral-700': '#374151',
+        'neutral-800': '#1F2937',
+        'neutral-900': '#111827'
+      },
+      fontFamily: {
+        'dm-sans': ['"DM Sans"', 'sans-serif']
+      },
+      spacing: {
+        '18': '4.5rem',
+        '22': '5.5rem',
+        '26': '6.5rem',
+        '30': '7.5rem',
+        '34': '8.5rem',
+        '38': '9.5rem',
+        '42': '10.5rem',
+        '46': '11.5rem',
+        '50': '12.5rem'
+      },
+      boxShadow: {
+        'card': '0 4px 20px rgba(0, 0, 0, 0.15)',
+        'card-hover': '0 10px 30px rgba(0, 0, 0, 0.25)'
+      }
+    }
+  }
+};</script>
+<style type='text/tailwindcss'>
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #575AD0 0%, #6B6EDD 100%);
+            }
+            .progress-bar-green {
+                background-color: #36D399;
+            }
+            .progress-bar-yellow {
+                background-color: #FBBD23;
+            }
+            .progress-bar-red {
+                background-color: #F87272;
+            }
+        }
+    </style>
+    </head>
+<body class='bg-dark font-dm-sans text-neutral-100 min-h-screen flex flex-col'>
+        <!-- [MODULE] 8d2_主内容区域 -->
+<div class='flex flex-1 overflow-hidden'>
+        <!-- [MODULE] 7a3_左侧侧边导航栏 -->
+<aside class='w-64 bg-neutral-900 border-r border-neutral-800 flex flex-col transition-all duration-300 ease-in-out z-10'>
+        <!-- [MODULE] 2f9_侧边栏:品牌标识 -->
+<div class='p-6 border-b border-neutral-800'>
+        <h1 class='text-2xl font-bold text-white flex items-center'>
+        <i class='fas fa-chart-line text-primary mr-3'>
+        </i>
+<span >
+        FinTrack
+    </span>
+    </h1>
+    </div>
+<!-- [/MODULE] 2f9_侧边栏:品牌标识 -- 显示系统品牌名称和图标 -->
+<!-- [MODULE] 5c7_侧边栏:导航菜单 -->
+<nav class='flex-1 overflow-y-auto scrollbar-hide p-4'>
+        <ul class='space-y-1'>
+        <li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all duration-200'>
+        <i class='fas fa-home w-5 h-5 mr-3'>
+        </i>
+<span >
+        Dashboard
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all duration-200'>
+        <i class='fas fa-exchange-alt w-5 h-5 mr-3'>
+        </i>
+<span >
+        Transaction
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all duration-200'>
+        <i class='fas fa-wallet w-5 h-5 mr-3'>
+        </i>
+<span >
+        Account
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all duration-200'>
+        <i class='fas fa-piggy-bank w-5 h-5 mr-3'>
+        </i>
+<span >
+        Budget
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all duration-200'>
+        <i class='fas fa-bullseye w-5 h-5 mr-3'>
+        </i>
+<span >
+        Goals
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all duration-200'>
+        <i class='fas fa-balance-scale w-5 h-5 mr-3'>
+        </i>
+<span >
+        Balance
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all duration-200'>
+        <i class='fas fa-chart-pie w-5 h-5 mr-3'>
+        </i>
+<span >
+        Investment
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 bg-primary/10 text-primary rounded-lg transition-all duration-200'>
+        <i class='fas fa-chart-bar w-5 h-5 mr-3'>
+        </i>
+<span >
+        Analytics
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all duration-200'>
+        <i class='fas fa-file-alt w-5 h-5 mr-3'>
+        </i>
+<span >
+        Report
+    </span>
+    </a>
+    </li>
+    </ul>
+    </nav>
+<!-- [/MODULE] 5c7_侧边栏:导航菜单 -- 包含系统所有主要功能模块的导航链接，当前选中Analytics项 -->
+<!-- [MODULE] 9b4_侧边栏:登出按钮 -->
+<div class='p-4 border-t border-neutral-800'>
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-neutral-400 hover:bg-neutral-800 hover:text-white rounded-lg transition-all duration-200'>
+        <i class='fas fa-sign-out-alt w-5 h-5 mr-3'>
+        </i>
+<span >
+        Logout
+    </span>
+    </a>
+    </div>
+<!-- [/MODULE] 9b4_侧边栏:登出按钮 -- 提供用户退出系统的功能 -->
+    </aside>
+<!-- [/MODULE] 7a3_左侧侧边导航栏 -- 包含品牌标识、导航菜单和登出按钮，采用深色主题设计 -->
+<!-- [MODULE] 3e5_Analytics页面内容 -->
+<main class='flex-1 overflow-y-auto bg-dark p-6'>
+        <!-- [MODULE] 6f8_Analytics页面:顶部区域 -->
+<div class='mb-8'>
+        <h1 class='text-[clamp(1.75rem,3vw,2.5rem)] font-bold text-white mb-2'>
+        Analytics
+    </h1>
+<p class='text-neutral-400 text-lg'>
+        Financial insights and performance analysis
+    </p>
+    </div>
+<!-- [/MODULE] 6f8_Analytics页面:顶部区域 -- 显示页面标题和副标题，采用与其他页面一致的标题样式 -->
+<!-- [MODULE] 2d9_Analytics页面:全局时间筛选 -->
+<div class='bg-neutral-900 rounded-xl p-4 mb-8 shadow-card'>
+        <div class='flex flex-wrap items-center gap-4'>
+        <span class='text-neutral-400 whitespace-nowrap'>
+        Time Period:
+    </span>
+<button class='px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all duration-200'>
+        Month
+    </button>
+<button class='px-4 py-2 bg-neutral-800 text-neutral-300 rounded-lg hover:bg-neutral-700 transition-all duration-200'>
+        Quarter
+    </button>
+<button class='px-4 py-2 bg-neutral-800 text-neutral-300 rounded-lg hover:bg-neutral-700 transition-all duration-200'>
+        Year
+    </button>
+<button class='px-4 py-2 bg-neutral-800 text-neutral-300 rounded-lg hover:bg-neutral-700 transition-all duration-200'>
+        Custom Range
+    </button>
+<div class='ml-auto flex items-center'>
+        <span class='text-neutral-400 mr-3'>
+        Current: June 2023
+    </span>
+<div class='flex space-x-2'>
+        <button class='p-2 bg-neutral-800 text-neutral-300 rounded-lg hover:bg-neutral-700 transition-all duration-200'>
+        <i class='fas fa-chevron-left'>
+        </i>
+    </button>
+<button class='p-2 bg-neutral-800 text-neutral-300 rounded-lg hover:bg-neutral-700 transition-all duration-200'>
+        <i class='fas fa-chevron-right'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] 2d9_Analytics页面:全局时间筛选 -- 提供时间范围筛选功能，包括Month、Quarter、Year和Custom Range选项，当前选中Month选项 -->
+<!-- [MODULE] 5a1_Analytics页面:Financial Overview + Cashflow Analytics -->
+<section class='mb-8'>
+        <h2 class='text-xl font-semibold text-white mb-6'>
+        Financial Overview
+    </h2>
+<div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <!-- [MODULE] 1b7_Financial Overview:Total Income -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-1'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <p class='text-neutral-400 text-sm mb-1'>
+        Total Income
+    </p>
+<h3 class='text-2xl font-bold text-white'>
+        $12,540
+    </h3>
+    </div>
+<div class='p-3 bg-primary/20 rounded-lg'>
+        <i class='fas fa-arrow-down text-primary text-xl'>
+        </i>
+    </div>
+    </div>
+<div class='flex items-center'>
+        <span class='text-success flex items-center text-sm font-medium'>
+        <i class='fas fa-arrow-up mr-1'>
+        </i>
+12.5%
+    </span>
+<span class='text-neutral-500 text-sm ml-2'>
+        vs last month
+    </span>
+    </div>
+    </div>
+<!-- [/MODULE] 1b7_Financial Overview:Total Income -- 显示总收入数据，包括金额、环比增长率和趋势图标 -->
+<!-- [MODULE] 4c9_Financial Overview:Total Expense -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-1'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <p class='text-neutral-400 text-sm mb-1'>
+        Total Expense
+    </p>
+<h3 class='text-2xl font-bold text-white'>
+        $8,320
+    </h3>
+    </div>
+<div class='p-3 bg-danger/20 rounded-lg'>
+        <i class='fas fa-arrow-up text-danger text-xl'>
+        </i>
+    </div>
+    </div>
+<div class='flex items-center'>
+        <span class='text-danger flex items-center text-sm font-medium'>
+        <i class='fas fa-arrow-up mr-1'>
+        </i>
+5.2%
+    </span>
+<span class='text-neutral-500 text-sm ml-2'>
+        vs last month
+    </span>
+    </div>
+    </div>
+<!-- [/MODULE] 4c9_Financial Overview:Total Expense -- 显示总支出数据，包括金额、环比增长率和趋势图标 -->
+<!-- [MODULE] 7e2_Financial Overview:Net Cash Flow -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-1'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <p class='text-neutral-400 text-sm mb-1'>
+        Net Cash Flow
+    </p>
+<h3 class='text-2xl font-bold text-white'>
+        $4,220
+    </h3>
+    </div>
+<div class='p-3 bg-success/20 rounded-lg'>
+        <i class='fas fa-chart-line text-success text-xl'>
+        </i>
+    </div>
+    </div>
+<div class='h-16'>
+        <div id='mini-line-chart' class='w-full h-full'>
+        </div>
+    </div>
+    </div>
+<!-- [/MODULE] 7e2_Financial Overview:Net Cash Flow -- 显示净现金流数据，包括金额和迷你折线图展示趋势 -->
+<!-- [MODULE] 9f5_Financial Overview:Savings Rate -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-1'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <p class='text-neutral-400 text-sm mb-1'>
+        Savings Rate
+    </p>
+<h3 class='text-2xl font-bold text-white'>
+        33.6%
+    </h3>
+    </div>
+<div class='p-3 bg-primary/20 rounded-lg'>
+        <i class='fas fa-piggy-bank text-primary text-xl'>
+        </i>
+    </div>
+    </div>
+<div class='w-full bg-neutral-800 rounded-full h-2.5 mb-1'>
+        <div class='progress-bar-green h-2.5 rounded-full' style='width: 33.6%'>
+        </div>
+    </div>
+<div class='flex justify-between text-xs text-neutral-500'>
+        <span >
+        0%
+    </span>
+<span >
+        50%
+    </span>
+<span >
+        100%
+    </span>
+    </div>
+    </div>
+<!-- [/MODULE] 9f5_Financial Overview:Savings Rate -- 显示储蓄率数据，包括百分比和进度条可视化展示 -->
+<!-- [MODULE] 2g3_Financial Overview:Average Daily Spending -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-1'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <p class='text-neutral-400 text-sm mb-1'>
+        Average Daily Spending
+    </p>
+<h3 class='text-2xl font-bold text-white'>
+        $277
+    </h3>
+    </div>
+<div class='p-3 bg-neutral-800 rounded-lg'>
+        <i class='fas fa-wallet text-neutral-300 text-xl'>
+        </i>
+    </div>
+    </div>
+<div class='flex items-center'>
+        <span class='text-danger flex items-center text-sm font-medium'>
+        <i class='fas fa-arrow-up mr-1'>
+        </i>
+3.8%
+    </span>
+<span class='text-neutral-500 text-sm ml-2'>
+        vs monthly average
+    </span>
+    </div>
+    </div>
+<!-- [/MODULE] 2g3_Financial Overview:Average Daily Spending -- 显示平均每日支出数据，包括金额、与月平均比较的增长率 -->
+<!-- [MODULE] 5h7_Financial Overview:Cash Runway -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-1'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <p class='text-neutral-400 text-sm mb-1'>
+        Cash Runway
+    </p>
+<h3 class='text-2xl font-bold text-white'>
+        187 days
+    </h3>
+    </div>
+<div class='p-3 bg-secondary/20 rounded-lg'>
+        <i class='fas fa-hourglass-half text-secondary text-xl'>
+        </i>
+    </div>
+    </div>
+<div class='flex items-center'>
+        <span class='text-success flex items-center text-sm font-medium'>
+        <i class='fas fa-arrow-up mr-1'>
+        </i>
+12 days
+    </span>
+<span class='text-neutral-500 text-sm ml-2'>
+        vs last month
+    </span>
+    </div>
+    </div>
+<!-- [/MODULE] 5h7_Financial Overview:Cash Runway -- 显示现金可维持天数，包括天数和环比变化情况 -->
+    </div>
+    </section>
+<!-- [/MODULE] 5a1_Analytics页面:Financial Overview + Cashflow Analytics -- 展示财务概览和现金流分析的关键指标，包括总收入、总支出、净现金流、储蓄率、平均每日支出和现金可维持天数 -->
+<!-- [MODULE] 8j2_Analytics页面:Income Analytics -->
+<section class='mb-8'>
+        <h2 class='text-xl font-semibold text-white mb-6'>
+        Income Analytics
+    </h2>
+<div class='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+        <!-- [MODULE] 1k5_Income Analytics:Income Trend -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card lg:col-span-2'>
+        <div class='flex justify-between items-center mb-6'>
+        <h3 class='text-lg font-semibold text-white'>
+        Income Trend
+    </h3>
+<div class='flex space-x-2'>
+        <button class='px-3 py-1 text-xs bg-primary/10 text-primary rounded-lg'>
+        Monthly
+    </button>
+<button class='px-3 py-1 text-xs bg-neutral-800 text-neutral-400 rounded-lg hover:bg-neutral-700 transition-all duration-200'>
+        Yearly
+    </button>
+    </div>
+    </div>
+<div class='h-80'>
+        <div id='income-trend-chart' class='w-full h-full'>
+        </div>
+    </div>
+    </div>
+<!-- [/MODULE] 1k5_Income Analytics:Income Trend -- 展示收入趋势的折线图，支持月度和年度数据切换 -->
+<!-- [MODULE] 3m7_Income Analytics:Income by Source -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card'>
+        <h3 class='text-lg font-semibold text-white mb-6'>
+        Income by Source
+    </h3>
+<div class='h-80'>
+        <div id='income-source-chart' class='w-full h-full'>
+        </div>
+    </div>
+    </div>
+<!-- [/MODULE] 3m7_Income Analytics:Income by Source -- 展示收入来源分布的水平条形图 -->
+<!-- [MODULE] 6n9_Income Analytics:Income Metrics -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card lg:col-span-3'>
+        <div class='grid grid-cols-1 md:grid-cols-2 gap-6'>
+        <div class='flex items-center'>
+        <div class='p-4 bg-primary/20 rounded-lg mr-4'>
+        <i class='fas fa-line-chart text-primary text-2xl'>
+        </i>
+    </div>
+<div >
+        <p class='text-neutral-400 text-sm'>
+        Income Growth Rate
+    </p>
+<div class='flex items-end'>
+        <h3 class='text-3xl font-bold text-white'>
+        12.5%
+    </h3>
+<span class='text-success text-sm ml-2 mb-1'>
+        +2.3% vs last quarter
+    </span>
+    </div>
+    </div>
+    </div>
+<div class='flex items-center'>
+        <div class='p-4 bg-secondary/20 rounded-lg mr-4'>
+        <i class='fas fa-wave-square text-secondary text-2xl'>
+        </i>
+    </div>
+<div >
+        <p class='text-neutral-400 text-sm'>
+        Income Volatility
+    </p>
+<div class='flex items-center'>
+        <span class='px-3 py-1 bg-neutral-800 text-neutral-300 rounded-full text-sm font-medium'>
+        Medium
+    </span>
+<p class='text-neutral-400 text-sm ml-3'>
+        Consistent with historical patterns
+    </p>
+    </div>
+    </div>
+    </div>
+    </div>
+<div class='mt-6 pt-6 border-t border-neutral-800'>
+        <h4 class='text-neutral-300 font-medium mb-3'>
+        Key Insights
+    </h4>
+<ul class='space-y-2 text-neutral-400 text-sm'>
+        <li class='flex items-start'>
+        <i class='fas fa-info-circle text-primary mt-1 mr-2'>
+        </i>
+<span >
+        Primary income source (Salary) shows steady growth of 8.2% YoY
+    </span>
+    </li>
+<li class='flex items-start'>
+        <i class='fas fa-info-circle text-primary mt-1 mr-2'>
+        </i>
+<span >
+        Investment income increased by 35% due to dividend payout in current month
+    </span>
+    </li>
+<li class='flex items-start'>
+        <i class='fas fa-info-circle text-primary mt-1 mr-2'>
+        </i>
+<span >
+        Freelance income shows highest volatility with 42% month-to-month variation
+    </span>
+    </li>
+    </ul>
+    </div>
+    </div>
+<!-- [/MODULE] 6n9_Income Analytics:Income Metrics -- 展示收入相关指标，包括收入增长率、收入波动性和关键洞察文本 -->
+    </div>
+    </section>
+<!-- [/MODULE] 8j2_Analytics页面:Income Analytics -- 分析收入情况，包括收入趋势、收入来源分布和收入相关指标 -->
+<!-- [MODULE] 4p6_Analytics页面:Expense Analytics -->
+<section class='mb-8'>
+        <h2 class='text-xl font-semibold text-white mb-6'>
+        Expense Analytics
+    </h2>
+<div class='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+        <!-- [MODULE] 7q8_Expense Analytics:Total Expense Trend -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card lg:col-span-2'>
+        <div class='flex justify-between items-center mb-6'>
+        <h3 class='text-lg font-semibold text-white'>
+        Total Expense Trend
+    </h3>
+<div class='flex space-x-2'>
+        <button class='px-3 py-1 text-xs bg-primary/10 text-primary rounded-lg'>
+        Monthly
+    </button>
+<button class='px-3 py-1 text-xs bg-neutral-800 text-neutral-400 rounded-lg hover:bg-neutral-700 transition-all duration-200'>
+        Yearly
+    </button>
+    </div>
+    </div>
+<div class='h-80'>
+        <div id='expense-trend-chart' class='w-full h-full'>
+        </div>
+    </div>
+    </div>
+<!-- [/MODULE] 7q8_Expense Analytics:Total Expense Trend -- 展示总支出趋势的折线图，支持月度和年度数据切换 -->
+<!-- [MODULE] 9r1_Expense Analytics:Expense by Category -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card'>
+        <h3 class='text-lg font-semibold text-white mb-6'>
+        Expense by Category
+    </h3>
+<div class='h-80'>
+        <div id='expense-category-chart' class='w-full h-full'>
+        </div>
+    </div>
+    </div>
+<!-- [/MODULE] 9r1_Expense Analytics:Expense by Category -- 展示支出类别分布的水平条形图 -->
+<!-- [MODULE] 2s3_Expense Analytics:Fixed vs Variable -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card lg:col-span-2'>
+        <h3 class='text-lg font-semibold text-white mb-6'>
+        Fixed vs Variable Expenses
+    </h3>
+<div class='h-80'>
+        <div id='fixed-variable-chart' class='w-full h-full'>
+        </div>
+    </div>
+    </div>
+<!-- [/MODULE] 2s3_Expense Analytics:Fixed vs Variable -- 展示固定支出与可变支出对比的堆叠条形图 -->
+<!-- [MODULE] 5t5_Expense Analytics:Top 5 Expense Categories -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card'>
+        <h3 class='text-lg font-semibold text-white mb-6'>
+        Top 5 Expense Categories
+    </h3>
+<div class='space-y-5'>
+        <div >
+        <div class='flex justify-between items-center mb-1'>
+        <span class='text-neutral-300 text-sm font-medium'>
+        Housing
+    </span>
+<span class='text-white font-semibold'>
+        $2,400
+    </span>
+    </div>
+<div class='w-full bg-neutral-800 rounded-full h-2.5'>
+        <div class='progress-bar-primary h-2.5 rounded-full' style='width: 35%'>
+        </div>
+    </div>
+    </div>
+<div >
+        <div class='flex justify-between items-center mb-1'>
+        <span class='text-neutral-300 text-sm font-medium'>
+        Transportation
+    </span>
+<span class='text-white font-semibold'>
+        $1,250
+    </span>
+    </div>
+<div class='w-full bg-neutral-800 rounded-full h-2.5'>
+        <div class='progress-bar-secondary h-2.5 rounded-full' style='width: 22%'>
+        </div>
+    </div>
+    </div>
+<div >
+        <div class='flex justify-between items-center mb-1'>
+        <span class='text-neutral-300 text-sm font-medium'>
+        Food
+&
+Dining
+    </span>
+<span class='text-white font-semibold'>
+        $980
+    </span>
+    </div>
+<div class='w-full bg-neutral-800 rounded-full h-2.5'>
+        <div class='progress-bar-tertiary h-2.5 rounded-full' style='width: 18%'>
+        </div>
+    </div>
+    </div>
+<div >
+        <div class='flex justify-between items-center mb-1'>
+        <span class='text-neutral-300 text-sm font-medium'>
+        Entertainment
+    </span>
+<span class='text-white font-semibold'>
+        $850
+    </span>
+    </div>
+<div class='w-full bg-neutral-800 rounded-full h-2.5'>
+        <div class='progress-bar-primary/80 h-2.5 rounded-full' style='width: 15%'>
+        </div>
+    </div>
+    </div>
+<div >
+        <div class='flex justify-between items-center mb-1'>
+        <span class='text-neutral-300 text-sm font-medium'>
+        Utilities
+    </span>
+<span class='text-white font-semibold'>
+        $620
+    </span>
+    </div>
+<div class='w-full bg-neutral-800 rounded-full h-2.5'>
+        <div class='progress-bar-secondary/80 h-2.5 rounded-full' style='width: 10%'>
+        </div>
+    </div>
+    </div>
+    </div>
+<div class='mt-6 pt-6 border-t border-neutral-800'>
+        <div class='flex items-center justify-between'>
+        <div >
+        <p class='text-neutral-400 text-sm'>
+        Abnormal Expense
+    </p>
+<p class='text-white font-medium'>
+        May 2023 (+$1,200)
+    </p>
+    </div>
+<div class='p-2 bg-danger/20 rounded-full'>
+        <i class='fas fa-exclamation-circle text-danger'>
+        </i>
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] 5t5_Expense Analytics:Top 5 Expense Categories -- 展示排名前五的支出类别及其金额的进度条列表，并标识异常支出月份 -->
+    </div>
+    </section>
+<!-- [/MODULE] 4p6_Analytics页面:Expense Analytics -- 分析支出情况，包括总支出趋势、支出类别分布、固定与可变支出对比和排名前五的支出类别 -->
+<!-- [MODULE] 7u8_Analytics页面:Category-level Analytics -->
+<section class='mb-8'>
+        <h2 class='text-xl font-semibold text-white mb-6'>
+        Category-level Analytics
+    </h2>
+<div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <!-- [MODULE] 1v3_Category-level Analytics:Housing -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card'>
+        <div class='flex justify-between items-center mb-4'>
+        <h3 class='text-lg font-semibold text-white'>
+        Housing
+    </h3>
+<span class='px-2 py-1 text-xs bg-primary/10 text-primary rounded-full'>
+        Fixed
+    </span>
+    </div>
+<div class='flex justify-between items-center mb-6'>
+        <div >
+        <p class='text-neutral-400 text-sm'>
+        Monthly Spend
+    </p>
+<p class='text-2xl font-bold text-white'>
+        $2,400
+    </p>
+    </div>
+<div class='text-right'>
+        <p class='text-neutral-400 text-sm'>
+        Budget
+    </p>
+<p class='text-white font-semibold'>
+        $2,500
+    </p>
+    </div>
+    </div>
+<div class='h-24 mb-4'>
+        <div id='housing-trend-chart' class='w-full h-full'>
+        </div>
+    </div>
+<div >
+        <div class='flex justify-between items-center mb-1'>
+        <span class='text-neutral-300 text-xs'>
+        Budget Utilization
+    </span>
+<span class='text-success text-xs font-medium'>
+        96%
+    </span>
+    </div>
+<div class='w-full bg-neutral-800 rounded-full h-2'>
+        <div class='progress-bar-yellow h-2 rounded-full' style='width: 96%'>
+        </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] 1v3_Category-level Analytics:Housing -- 展示住房类别的详细分析，包括月度支出、预算、趋势迷你图和预算利用率 -->
+<!-- [MODULE] 4w5_Category-level Analytics:Food & Dining -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card'>
+        <div class='flex justify-between items-center mb-4'>
+        <h3 class='text-lg font-semibold text-white'>
+        Food
+&
+Dining
+    </h3>
+<span class='px-2 py-1 text-xs bg-secondary/10 text-secondary rounded-full'>
+        Variable
+    </span>
+    </div>
+<div class='flex justify-between items-center mb-6'>
+        <div >
+        <p class='text-neutral-400 text-sm'>
+        Monthly Spend
+    </p>
+<p class='text-2xl font-bold text-white'>
+        $980
+    </p>
+    </div>
+<div class='text-right'>
+        <p class='text-neutral-400 text-sm'>
+        Budget
+    </p>
+<p class='text-white font-semibold'>
+        $1,200
+    </p>
+    </div>
+    </div>
+<div class='h-24 mb-4'>
+        <div id='food-trend-chart' class='w-full h-full'>
+        </div>
+    </div>
+<div >
+        <div class='flex justify-between items-center mb-1'>
+        <span class='text-neutral-300 text-xs'>
+        Budget Utilization
+    </span>
+<span class='text-success text-xs font-medium'>
+        81.7%
+    </span>
+    </div>
+<div class='w-full bg-neutral-800 rounded-full h-2'>
+        <div class='progress-bar-yellow h-2 rounded-full' style='width: 81.7%'>
+        </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] 4w5_Category-level Analytics:Food & Dining -- 展示餐饮类别的详细分析，包括月度支出、预算、趋势迷你图和预算利用率 -->
+<!-- [MODULE] 6x7_Category-level Analytics:Transportation -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card'>
+        <div class='flex justify-between items-center mb-4'>
+        <h3 class='text-lg font-semibold text-white'>
+        Transportation
+    </h3>
+<span class='px-2 py-1 text-xs bg-secondary/10 text-secondary rounded-full'>
+        Variable
+    </span>
+    </div>
+<div class='flex justify-between items-center mb-6'>
+        <div >
+        <p class='text-neutral-400 text-sm'>
+        Monthly Spend
+    </p>
+<p class='text-2xl font-bold text-white'>
+        $1,250
+    </p>
+    </div>
+<div class='text-right'>
+        <p class='text-neutral-400 text-sm'>
+        Budget
+    </p>
+<p class='text-white font-semibold'>
+        $1,000
+    </p>
+    </div>
+    </div>
+<div class='h-24 mb-4'>
+        <div id='transport-trend-chart' class='w-full h-full'>
+        </div>
+    </div>
+<div >
+        <div class='flex justify-between items-center mb-1'>
+        <span class='text-neutral-300 text-xs'>
+        Budget Utilization
+    </span>
+<span class='text-danger text-xs font-medium'>
+        125%
+    </span>
+    </div>
+<div class='w-full bg-neutral-800 rounded-full h-2'>
+        <div class='progress-bar-red h-2 rounded-full' style='width: 125%'>
+        </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] 6x7_Category-level Analytics:Transportation -- 展示交通类别的详细分析，包括月度支出、预算、趋势迷你图和预算利用率 -->
+<!-- [MODULE] 9y9_Category-level Analytics:Entertainment -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card'>
+        <div class='flex justify-between items-center mb-4'>
+        <h3 class='text-lg font-semibold text-white'>
+        Entertainment
+    </h3>
+<span class='px-2 py-1 text-xs bg-secondary/10 text-secondary rounded-full'>
+        Variable
+    </span>
+    </div>
+<div class='flex justify-between items-center mb-6'>
+        <div >
+        <p class='text-neutral-400 text-sm'>
+        Monthly Spend
+    </p>
+<p class='text-2xl font-bold text-white'>
+        $850
+    </p>
+    </div>
+<div class='text-right'>
+        <p class='text-neutral-400 text-sm'>
+        Budget
+    </p>
+<p class='text-white font-semibold'>
+        $700
+    </p>
+    </div>
+    </div>
+<div class='h-24 mb-4'>
+        <div id='entertainment-trend-chart' class='w-full h-full'>
+        </div>
+    </div>
+<div >
+        <div class='flex justify-between items-center mb-1'>
+        <span class='text-neutral-300 text-xs'>
+        Budget Utilization
+    </span>
+<span class='text-danger text-xs font-medium'>
+        121.4%
+    </span>
+    </div>
+<div class='w-full bg-neutral-800 rounded-full h-2'>
+        <div class='progress-bar-red h-2 rounded-full' style='width: 121.4%'>
+        </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] 9y9_Category-level Analytics:Entertainment -- 展示娱乐类别的详细分析，包括月度支出、预算、趋势迷你图和预算利用率 -->
+<!-- [MODULE] 2z1_Category-level Analytics:Utilities -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card'>
+        <div class='flex justify-between items-center mb-4'>
+        <h3 class='text-lg font-semibold text-white'>
+        Utilities
+    </h3>
+<span class='px-2 py-1 text-xs bg-primary/10 text-primary rounded-full'>
+        Semi-Variable
+    </span>
+    </div>
+<div class='flex justify-between items-center mb-6'>
+        <div >
+        <p class='text-neutral-400 text-sm'>
+        Monthly Spend
+    </p>
+<p class='text-2xl font-bold text-white'>
+        $620
+    </p>
+    </div>
+<div class='text-right'>
+        <p class='text-neutral-400 text-sm'>
+        Budget
+    </p>
+<p class='text-white font-semibold'>
+        $750
+    </p>
+    </div>
+    </div>
+<div class='h-24 mb-4'>
+        <div id='utilities-trend-chart' class='w-full h-full'>
+        </div>
+    </div>
+<div >
+        <div class='flex justify-between items-center mb-1'>
+        <span class='text-neutral-300 text-xs'>
+        Budget Utilization
+    </span>
+<span class='text-success text-xs font-medium'>
+        82.7%
+    </span>
+    </div>
+<div class='w-full bg-neutral-800 rounded-full h-2'>
+        <div class='progress-bar-green h-2 rounded-full' style='width: 82.7%'>
+        </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] 2z1_Category-level Analytics:Utilities -- 展示公共事业类别的详细分析，包括月度支出、预算、趋势迷你图和预算利用率 -->
+<!-- [MODULE] 5a2_Category-level Analytics:Healthcare -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card'>
+        <div class='flex justify-between items-center mb-4'>
+        <h3 class='text-lg font-semibold text-white'>
+        Healthcare
+    </h3>
+<span class='px-2 py-1 text-xs bg-secondary/10 text-secondary rounded-full'>
+        Variable
+    </span>
+    </div>
+<div class='flex justify-between items-center mb-6'>
+        <div >
+        <p class='text-neutral-400 text-sm'>
+        Monthly Spend
+    </p>
+<p class='text-2xl font-bold text-white'>
+        $480
+    </p>
+    </div>
+<div class='text-right'>
+        <p class='text-neutral-400 text-sm'>
+        Budget
+    </p>
+<p class='text-white font-semibold'>
+        $600
+    </p>
+    </div>
+    </div>
+<div class='h-24 mb-4'>
+        <div id='healthcare-trend-chart' class='w-full h-full'>
+        </div>
+    </div>
+<div >
+        <div class='flex justify-between items-center mb-1'>
+        <span class='text-neutral-300 text-xs'>
+        Budget Utilization
+    </span>
+<span class='text-success text-xs font-medium'>
+        80%
+    </span>
+    </div>
+<div class='w-full bg-neutral-800 rounded-full h-2'>
+        <div class='progress-bar-green h-2 rounded-full' style='width: 80%'>
+        </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] 5a2_Category-level Analytics:Healthcare -- 展示医疗保健类别的详细分析，包括月度支出、预算、趋势迷你图和预算利用率 -->
+    </div>
+    </section>
+<!-- [/MODULE] 7u8_Analytics页面:Category-level Analytics -- 展示各个支出类别的详细分析，包括月度支出、预算、趋势和预算利用率 -->
+<!-- [MODULE] 8b4_Analytics页面:Budget Performance Analytics -->
+<section class='mb-8'>
+        <h2 class='text-xl font-semibold text-white mb-6'>
+        Budget Performance Analytics
+    </h2>
+<div class='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+        <!-- [MODULE] 1c6_Budget Performance:Budget vs Actual -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card lg:col-span-2'>
+        <h3 class='text-lg font-semibold text-white mb-6'>
+        Budget vs Actual
+    </h3>
+<div class='h-80'>
+        <div id='budget-vs-actual-chart' class='w-full h-full'>
+        </div>
+    </div>
+    </div>
+<!-- [/MODULE] 1c6_Budget Performance:Budget vs Actual -- 展示预算与实际支出对比的分组条形图 -->
+<!-- [MODULE] 3d8_Budget Performance:Chronic Overspend -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card'>
+        <h3 class='text-lg font-semibold text-white mb-6'>
+        Chronic Overspend
+    </h3>
+<div class='space-y-6'>
+        <div class='bg-danger/5 border border-danger/20 rounded-lg p-4'>
+        <div class='flex items-start'>
+        <div class='p-2 bg-danger/20 rounded-full mr-3 mt-0.5'>
+        <i class='fas fa-exclamation-triangle text-danger'>
+        </i>
+    </div>
+<div >
+        <h4 class='text-white font-medium mb-1'>
+        Transportation
+    </h4>
+<p class='text-neutral-400 text-sm'>
+        Exceeded budget in 4 out of last 6 months
+    </p>
+<div class='flex mt-2 space-x-1'>
+        <span class='w-2 h-2 bg-danger rounded-full'>
+        </span>
+<span class='w-2 h-2 bg-danger rounded-full'>
+        </span>
+<span class='w-2 h-2 bg-danger rounded-full'>
+        </span>
+<span class='w-2 h-2 bg-danger rounded-full'>
+        </span>
+<span class='w-2 h-2 bg-neutral-700 rounded-full'>
+        </span>
+<span class='w-2 h-2 bg-neutral-700 rounded-full'>
+        </span>
+    </div>
+    </div>
+    </div>
+    </div>
+<div class='bg-danger/5 border border-danger/20 rounded-lg p-4'>
+        <div class='flex items-start'>
+        <div class='p-2 bg-danger/20 rounded-full mr-3 mt-0.5'>
+        <i class='fas fa-exclamation-triangle text-danger'>
+        </i>
+    </div>
+<div >
+        <h4 class='text-white font-medium mb-1'>
+        Entertainment
+    </h4>
+<p class='text-neutral-400 text-sm'>
+        Exceeded budget in 5 out of last 6 months
+    </p>
+<div class='flex mt-2 space-x-1'>
+        <span class='w-2 h-2 bg-danger rounded-full'>
+        </span>
+<span class='w-2 h-2 bg-danger rounded-full'>
+        </span>
+<span class='w-2 h-2 bg-danger rounded-full'>
+        </span>
+<span class='w-2 h-2 bg-danger rounded-full'>
+        </span>
+<span class='w-2 h-2 bg-danger rounded-full'>
+        </span>
+<span class='w-2 h-2 bg-neutral-700 rounded-full'>
+        </span>
+    </div>
+    </div>
+    </div>
+    </div>
+<div class='bg-warning/5 border border-warning/20 rounded-lg p-4'>
+        <div class='flex items-start'>
+        <div class='p-2 bg-warning/20 rounded-full mr-3 mt-0.5'>
+        <i class='fas fa-exclamation-circle text-warning'>
+        </i>
+    </div>
+<div >
+        <h4 class='text-white font-medium mb-1'>
+        Housing
+    </h4>
+<p class='text-neutral-400 text-sm'>
+        Approaching budget limit consistently
+    </p>
+<div class='flex mt-2 space-x-1'>
+        <span class='w-2 h-2 bg-warning rounded-full'>
+        </span>
+<span class='w-2 h-2 bg-warning rounded-full'>
+        </span>
+<span class='w-2 h-2 bg-warning rounded-full'>
+        </span>
+<span class='w-2 h-2 bg-warning rounded-full'>
+        </span>
+<span class='w-2 h-2 bg-warning rounded-full'>
+        </span>
+<span class='w-2 h-2 bg-warning rounded-full'>
+        </span>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] 3d8_Budget Performance:Chronic Overspend -- 展示长期超支的支出类别及其超支历史记录 -->
+<!-- [MODULE] 5e9_Budget Performance:Category × Month Heatmap -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card lg:col-span-3'>
+        <h3 class='text-lg font-semibold text-white mb-6'>
+        Category × Month Budget Utilization
+    </h3>
+<div class='overflow-x-auto'>
+        <table class='w-full min-w-[800px]'>
+        <thead >
+        <tr class='border-b border-neutral-800'>
+        <th class='text-left py-3 px-4 text-neutral-400 font-medium text-sm'>
+        Category
+    </th>
+<th class='text-center py-3 px-4 text-neutral-400 font-medium text-sm'>
+        Jan
+    </th>
+<th class='text-center py-3 px-4 text-neutral-400 font-medium text-sm'>
+        Feb
+    </th>
+<th class='text-center py-3 px-4 text-neutral-400 font-medium text-sm'>
+        Mar
+    </th>
+<th class='text-center py-3 px-4 text-neutral-400 font-medium text-sm'>
+        Apr
+    </th>
+<th class='text-center py-3 px-4 text-neutral-400 font-medium text-sm'>
+        May
+    </th>
+<th class='text-center py-3 px-4 text-neutral-400 font-medium text-sm'>
+        Jun
+    </th>
+    </tr>
+    </thead>
+<tbody >
+        <tr class='border-b border-neutral-800'>
+        <td class='py-4 px-4 text-neutral-300 font-medium'>
+        Housing
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-warning/20 text-warning rounded-full'>
+        95%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-warning/20 text-warning rounded-full'>
+        96%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-warning/20 text-warning rounded-full'>
+        97%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-warning/20 text-warning rounded-full'>
+        96%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-warning/20 text-warning rounded-full'>
+        95%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-warning/20 text-warning rounded-full'>
+        96%
+    </span>
+    </td>
+    </tr>
+<tr class='border-b border-neutral-800'>
+        <td class='py-4 px-4 text-neutral-300 font-medium'>
+        Transportation
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-danger/20 text-danger rounded-full'>
+        115%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-danger/20 text-danger rounded-full'>
+        120%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-success/20 text-success rounded-full'>
+        78%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-danger/20 text-danger rounded-full'>
+        125%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-danger/20 text-danger rounded-full'>
+        118%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-success/20 text-success rounded-full'>
+        85%
+    </span>
+    </td>
+    </tr>
+<tr class='border-b border-neutral-800'>
+        <td class='py-4 px-4 text-neutral-300 font-medium'>
+        Food
+&
+Dining
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-success/20 text-success rounded-full'>
+        82%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-success/20 text-success rounded-full'>
+        78%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-warning/20 text-warning rounded-full'>
+        92%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-success/20 text-success rounded-full'>
+        85%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-warning/20 text-warning rounded-full'>
+        89%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-warning/20 text-warning rounded-full'>
+        82%
+    </span>
+    </td>
+    </tr>
+<tr class='border-b border-neutral-800'>
+        <td class='py-4 px-4 text-neutral-300 font-medium'>
+        Entertainment
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-danger/20 text-danger rounded-full'>
+        125%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-danger/20 text-danger rounded-full'>
+        118%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-danger/20 text-danger rounded-full'>
+        130%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-success/20 text-success rounded-full'>
+        75%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-danger/20 text-danger rounded-full'>
+        122%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-danger/20 text-danger rounded-full'>
+        121%
+    </span>
+    </td>
+    </tr>
+<tr >
+        <td class='py-4 px-4 text-neutral-300 font-medium'>
+        Utilities
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-success/20 text-success rounded-full'>
+        78%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-success/20 text-success rounded-full'>
+        82%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-success/20 text-success rounded-full'>
+        85%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-success/20 text-success rounded-full'>
+        80%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-success/20 text-success rounded-full'>
+        83%
+    </span>
+    </td>
+<td class='py-4 px-4 text-center'>
+        <span class='px-3 py-1 text-xs bg-success/20 text-success rounded-full'>
+        82%
+    </span>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+    </div>
+<!-- [/MODULE] 5e9_Budget Performance:Category × Month Heatmap -- 展示各支出类别在不同月份的预算利用率热力图表格 -->
+    </div>
+    </section>
+<!-- [/MODULE] 8b4_Analytics页面:Budget Performance Analytics -- 分析预算执行情况，包括预算与实际对比、长期超支类别和预算利用率热力图 -->
+<!-- [MODULE] 9c5_Analytics页面:Asset & Net Worth Analytics -->
+<section class='mb-8'>
+        <h2 class='text-xl font-semibold text-white mb-6'>
+        Asset
+&
+Net Worth Analytics
+    </h2>
+<div class='grid grid-cols-1 lg:grid-cols-3 gap-6'>
+        <!-- [MODULE] 2d7_Asset & Net Worth:Net Worth Trend -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card lg:col-span-2'>
+        <div class='flex justify-between items-center mb-6'>
+        <h3 class='text-lg font-semibold text-white'>
+        Net Worth Trend
+    </h3>
+<div class='flex space-x-2'>
+        <button class='px-3 py-1 text-xs bg-primary/10 text-primary rounded-lg'>
+        Yearly
+    </button>
+<button class='px-3 py-1 text-xs bg-neutral-800 text-neutral-400 rounded-lg hover:bg-neutral-700 transition-all duration-200'>
+        5-Year
+    </button>
+    </div>
+    </div>
+<div class='h-80'>
+        <div id='net-worth-trend-chart' class='w-full h-full'>
+        </div>
+    </div>
+    </div>
+<!-- [/MODULE] 2d7_Asset & Net Worth:Net Worth Trend -- 展示净资产趋势的折线图，支持年度和五年期数据切换 -->
+<!-- [MODULE] 4e9_Asset & Net Worth:Current Net Worth -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card'>
+        <h3 class='text-lg font-semibold text-white mb-6'>
+        Current Net Worth
+    </h3>
+<div class='text-center mb-6'>
+        <p class='text-4xl font-bold text-white mb-2'>
+        $128,450
+    </p>
+<div class='flex items-center justify-center'>
+        <span class='text-success flex items-center text-sm font-medium'>
+        <i class='fas fa-arrow-up mr-1'>
+        </i>
+8.2%
+    </span>
+<span class='text-neutral-500 text-sm ml-2'>
+        vs last year
+    </span>
+    </div>
+    </div>
+<div class='h-64'>
+        <div id='asset-class-chart' class='w-full h-full'>
+        </div>
+    </div>
+    </div>
+<!-- [/MODULE] 4e9_Asset & Net Worth:Current Net Worth -- 展示当前净资产金额、同比增长率和资产类别分布饼图 -->
+    </div>
+    </section>
+<!-- [/MODULE] 9c5_Analytics页面:Asset & Net Worth Analytics -- 分析资产和净资产情况，包括净资产趋势和资产类别分布 -->
+<!-- [MODULE] 1f2_Analytics页面:Financial Goal Analytics -->
+<section class='mb-8'>
+        <h2 class='text-xl font-semibold text-white mb-6'>
+        Financial Goal Analytics
+    </h2>
+<div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <!-- [MODULE] 3g4_Financial Goal:Emergency Fund -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <h3 class='text-lg font-semibold text-white'>
+        Emergency Fund
+    </h3>
+<p class='text-neutral-400 text-sm'>
+        6 months of expenses
+    </p>
+    </div>
+<span class='px-2 py-1 text-xs bg-success/20 text-success rounded-full'>
+        On-track
+    </span>
+    </div>
+<div class='flex justify-between items-center mb-4'>
+        <div >
+        <p class='text-neutral-400 text-sm'>
+        Current
+    </p>
+<p class='text-2xl font-bold text-white'>
+        $32,500
+    </p>
+    </div>
+<div class='text-right'>
+        <p class='text-neutral-400 text-sm'>
+        Target
+    </p>
+<p class='text-white font-semibold'>
+        $50,000
+    </p>
+    </div>
+    </div>
+<div class='mb-2'>
+        <div class='w-full bg-neutral-800 rounded-full h-2.5'>
+        <div class='progress-bar-success h-2.5 rounded-full' style='width: 65%'>
+        </div>
+    </div>
+    </div>
+<div class='flex justify-between text-xs text-neutral-500 mb-6'>
+        <span >
+        0%
+    </span>
+<span >
+        65%
+    </span>
+<span >
+        100%
+    </span>
+    </div>
+<div class='h-24'>
+        <div id='emergency-fund-chart' class='w-full h-full'>
+        </div>
+    </div>
+    </div>
+<!-- [/MODULE] 3g4_Financial Goal:Emergency Fund -- 展示应急基金目标的进度情况，包括当前金额、目标金额、进度条和趋势迷你图 -->
+<!-- [MODULE] 5h6_Financial Goal:New Car -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <h3 class='text-lg font-semibold text-white'>
+        New Car
+    </h3>
+<p class='text-neutral-400 text-sm'>
+        Purchase fund
+    </p>
+    </div>
+<span class='px-2 py-1 text-xs bg-danger/20 text-danger rounded-full'>
+        Off-track
+    </span>
+    </div>
+<div class='flex justify-between items-center mb-4'>
+        <div >
+        <p class='text-neutral-400 text-sm'>
+        Current
+    </p>
+<p class='text-2xl font-bold text-white'>
+        $8,200
+    </p>
+    </div>
+<div class='text-right'>
+        <p class='text-neutral-400 text-sm'>
+        Target
+    </p>
+<p class='text-white font-semibold'>
+        $25,000
+    </p>
+    </div>
+    </div>
+<div class='mb-2'>
+        <div class='w-full bg-neutral-800 rounded-full h-2.5'>
+        <div class='progress-bar-danger h-2.5 rounded-full' style='width: 33%'>
+        </div>
+    </div>
+    </div>
+<div class='flex justify-between text-xs text-neutral-500 mb-6'>
+        <span >
+        0%
+    </span>
+<span >
+        33%
+    </span>
+<span >
+        100%
+    </span>
+    </div>
+<div class='h-24'>
+        <div id='new-car-fund-chart' class='w-full h-full'>
+        </div>
+    </div>
+    </div>
+<!-- [/MODULE] 5h6_Financial Goal:New Car -- 展示新车购买基金目标的进度情况，包括当前金额、目标金额、进度条和趋势迷你图 -->
+<!-- [MODULE] 7i8_Financial Goal:Retirement -->
+<div class='bg-neutral-900 rounded-xl p-6 shadow-card'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <h3 class='text-lg font-semibold text-white'>
+        Retirement
+    </h3>
+<p class='text-neutral-400 text-sm'>
+        401(k)
+&
+IRA
+    </p>
+    </div>
+<span class='px-2 py-1 text-xs bg-success/20 text-success rounded-full'>
+        On-track
+    </span>
+    </div>
+<div class='flex justify-between items-center mb-4'>
+        <div >
+        <p class='text-neutral-400 text-sm'>
+        Current
+    </p>
+<p class='text-2xl font-bold text-white'>
+        $85,600
+    </p>
+    </div>
+<div class='text-right'>
+        <p class='text-neutral-400 text-sm'>
+        Target
+    </p>
+<p class='text-white font-semibold'>
+        $500,000
+    </p>
+    </div>
+    </div>
+<div class='mb-2'>
+        <div class='w-full bg-neutral-800 rounded-full h-2.5'>
+        <div class='progress-bar-success h-2.5 rounded-full' style='width: 17%'>
+        </div>
+    </div>
+    </div>
+<div class='flex justify-between text-xs text-neutral-500 mb-6'>
+        <span >
+        0%
+    </span>
+<span >
+        17%
+    </span>
+<span >
+        100%
+    </span>
+    </div>
+<div class='h-24'>
+        <div id='retirement-fund-chart' class='w-full h-full'>
+        </div>
+    </div>
+    </div>
+<!-- [/MODULE] 7i8_Financial Goal:Retirement -- 展示退休基金目标的进度情况，包括当前金额、目标金额、进度条和趋势迷你图 -->
+    </div>
+    </section>
+<!-- [/MODULE] 1f2_Analytics页面:Financial Goal Analytics -- 分析财务目标的完成情况，包括应急基金、新车购买基金和退休基金 -->
+    </main>
+<!-- [/MODULE] 3e5_Analytics页面内容 -- 展示个人财务管理系统中的财务分析模块，包含财务概览、收入分析、支出分析、类别级分析、预算执行分析、资产与净资产分析和财务目标分析等内容 -->
+    </div>
+<!-- [/MODULE] 8d2_主内容区域 -- 包含左侧侧边导航栏和Analytics页面内容，采用深色主题设计 -->
+<!-- [JSMOD] 9k3_Analytics页面:图表初始化 -->
+<script id='chart-initialization'>// 等待页面加载完成
+window.addEventListener('load', function () {
+  // 图表颜色主题配置
+  var chartColors = {
+    primary: '#575AD0',
+    secondary: '#6B6EDD',
+    tertiary: '#8A8CD9',
+    success: '#36D399',
+    warning: '#FBBD23',
+    danger: '#F87272',
+    neutral: {
+      100: '#F3F4F6',
+      200: '#E5E7EB',
+      300: '#D1D5DB',
+      400: '#9CA3AF',
+      500: '#6B7280',
+      600: '#4B5563',
+      700: '#374151',
+      800: '#1F2937',
+      900: '#111827'
+    },
+    background: {
+      card: '#0A0721',
+      chart: '#030112'
+    }
+  };
+
+  // 图表通用配置
+  var chartCommonOptions = {
+    backgroundColor: 'transparent',
+    textStyle: {
+      color: chartColors.neutral[300]
+    },
+    tooltip: {
+      backgroundColor: chartColors.background.card,
+      borderColor: chartColors.neutral[800],
+      borderWidth: 1,
+      textStyle: {
+        color: chartColors.neutral[200]
+      },
+      padding: 10,
+      borderRadius: 6,
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      top: '3%',
+      containLabel: true
+    },
+    legend: {
+      textStyle: {
+        color: chartColors.neutral[400]
+      }
+    },
+    axisLine: {
+      lineStyle: {
+        color: chartColors.neutral[800]
+      }
+    },
+    axisTick: {
+      lineStyle: {
+        color: chartColors.neutral[800]
+      }
+    },
+    splitLine: {
+      lineStyle: {
+        color: chartColors.neutral[800]
+      }
+    },
+    axisLabel: {
+      color: chartColors.neutral[500]
+    }
+  };
+
+  // 迷你净现金流折线图
+  var miniLineChart = echarts.init(document.getElementById('mini-line-chart'));
+  var miniLineOption = {
+    ...chartCommonOptions,
+    grid: {
+      left: 0,
+      right: 0,
+      bottom: 0,
+      top: 0,
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      },
+      splitLine: {
+        show: false
+      }
+    },
+    series: [{
+      data: [3200, 3800, 3500, 4100, 3900, 4220],
+      type: 'line',
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        color: chartColors.success,
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: chartColors.success + '40'
+        }, {
+          offset: 1,
+          color: chartColors.success + '00'
+        }])
+      }
+    }]
+  };
+  miniLineChart.setOption(miniLineOption);
+
+  // 收入趋势折线图
+  var incomeTrendChart = echarts.init(document.getElementById('income-trend-chart'));
+  var incomeTrendOption = {
+    ...chartCommonOptions,
+    xAxis: {
+      type: 'category',
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: {
+        formatter: '${value}'
+      }
+    },
+    series: [{
+      data: [10200, 10800, 11500, 11200, 11900, 12540, null, null, null, null, null, null],
+      type: 'line',
+      smooth: true,
+      symbol: 'circle',
+      symbolSize: 6,
+      itemStyle: {
+        color: chartColors.primary,
+        borderColor: chartColors.background.card,
+        borderWidth: 2
+      },
+      lineStyle: {
+        color: chartColors.primary,
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: chartColors.primary + '20'
+        }, {
+          offset: 1,
+          color: chartColors.primary + '00'
+        }])
+      },
+      markPoint: {
+        symbolSize: 0
+      },
+      markLine: {
+        symbol: ['none', 'none'],
+        lineStyle: {
+          color: chartColors.success,
+          type: 'dashed'
+        },
+        data: [{
+          type: 'average',
+          name: 'Average'
+        }],
+        label: {
+          color: chartColors.success
+        }
+      }
+    }]
+  };
+  incomeTrendChart.setOption(incomeTrendOption);
+
+  // 收入来源水平条形图
+  var incomeSourceChart = echarts.init(document.getElementById('income-source-chart'));
+  var incomeSourceOption = {
+    ...chartCommonOptions,
+    grid: {
+      left: '10%',
+      right: '3%',
+      bottom: '3%',
+      top: '3%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'value',
+      axisLabel: {
+        formatter: '${value}'
+      }
+    },
+    yAxis: {
+      type: 'category',
+      data: ['Salary', 'Investment', 'Freelance', 'Rental', 'Other'],
+      axisLabel: {
+        color: chartColors.neutral[300]
+      }
+    },
+    series: [{
+      data: [8500, 1800, 1200, 650, 390],
+      type: 'bar',
+      itemStyle: {
+        color: function color(params) {
+          var colorList = [chartColors.primary, chartColors.secondary, chartColors.tertiary, chartColors.success, chartColors.warning];
+          return colorList[params.dataIndex];
+        },
+        borderRadius: [0, 6, 6, 0]
+      },
+      label: {
+        show: true,
+        position: 'right',
+        formatter: '${c}',
+        color: chartColors.neutral[300]
+      },
+      barWidth: 14
+    }]
+  };
+  incomeSourceChart.setOption(incomeSourceOption);
+
+  // 支出趋势折线图
+  var expenseTrendChart = echarts.init(document.getElementById('expense-trend-chart'));
+  var expenseTrendOption = {
+    ...chartCommonOptions,
+    xAxis: {
+      type: 'category',
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: {
+        formatter: '${value}'
+      }
+    },
+    series: [{
+      data: [7200, 7500, 7800, 7600, 9200, 8320, null, null, null, null, null, null],
+      type: 'line',
+      smooth: true,
+      symbol: 'circle',
+      symbolSize: 6,
+      itemStyle: {
+        color: chartColors.danger,
+        borderColor: chartColors.background.card,
+        borderWidth: 2
+      },
+      lineStyle: {
+        color: chartColors.danger,
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: chartColors.danger + '20'
+        }, {
+          offset: 1,
+          color: chartColors.danger + '00'
+        }])
+      },
+      markPoint: {
+        data: [{
+          name: 'Anomaly',
+          value: 'May',
+          xAxis: 4,
+          yAxis: 9200,
+          symbolSize: 60
+        }],
+        symbol: 'pin',
+        symbolSize: 20,
+        itemStyle: {
+          color: chartColors.danger
+        },
+        label: {
+          show: false
+        }
+      }
+    }]
+  };
+  expenseTrendChart.setOption(expenseTrendOption);
+
+  // 支出类别水平条形图
+  var expenseCategoryChart = echarts.init(document.getElementById('expense-category-chart'));
+  var expenseCategoryOption = {
+    ...chartCommonOptions,
+    grid: {
+      left: '10%',
+      right: '3%',
+      bottom: '3%',
+      top: '3%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'value',
+      axisLabel: {
+        formatter: '${value}'
+      }
+    },
+    yAxis: {
+      type: 'category',
+      data: ['Housing', 'Transportation', 'Food & Dining', 'Entertainment', 'Utilities'],
+      axisLabel: {
+        color: chartColors.neutral[300]
+      }
+    },
+    series: [{
+      data: [2400, 1250, 980, 850, 620],
+      type: 'bar',
+      itemStyle: {
+        color: function color(params) {
+          var colorList = [chartColors.danger, chartColors.warning, chartColors.primary, chartColors.secondary, chartColors.tertiary];
+          return colorList[params.dataIndex];
+        },
+        borderRadius: [0, 6, 6, 0]
+      },
+      label: {
+        show: true,
+        position: 'right',
+        formatter: '${c}',
+        color: chartColors.neutral[300]
+      },
+      barWidth: 14
+    }]
+  };
+  expenseCategoryChart.setOption(expenseCategoryOption);
+
+  // 固定与可变支出堆叠条形图
+  var fixedVariableChart = echarts.init(document.getElementById('fixed-variable-chart'));
+  var fixedVariableOption = {
+    ...chartCommonOptions,
+    legend: {
+      data: ['Fixed', 'Variable'],
+      top: 0,
+      right: 0,
+      orient: 'horizontal'
+    },
+    xAxis: {
+      type: 'category',
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: {
+        formatter: '${value}'
+      }
+    },
+    series: [{
+      name: 'Fixed',
+      type: 'bar',
+      stack: 'Total',
+      emphasis: {
+        focus: 'series'
+      },
+      data: [4800, 4900, 5000, 5100, 5200, 5250],
+      itemStyle: {
+        color: chartColors.primary,
+        borderRadius: [4, 4, 0, 0]
+      }
+    }, {
+      name: 'Variable',
+      type: 'bar',
+      stack: 'Total',
+      emphasis: {
+        focus: 'series'
+      },
+      data: [2400, 2600, 2800, 2500, 4000, 3070],
+      itemStyle: {
+        color: chartColors.danger,
+        borderRadius: [4, 4, 0, 0]
+      }
+    }]
+  };
+  fixedVariableChart.setOption(fixedVariableOption);
+
+  // 住房趋势迷你图
+  var housingTrendChart = echarts.init(document.getElementById('housing-trend-chart'));
+  var housingTrendOption = {
+    ...chartCommonOptions,
+    grid: {
+      left: 0,
+      right: 0,
+      bottom: 0,
+      top: 0,
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      },
+      splitLine: {
+        show: false
+      }
+    },
+    series: [{
+      data: [2400, 2400, 2400, 2400, 2400, 2400],
+      type: 'line',
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        color: chartColors.warning,
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: chartColors.warning + '20'
+        }, {
+          offset: 1,
+          color: chartColors.warning + '00'
+        }])
+      }
+    }]
+  };
+  housingTrendChart.setOption(housingTrendOption);
+
+  // 餐饮趋势迷你图
+  var foodTrendChart = echarts.init(document.getElementById('food-trend-chart'));
+  var foodTrendOption = {
+    ...chartCommonOptions,
+    grid: {
+      left: 0,
+      right: 0,
+      bottom: 0,
+      top: 0,
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      },
+      splitLine: {
+        show: false
+      }
+    },
+    series: [{
+      data: [850, 920, 1050, 980, 1100, 980],
+      type: 'line',
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        color: chartColors.success,
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: chartColors.success + '20'
+        }, {
+          offset: 1,
+          color: chartColors.success + '00'
+        }])
+      }
+    }]
+  };
+  foodTrendChart.setOption(foodTrendOption);
+
+  // 交通趋势迷你图
+  var transportTrendChart = echarts.init(document.getElementById('transport-trend-chart'));
+  var transportTrendOption = {
+    ...chartCommonOptions,
+    grid: {
+      left: 0,
+      right: 0,
+      bottom: 0,
+      top: 0,
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      },
+      splitLine: {
+        show: false
+      }
+    },
+    series: [{
+      data: [1350, 1400, 950, 1500, 1450, 1250],
+      type: 'line',
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        color: chartColors.danger,
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: chartColors.danger + '20'
+        }, {
+          offset: 1,
+          color: chartColors.danger + '00'
+        }])
+      }
+    }]
+  };
+  transportTrendChart.setOption(transportTrendOption);
+
+  // 娱乐趋势迷你图
+  var entertainmentTrendChart = echarts.init(document.getElementById('entertainment-trend-chart'));
+  var entertainmentTrendOption = {
+    ...chartCommonOptions,
+    grid: {
+      left: 0,
+      right: 0,
+      bottom: 0,
+      top: 0,
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      },
+      splitLine: {
+        show: false
+      }
+    },
+    series: [{
+      data: [950, 1050, 1100, 750, 900, 850],
+      type: 'line',
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        color: chartColors.danger,
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: chartColors.danger + '20'
+        }, {
+          offset: 1,
+          color: chartColors.danger + '00'
+        }])
+      }
+    }]
+  };
+  entertainmentTrendChart.setOption(entertainmentTrendOption);
+
+  // 公共事业趋势迷你图
+  var utilitiesTrendChart = echarts.init(document.getElementById('utilities-trend-chart'));
+  var utilitiesTrendOption = {
+    ...chartCommonOptions,
+    grid: {
+      left: 0,
+      right: 0,
+      bottom: 0,
+      top: 0,
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      },
+      splitLine: {
+        show: false
+      }
+    },
+    series: [{
+      data: [580, 650, 620, 590, 680, 620],
+      type: 'line',
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        color: chartColors.success,
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: chartColors.success + '20'
+        }, {
+          offset: 1,
+          color: chartColors.success + '00'
+        }])
+      }
+    }]
+  };
+  utilitiesTrendChart.setOption(utilitiesTrendOption);
+
+  // 医疗保健趋势迷你图
+  var healthcareTrendChart = echarts.init(document.getElementById('healthcare-trend-chart'));
+  var healthcareTrendOption = {
+    ...chartCommonOptions,
+    grid: {
+      left: 0,
+      right: 0,
+      bottom: 0,
+      top: 0,
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      },
+      splitLine: {
+        show: false
+      }
+    },
+    series: [{
+      data: [420, 380, 550, 490, 520, 480],
+      type: 'line',
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        color: chartColors.success,
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: chartColors.success + '20'
+        }, {
+          offset: 1,
+          color: chartColors.success + '00'
+        }])
+      }
+    }]
+  };
+  healthcareTrendChart.setOption(healthcareTrendOption);
+
+  // 预算与实际支出对比分组条形图
+  var budgetVsActualChart = echarts.init(document.getElementById('budget-vs-actual-chart'));
+  var budgetVsActualOption = {
+    ...chartCommonOptions,
+    legend: {
+      data: ['Budget', 'Actual'],
+      top: 0,
+      right: 0,
+      orient: 'horizontal'
+    },
+    xAxis: {
+      type: 'category',
+      data: ['Housing', 'Transportation', 'Food & Dining', 'Entertainment', 'Utilities', 'Healthcare']
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: {
+        formatter: '${value}'
+      }
+    },
+    series: [{
+      name: 'Budget',
+      type: 'bar',
+      data: [2500, 1000, 1200, 700, 750, 600],
+      itemStyle: {
+        color: chartColors.neutral[700],
+        borderRadius: 4
+      },
+      barWidth: 18
+    }, {
+      name: 'Actual',
+      type: 'bar',
+      data: [2400, 1250, 980, 850, 620, 480],
+      itemStyle: {
+        color: function color(params) {
+          var budgetData = [2500, 1000, 1200, 700, 750, 600];
+          var actualData = [2400, 1250, 980, 850, 620, 480];
+          var ratio = actualData[params.dataIndex] / budgetData[params.dataIndex];
+          if (ratio > 1) return chartColors.danger;
+          if (ratio >= 0.8 && ratio <= 1) return chartColors.warning;
+          return chartColors.success;
+        },
+        borderRadius: 4
+      },
+      barWidth: 18
+    }]
+  };
+  budgetVsActualChart.setOption(budgetVsActualOption);
+
+  // 净资产趋势折线图
+  var netWorthTrendChart = echarts.init(document.getElementById('net-worth-trend-chart'));
+  var netWorthTrendOption = {
+    ...chartCommonOptions,
+    xAxis: {
+      type: 'category',
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    },
+    yAxis: {
+      type: 'value',
+      axisLabel: {
+        formatter: '${value}'
+      }
+    },
+    series: [{
+      data: [112000, 114500, 116800, 119200, 121500, 123700, 124500, 125300, 126100, 126900, 127700, 128450],
+      type: 'line',
+      smooth: true,
+      symbol: 'circle',
+      symbolSize: 6,
+      itemStyle: {
+        color: chartColors.success,
+        borderColor: chartColors.background.card,
+        borderWidth: 2
+      },
+      lineStyle: {
+        color: chartColors.success,
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: chartColors.success + '20'
+        }, {
+          offset: 1,
+          color: chartColors.success + '00'
+        }])
+      }
+    }]
+  };
+  netWorthTrendChart.setOption(netWorthTrendOption);
+
+  // 资产类别饼图
+  var assetClassChart = echarts.init(document.getElementById('asset-class-chart'));
+  var assetClassOption = {
+    ...chartCommonOptions,
+    tooltip: {
+      ...chartCommonOptions.tooltip,
+      formatter: '{a} <br/>{b}: ${c} ({d}%)'
+    },
+    legend: {
+      show: false
+    },
+    series: [{
+      name: 'Asset Class',
+      type: 'pie',
+      radius: ['45%', '70%'],
+      avoidLabelOverlap: false,
+      itemStyle: {
+        borderRadius: 6,
+        borderColor: chartColors.background.card,
+        borderWidth: 2
+      },
+      label: {
+        show: false,
+        position: 'center'
+      },
+      emphasis: {
+        label: {
+          show: true,
+          fontSize: 14,
+          fontWeight: 'bold',
+          color: chartColors.neutral[200]
+        }
+      },
+      labelLine: {
+        show: false
+      },
+      data: [{
+        value: 55000,
+        name: 'Retirement'
+      }, {
+        value: 32500,
+        name: 'Emergency Fund'
+      }, {
+        value: 25000,
+        name: 'Investments'
+      }, {
+        value: 12500,
+        name: 'Savings'
+      }, {
+        value: 3450,
+        name: 'Checking'
+      }],
+      color: [chartColors.primary, chartColors.secondary, chartColors.tertiary, chartColors.success, chartColors.warning]
+    }]
+  };
+  assetClassChart.setOption(assetClassOption);
+
+  // 应急基金趋势迷你图
+  var emergencyFundChart = echarts.init(document.getElementById('emergency-fund-chart'));
+  var emergencyFundOption = {
+    ...chartCommonOptions,
+    grid: {
+      left: 0,
+      right: 0,
+      bottom: 0,
+      top: 0,
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      },
+      splitLine: {
+        show: false
+      }
+    },
+    series: [{
+      data: [28500, 29200, 30000, 30800, 31600, 32500],
+      type: 'line',
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        color: chartColors.success,
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: chartColors.success + '20'
+        }, {
+          offset: 1,
+          color: chartColors.success + '00'
+        }])
+      }
+    }, {
+      data: [50000, 50000, 50000, 50000, 50000, 50000],
+      type: 'line',
+      symbol: 'none',
+      lineStyle: {
+        color: chartColors.neutral[700],
+        width: 1,
+        type: 'dashed'
+      }
+    }]
+  };
+  emergencyFundChart.setOption(emergencyFundOption);
+
+  // 新车基金趋势迷你图
+  var newCarFundChart = echarts.init(document.getElementById('new-car-fund-chart'));
+  var newCarFundOption = {
+    ...chartCommonOptions,
+    grid: {
+      left: 0,
+      right: 0,
+      bottom: 0,
+      top: 0,
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      },
+      splitLine: {
+        show: false
+      }
+    },
+    series: [{
+      data: [7200, 7400, 7500, 7700, 7900, 8200],
+      type: 'line',
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        color: chartColors.danger,
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: chartColors.danger + '20'
+        }, {
+          offset: 1,
+          color: chartColors.danger + '00'
+        }])
+      }
+    }, {
+      data: [25000, 25000, 25000, 25000, 25000, 25000],
+      type: 'line',
+      symbol: 'none',
+      lineStyle: {
+        color: chartColors.neutral[700],
+        width: 1,
+        type: 'dashed'
+      }
+    }]
+  };
+  newCarFundChart.setOption(newCarFundOption);
+
+  // 退休基金趋势迷你图
+  var retirementFundChart = echarts.init(document.getElementById('retirement-fund-chart'));
+  var retirementFundOption = {
+    ...chartCommonOptions,
+    grid: {
+      left: 0,
+      right: 0,
+      bottom: 0,
+      top: 0,
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      },
+      splitLine: {
+        show: false
+      }
+    },
+    series: [{
+      data: [82000, 82800, 83400, 84000, 84800, 85600],
+      type: 'line',
+      smooth: true,
+      showSymbol: false,
+      lineStyle: {
+        color: chartColors.success,
+        width: 2
+      },
+      areaStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: chartColors.success + '20'
+        }, {
+          offset: 1,
+          color: chartColors.success + '00'
+        }])
+      }
+    }, {
+      data: [500000, 500000, 500000, 500000, 500000, 500000],
+      type: 'line',
+      symbol: 'none',
+      lineStyle: {
+        color: chartColors.neutral[700],
+        width: 1,
+        type: 'dashed'
+      }
+    }]
+  };
+  retirementFundChart.setOption(retirementFundOption);
+
+  // 监听窗口大小变化，调整图表大小
+  window.addEventListener('resize', function () {
+    miniLineChart.resize();
+    incomeTrendChart.resize();
+    incomeSourceChart.resize();
+    expenseTrendChart.resize();
+    expenseCategoryChart.resize();
+    fixedVariableChart.resize();
+    housingTrendChart.resize();
+    foodTrendChart.resize();
+    transportTrendChart.resize();
+    entertainmentTrendChart.resize();
+    utilitiesTrendChart.resize();
+    healthcareTrendChart.resize();
+    budgetVsActualChart.resize();
+    netWorthTrendChart.resize();
+    assetClassChart.resize();
+    emergencyFundChart.resize();
+    newCarFundChart.resize();
+    retirementFundChart.resize();
+  });
+});</script>
+<!-- [/JSMOD] 9k3_Analytics页面:图表初始化 -- 初始化页面中所有ECharts图表，包括收入趋势、支出趋势、预算对比、资产分布等各类图表，并监听窗口大小变化事件以调整图表尺寸 -->
+    </body>
+    </html>

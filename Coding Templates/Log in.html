@@ -1,0 +1,260 @@
+<html lang='en'>
+        <head >
+        <meta charset='UTF-8'/>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+<title >Personal Finance System</title>
+<link href='https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css' rel='stylesheet'/>
+<script src='https://res.gemcoder.com/js/reload.js'></script>
+<script src='https://cdn.tailwindcss.com'></script>
+<link href='https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap' rel='stylesheet'/>
+<script >tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#575AD0',
+        secondary: '#8A8CD9',
+        darkBg: '#030112',
+        cardBg: '#0A0721',
+        inputBg: '#141230',
+        textPrimary: '#E2E2FF',
+        textSecondary: '#9CA3AF',
+        error: '#FF5252'
+      },
+      fontFamily: {
+        dmSans: ['"DM Sans"', 'sans-serif']
+      },
+      boxShadow: {
+        'card': '0 10px 30px -5px rgba(87, 90, 208, 0.15)',
+        'button': '0 4px 14px 0 rgba(87, 90, 208, 0.4)'
+      }
+    }
+  }
+};</script>
+<style type='text/tailwindcss'>
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .bg-gradient-brand {
+                background: linear-gradient(135deg, #575AD0 0%, #8A8CD9 100%);
+            }
+            .text-gradient {
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+                background-image: linear-gradient(90deg, #575AD0, #8A8CD9);
+            }
+            .bg-glass {
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            .animate-float {
+                animation: float 6s ease-in-out infinite;
+            }
+            .animate-float-delay-1 {
+                animation: float 6s ease-in-out 1s infinite;
+            }
+            .animate-float-delay-2 {
+                animation: float 6s ease-in-out 2s infinite;
+            }
+            @keyframes float {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-20px); }
+                100% { transform: translateY(0px); }
+            }
+            .animate-fade-in {
+                animation: fadeIn 0.8s ease-out forwards;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-card-rise {
+                animation: cardRise 0.6s ease-out forwards;
+            }
+            @keyframes cardRise {
+                from { opacity: 0; transform: translateY(20px); box-shadow: 0 0 0 rgba(87, 90, 208, 0); }
+                to { opacity: 1; transform: translateY(0); box-shadow: 0 10px 30px -5px rgba(87, 90, 208, 0.15); }
+            }
+        }
+    </style>
+    </head>
+<body class='bg-darkBg font-dmSans text-textPrimary min-h-screen flex items-center justify-center p-4 overflow-hidden'>
+        <!-- Background decorative elements -->
+<div class='fixed inset-0 z-0 overflow-hidden'>
+        <div class='absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full filter blur-3xl animate-float'>
+        </div>
+<div class='absolute bottom-1/3 right-1/3 w-96 h-96 bg-secondary/5 rounded-full filter blur-3xl animate-float-delay-1'>
+        </div>
+<div class='absolute top-2/3 left-1/3 w-80 h-80 bg-primary/5 rounded-full filter blur-3xl animate-float-delay-2'>
+        </div>
+    </div>
+<!-- [MODULE] a1b_主内容区域 -->
+<div class='relative z-10 w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center gap-12 animate-fade-in'>
+        <!-- [MODULE] c3d_左侧品牌区域 -->
+<div class='w-full lg:w-1/2 lg:pr-12 animate-fade-in' style='animation-delay: 0.2s'>
+        <div class='max-w-md mx-auto lg:mx-0'>
+        <h1 class='text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight mb-4'>
+        <span class='text-gradient'>
+        FinTrack
+    </span>
+    </h1>
+<p class='text-[clamp(1.1rem,2vw,1.3rem)] text-textSecondary mb-8'>
+        A clear view of your personal finances
+    </p>
+<div class='flex items-center gap-4 mt-12'>
+        <div class='h-px flex-grow bg-gradient-to-r from-primary/30 to-transparent'>
+        </div>
+<span class='text-sm text-textSecondary/70'>
+        Trusted by 10,000+ users
+    </span>
+<div class='h-px flex-grow bg-gradient-to-l from-primary/30 to-transparent'>
+        </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] c3d_左侧品牌区域 -- 包含系统名称、简短标语和用户信任度信息 -->
+<!-- [MODULE] e5f_右侧登录卡片 -->
+<div class='w-full lg:w-1/2 max-w-md animate-card-rise'>
+        <!-- [MODULE] g7h_登录卡片容器 -->
+<div class='bg-cardBg rounded-2xl shadow-card p-8 border border-white/5 animate-card-rise' style='animation-delay: 0.4s'>
+        <div class='mb-8'>
+        <h2 class='text-2xl font-bold mb-1'>
+        Sign in
+    </h2>
+<p class='text-textSecondary'>
+        Access your financial dashboard
+    </p>
+    </div>
+<!-- [MODULE] i9j_登录表单 -->
+<form id='loginForm' class='space-y-6'>
+        <!-- Error message -->
+<div id='errorMessage' class='hidden bg-error/10 border border-error/20 text-error text-sm rounded-lg p-3 flex items-start gap-2'>
+        <i class='fas fa-exclamation-circle mt-0.5'>
+        </i>
+<span >
+        Invalid email or password. Please try again.
+    </span>
+    </div>
+<!-- Email input -->
+<div class='space-y-2'>
+        <label for='email' class='block text-sm font-medium'>
+        Email
+    </label>
+<div class='relative'>
+        <div class='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+        <i class='fas fa-envelope text-textSecondary'>
+        </i>
+    </div>
+<input type='email' id='email' class='w-full bg-inputBg border border-white/10 rounded-lg py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all' placeholder='your.email@example.com' required/>
+    </div>
+    </div>
+<!-- Password input -->
+<div class='space-y-2'>
+        <div class='flex items-center justify-between'>
+        <label for='password' class='block text-sm font-medium'>
+        Password
+    </label>
+<a href='javascript:void(0);' class='text-sm text-primary hover:text-primary/80 transition-colors'>
+        Forgot password
+    </a>
+    </div>
+<div class='relative'>
+        <div class='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+        <i class='fas fa-lock text-textSecondary'>
+        </i>
+    </div>
+<input type='password' id='password' class='w-full bg-inputBg border border-white/10 rounded-lg py-3 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all' placeholder='••••••••' required/>
+<button type='button' id='togglePassword' class='absolute inset-y-0 right-0 pr-3 flex items-center text-textSecondary hover:text-textPrimary transition-colors'>
+        <i class='fas fa-eye-slash'>
+        </i>
+    </button>
+    </div>
+    </div>
+<!-- Remember me -->
+<div class='flex items-center'>
+        <input id='remember' type='checkbox' class='w-4 h-4 rounded border-white/20 bg-inputBg text-primary focus:ring-primary/50'/>
+<label for='remember' class='ml-2 text-sm text-textSecondary'>
+        Remember me for 30 days
+    </label>
+    </div>
+<!-- Sign in button -->
+<button type='submit' class='w-full bg-gradient-brand hover:opacity-90 text-white font-medium py-3 px-4 rounded-lg transition-all duration-300 shadow-button flex items-center justify-center gap-2'>
+        <span >
+        Sign in
+    </span>
+<i class='fas fa-arrow-right ml-1'>
+        </i>
+    </button>
+<!-- Create account link -->
+<div class='text-center text-sm text-textSecondary'>
+        Don't have an account?
+<a href='javascript:void(0);' class='text-primary hover:text-primary/80 ml-1 transition-colors'>
+        Create an account
+    </a>
+    </div>
+    </form>
+<!-- [/MODULE] i9j_登录表单 -- 包含邮箱输入框、密码输入框(带显示/隐藏功能)、记住我选项、登录按钮和创建账户链接 -->
+    </div>
+<!-- [/MODULE] g7h_登录卡片容器 -- 包含登录表单的卡片容器，带有阴影和边框效果 -->
+    </div>
+<!-- [/MODULE] e5f_右侧登录卡片 -- 包含登录卡片容器，是页面的核心交互区域 -->
+    </div>
+<!-- [/MODULE] a1b_主内容区域 -- 包含左侧品牌区域和右侧登录卡片的全屏布局 -->
+<!-- [JSMOD] k2l_登录表单交互 -->
+<script id='loginScript'>// Toggle password visibility
+var togglePassword = document.getElementById('togglePassword');
+var passwordInput = document.getElementById('password');
+var errorMessage = document.getElementById('errorMessage');
+var loginForm = document.getElementById('loginForm');
+togglePassword.addEventListener('click', function () {
+  var type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+  passwordInput.setAttribute('type', type);
+
+  // Toggle the eye icon
+  togglePassword.querySelector('i').classList.toggle('fa-eye');
+  togglePassword.querySelector('i').classList.toggle('fa-eye-slash');
+});
+// Form submission handling
+loginForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  // Simple validation simulation
+  var email = document.getElementById('email').value;
+  var password = passwordInput.value;
+
+  // In a real application, this would be an API call
+  if (email && password) {
+    // Hide error message if visible
+    errorMessage.classList.add('hidden');
+
+    // Simulate loading state
+    var submitButton = loginForm.querySelector('button[type="submit"]');
+    var originalText = submitButton.innerHTML;
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+
+    // Simulate API delay
+    setTimeout(function () {
+      // In a real app, this would redirect to dashboard
+      alert('Login functionality would be implemented here');
+      submitButton.disabled = false;
+      submitButton.innerHTML = originalText;
+    }, 1500);
+  } else {
+    // Show error message
+    errorMessage.classList.remove('hidden');
+    // Add shake animation to error message
+    errorMessage.classList.add('animate-shake');
+    setTimeout(function () {
+      errorMessage.classList.remove('animate-shake');
+    }, 500);
+  }
+});
+// Add shake animation for error feedback
+var style = document.createElement('style');
+style.textContent = "@keyframes shake {\n                0%, 100% { transform: translateX(0); }\n                20%, 60% { transform: translateX(-5px); }\n                40%, 80% { transform: translateX(5px); }\n            }\n            .animate-shake {\n                animation: shake 0.5s ease-in-out;\n            }";
+document.head.appendChild(style);</script>
+<!-- [/JSMOD] k2l_登录表单交互 -- 处理密码显示/隐藏切换、表单提交验证和错误反馈 -->
+    </body>
+    </html>

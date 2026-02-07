@@ -1,0 +1,826 @@
+<html lang='en'>
+        <head >
+        <meta charset='UTF-8'/>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+<title >Personal Finance Dashboard</title>
+<script src='https://res.gemcoder.com/js/reload.js'></script>
+<script src='https://cdn.tailwindcss.com'></script>
+<link href='https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css' rel='stylesheet'/>
+<script src='https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js'></script>
+<link href='https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap' rel='stylesheet'/>
+<script >tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        'bg-main': '#030112',
+        'bg-sidebar': '#0A0621',
+        'accent': '#575AD0',
+        'income': '#00C896',
+        'expense': '#FF5757',
+        'text-primary': '#E2E8F0',
+        'text-secondary': '#94A3B8',
+        'card-bg': 'rgba(255, 255, 255, 0.05)',
+        'card-border': 'rgba(255, 255, 255, 0.1)',
+        'glass': 'rgba(97, 93, 161, 0.15)'
+      },
+      fontFamily: {
+        'dm-sans': ['"DM Sans"', 'sans-serif']
+      },
+      spacing: {
+        '18': '4.5rem',
+        '22': '5.5rem'
+      },
+      boxShadow: {
+        'card': '0 8px 32px rgba(0, 0, 0, 0.2)',
+        'card-hover': '0 12px 40px rgba(87, 90, 208, 0.15)'
+      },
+      borderRadius: {
+        'xl': '1rem',
+        '2xl': '1.5rem'
+      }
+    }
+  }
+};</script>
+<style type='text/tailwindcss'>
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .glass-effect {
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+            }
+            .sidebar-item {
+                @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 cursor-pointer;
+            }
+            .sidebar-item.active {
+                @apply bg-accent/20 text-accent;
+            }
+            .sidebar-item:not(.active):hover {
+                @apply bg-white/5;
+            }
+            .card {
+                @apply bg-card-bg rounded-xl p-6 shadow-card border border-card-border transition-all duration-300 hover:shadow-card-hover;
+            }
+            .progress-bar {
+                @apply h-2 rounded-full overflow-hidden bg-white/10;
+            }
+            .progress-value {
+                @apply h-full rounded-full bg-accent transition-all duration-1000 ease-out;
+            }
+        }
+    </style>
+    </head>
+<body class='bg-bg-main font-dm-sans text-text-primary min-h-screen flex overflow-hidden'>
+        <!-- [MODULE] a1b_Sidebar Navigation -->
+<aside class='bg-bg-sidebar w-64 flex flex-col h-screen fixed left-0 top-0 z-10 transition-all duration-300'>
+        <!-- [MODULE] c2d_Sidebar Logo -->
+<div class='p-6 border-b border-white/10'>
+        <h1 class='text-2xl font-bold text-white flex items-center gap-2'>
+        <i class='fas fa-wallet text-accent'>
+        </i>
+<span >
+        FinTrack
+    </span>
+    </h1>
+    </div>
+<!-- [/MODULE] c2d_Sidebar Logo -- 显示系统名称和图标 -->
+<!-- [MODULE] d3e_Sidebar Menu -->
+<nav class='flex-1 overflow-y-auto py-6 px-3'>
+        <ul class='space-y-1'>
+        <li >
+        <div class='sidebar-item active'>
+        <i class='fas fa-chart-line w-5 text-center'>
+        </i>
+Dashboard
+    </div>
+    </li>
+<li >
+        <div class='sidebar-item'>
+        <i class='fas fa-exchange-alt w-5 text-center'>
+        </i>
+Transaction
+    </div>
+    </li>
+<li >
+        <div class='sidebar-item'>
+        <i class='fas fa-credit-card w-5 text-center'>
+        </i>
+Account
+    </div>
+    </li>
+<li >
+        <div class='sidebar-item'>
+        <i class='fas fa-piggy-bank w-5 text-center'>
+        </i>
+Budget
+    </div>
+    </li>
+<li >
+        <div class='sidebar-item'>
+        <i class='fas fa-bullseye w-5 text-center'>
+        </i>
+Goals
+    </div>
+    </li>
+<li >
+        <div class='sidebar-item'>
+        <i class='fas fa-balance-scale w-5 text-center'>
+        </i>
+Balance
+    </div>
+    </li>
+<li >
+        <div class='sidebar-item'>
+        <i class='fas fa-chart-pie w-5 text-center'>
+        </i>
+Investment
+    </div>
+    </li>
+<li >
+        <div class='sidebar-item'>
+        <i class='fas fa-chart-bar w-5 text-center'>
+        </i>
+Analytics
+    </div>
+    </li>
+<li >
+        <div class='sidebar-item'>
+        <i class='fas fa-file-alt w-5 text-center'>
+        </i>
+Report
+    </div>
+    </li>
+    </ul>
+    </nav>
+<!-- [/MODULE] d3e_Sidebar Menu -- 包含所有导航菜单选项，当前选中Dashboard -->
+<!-- [MODULE] e4f_Sidebar Logout -->
+<div class='p-4 border-t border-white/10 mt-auto'>
+        <div class='sidebar-item'>
+        <i class='fas fa-sign-out-alt w-5 text-center'>
+        </i>
+Logout
+    </div>
+    </div>
+<!-- [/MODULE] e4f_Sidebar Logout -- 显示退出登录选项 -->
+    </aside>
+<!-- [/MODULE] a1b_Sidebar Navigation -- 左侧垂直导航栏，包含logo、菜单和退出按钮 -->
+<!-- [MODULE] b2c_Main Content Area -->
+<main class='flex-1 ml-64 p-8 overflow-y-auto h-screen'>
+        <!-- [MODULE] f5g_Dashboard Header -->
+<header class='mb-8'>
+        <div class='flex justify-between items-center'>
+        <div >
+        <h2 class='text-[clamp(1.5rem,3vw,2.5rem)] font-bold'>
+        Financial Dashboard
+    </h2>
+<p class='text-text-secondary mt-1'>
+        Welcome back, here's your financial overview
+    </p>
+    </div>
+<div class='flex items-center gap-4'>
+        <button class='bg-accent hover:bg-accent/90 text-white px-5 py-2 rounded-lg transition-all duration-300 flex items-center gap-2'>
+        <i class='fas fa-download'>
+        </i>
+<span >
+        Export
+    </span>
+    </button>
+<div class='relative'>
+        <img src='https://design.gemcoder.com/staticResource/echoAiSystemImages/95f160691cd9904a5b1ba8f39c0575bb.png' alt='User profile' class='w-10 h-10 rounded-full object-cover border-2 border-accent'/>
+    </div>
+    </div>
+    </div>
+    </header>
+<!-- [/MODULE] f5g_Dashboard Header -- 显示页面标题、欢迎信息、导出按钮和用户头像 -->
+<!-- [MODULE] g6h_Dashboard Content -->
+<div class='space-y-6'>
+        <!-- [MODULE] h7i_Row 1 - Total Balance -->
+<div class='grid grid-cols-1'>
+        <div class='card glass-effect'>
+        <div class='flex justify-between items-start mb-6'>
+        <div >
+        <h3 class='text-text-secondary text-sm font-medium'>
+        Total Balance
+    </h3>
+<p class='text-4xl font-bold mt-1'>
+        $24,580.50
+    </p>
+    </div>
+<div class='bg-white/5 px-4 py-2 rounded-lg'>
+        <div class='flex items-center gap-1 text-income text-sm'>
+        <i class='fas fa-arrow-up'>
+        </i>
+<span >
+        5.2% from last month
+    </span>
+    </div>
+    </div>
+    </div>
+<div class='grid grid-cols-2 gap-4'>
+        <div >
+        <p class='text-text-secondary text-sm'>
+        Income
+    </p>
+<p class='text-2xl font-bold text-income mt-1'>
+        $8,450.25
+    </p>
+<p class='text-text-secondary text-xs mt-1 flex items-center gap-1'>
+        <i class='fas fa-arrow-up'>
+        </i>
+<span >
+        12.5% from last month
+    </span>
+    </p>
+    </div>
+<div >
+        <p class='text-text-secondary text-sm'>
+        Expense
+    </p>
+<p class='text-2xl font-bold text-expense mt-1'>
+        $3,240.75
+    </p>
+<p class='text-text-secondary text-xs mt-1 flex items-center gap-1'>
+        <i class='fas fa-arrow-down'>
+        </i>
+<span >
+        3.2% from last month
+    </span>
+    </p>
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] h7i_Row 1 - Total Balance -- 显示总余额、收入和支出信息，以及与上月对比的百分比 -->
+<!-- [MODULE] i8j_Row 2 - Income/Expense & Budget Utilization -->
+<div class='grid grid-cols-3 gap-6'>
+        <!-- [MODULE] j9k_Income vs Expense -->
+<div class='card col-span-2'>
+        <div class='flex justify-between items-center mb-6'>
+        <h3 class='font-bold text-lg'>
+        Income vs Expense
+    </h3>
+<div class='flex gap-2'>
+        <button class='px-3 py-1 rounded-full text-xs bg-income/20 text-income'>
+        Monthly
+    </button>
+<button class='px-3 py-1 rounded-full text-xs bg-white/5 text-text-secondary hover:bg-white/10 transition-colors'>
+        Yearly
+    </button>
+    </div>
+    </div>
+<div id='incomeExpenseChart' class='w-full h-64'>
+        </div>
+    </div>
+<!-- [/MODULE] j9k_Income vs Expense -- 显示收入与支出的折线图，包含月度/年度切换按钮 -->
+<!-- [MODULE] k0l_Budget Utilization -->
+<div class='card'>
+        <h3 class='font-bold text-lg mb-6'>
+        Budget Utilization
+    </h3>
+<div id='budgetChart' class='w-full h-64 flex items-center justify-center'>
+        </div>
+<div class='mt-6 space-y-4'>
+        <div >
+        <div class='flex justify-between text-sm mb-1'>
+        <span class='text-text-secondary'>
+        Housing
+    </span>
+<span >
+        75%
+    </span>
+    </div>
+<div class='progress-bar'>
+        <div class='progress-value' style='width: 75%'>
+        </div>
+    </div>
+    </div>
+<div >
+        <div class='flex justify-between text-sm mb-1'>
+        <span class='text-text-secondary'>
+        Food
+    </span>
+<span >
+        45%
+    </span>
+    </div>
+<div class='progress-bar'>
+        <div class='progress-value' style='width: 45%'>
+        </div>
+    </div>
+    </div>
+<div >
+        <div class='flex justify-between text-sm mb-1'>
+        <span class='text-text-secondary'>
+        Transport
+    </span>
+<span >
+        30%
+    </span>
+    </div>
+<div class='progress-bar'>
+        <div class='progress-value' style='width: 30%'>
+        </div>
+    </div>
+    </div>
+<div >
+        <div class='flex justify-between text-sm mb-1'>
+        <span class='text-text-secondary'>
+        Entertainment
+    </span>
+<span >
+        60%
+    </span>
+    </div>
+<div class='progress-bar'>
+        <div class='progress-value' style='width: 60%'>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] k0l_Budget Utilization -- 显示预算使用情况的饼图和各类别预算进度条 -->
+    </div>
+<!-- [/MODULE] i8j_Row 2 - Income/Expense & Budget Utilization -- 包含收入支出图表和预算使用情况 -->
+<!-- [MODULE] l1m_Row 3 - Recent Transactions & Saving Goals -->
+<div class='grid grid-cols-3 gap-6'>
+        <!-- [MODULE] m2n_Recent Transactions -->
+<div class='card col-span-2'>
+        <div class='flex justify-between items-center mb-6'>
+        <h3 class='font-bold text-lg'>
+        Recent Transactions
+    </h3>
+<a href='javascript:void(0);' class='text-accent hover:text-accent/80 text-sm flex items-center gap-1 transition-colors'>
+        <span >
+        View All
+    </span>
+<i class='fas fa-chevron-right text-xs'>
+        </i>
+    </a>
+    </div>
+<div class='overflow-x-auto'>
+        <table class='w-full'>
+        <thead >
+        <tr class='text-text-secondary text-sm border-b border-white/10'>
+        <th class='text-left pb-4'>
+        Date
+    </th>
+<th class='text-left pb-4'>
+        Description
+    </th>
+<th class='text-left pb-4'>
+        Category
+    </th>
+<th class='text-left pb-4'>
+        Amount
+    </th>
+<th class='text-left pb-4'>
+        Type
+    </th>
+    </tr>
+    </thead>
+<tbody >
+        <tr class='border-b border-white/5 hover:bg-white/5 transition-colors'>
+        <td class='py-4 text-sm'>
+        May 12, 2023
+    </td>
+<td class='py-4'>
+        <div class='flex items-center gap-3'>
+        <div class='w-10 h-10 rounded-full bg-income/20 flex items-center justify-center text-income'>
+        <i class='fas fa-arrow-down'>
+        </i>
+    </div>
+<span >
+        Salary Deposit
+    </span>
+    </div>
+    </td>
+<td class='py-4 text-sm text-text-secondary'>
+        Income
+    </td>
+<td class='py-4 font-semibold text-income'>
+        $3,200.00
+    </td>
+<td class='py-4'>
+        <span class='px-2 py-1 bg-income/20 text-income text-xs rounded-full'>
+        Income
+    </span>
+    </td>
+    </tr>
+<tr class='border-b border-white/5 hover:bg-white/5 transition-colors'>
+        <td class='py-4 text-sm'>
+        May 10, 2023
+    </td>
+<td class='py-4'>
+        <div class='flex items-center gap-3'>
+        <div class='w-10 h-10 rounded-full bg-expense/20 flex items-center justify-center text-expense'>
+        <i class='fas fa-arrow-up'>
+        </i>
+    </div>
+<span >
+        Rent Payment
+    </span>
+    </div>
+    </td>
+<td class='py-4 text-sm text-text-secondary'>
+        Housing
+    </td>
+<td class='py-4 font-semibold text-expense'>
+        -$1,800.00
+    </td>
+<td class='py-4'>
+        <span class='px-2 py-1 bg-expense/20 text-expense text-xs rounded-full'>
+        Expense
+    </span>
+    </td>
+    </tr>
+<tr class='border-b border-white/5 hover:bg-white/5 transition-colors'>
+        <td class='py-4 text-sm'>
+        May 08, 2023
+    </td>
+<td class='py-4'>
+        <div class='flex items-center gap-3'>
+        <div class='w-10 h-10 rounded-full bg-expense/20 flex items-center justify-center text-expense'>
+        <i class='fas fa-arrow-up'>
+        </i>
+    </div>
+<span >
+        Groceries
+    </span>
+    </div>
+    </td>
+<td class='py-4 text-sm text-text-secondary'>
+        Food
+    </td>
+<td class='py-4 font-semibold text-expense'>
+        -$124.50
+    </td>
+<td class='py-4'>
+        <span class='px-2 py-1 bg-expense/20 text-expense text-xs rounded-full'>
+        Expense
+    </span>
+    </td>
+    </tr>
+<tr class='border-b border-white/5 hover:bg-white/5 transition-colors'>
+        <td class='py-4 text-sm'>
+        May 05, 2023
+    </td>
+<td class='py-4'>
+        <div class='flex items-center gap-3'>
+        <div class='w-10 h-10 rounded-full bg-income/20 flex items-center justify-center text-income'>
+        <i class='fas fa-arrow-down'>
+        </i>
+    </div>
+<span >
+        Freelance Work
+    </span>
+    </div>
+    </td>
+<td class='py-4 text-sm text-text-secondary'>
+        Business
+    </td>
+<td class='py-4 font-semibold text-income'>
+        $850.00
+    </td>
+<td class='py-4'>
+        <span class='px-2 py-1 bg-income/20 text-income text-xs rounded-full'>
+        Income
+    </span>
+    </td>
+    </tr>
+<tr class='hover:bg-white/5 transition-colors'>
+        <td class='py-4 text-sm'>
+        May 03, 2023
+    </td>
+<td class='py-4'>
+        <div class='flex items-center gap-3'>
+        <div class='w-10 h-10 rounded-full bg-expense/20 flex items-center justify-center text-expense'>
+        <i class='fas fa-arrow-up'>
+        </i>
+    </div>
+<span >
+        Utility Bill
+    </span>
+    </div>
+    </td>
+<td class='py-4 text-sm text-text-secondary'>
+        Utilities
+    </td>
+<td class='py-4 font-semibold text-expense'>
+        -$156.20
+    </td>
+<td class='py-4'>
+        <span class='px-2 py-1 bg-expense/20 text-expense text-xs rounded-full'>
+        Expense
+    </span>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+    </div>
+<!-- [/MODULE] m2n_Recent Transactions -- 显示最近交易记录表格，包含日期、描述、类别、金额和类型列 -->
+<!-- [MODULE] n3o_Saving Goals -->
+<div class='card'>
+        <div class='flex justify-between items-center mb-6'>
+        <h3 class='font-bold text-lg'>
+        Saving Goals
+    </h3>
+<button class='text-accent hover:text-accent/80 transition-colors'>
+        <i class='fas fa-plus'>
+        </i>
+    </button>
+    </div>
+<div class='space-y-6'>
+        <div >
+        <div class='flex justify-between mb-2'>
+        <h4 class='font-medium'>
+        New Car
+    </h4>
+<span class='text-sm text-text-secondary'>
+        65%
+    </span>
+    </div>
+<div class='progress-bar'>
+        <div class='progress-value' style='width: 65%'>
+        </div>
+    </div>
+<div class='flex justify-between mt-2 text-sm'>
+        <span class='text-text-secondary'>
+        $13,000 raised
+    </span>
+<span >
+        $20,000 goal
+    </span>
+    </div>
+    </div>
+<div >
+        <div class='flex justify-between mb-2'>
+        <h4 class='font-medium'>
+        Vacation
+    </h4>
+<span class='text-sm text-text-secondary'>
+        32%
+    </span>
+    </div>
+<div class='progress-bar'>
+        <div class='progress-value' style='width: 32%'>
+        </div>
+    </div>
+<div class='flex justify-between mt-2 text-sm'>
+        <span class='text-text-secondary'>
+        $1,600 raised
+    </span>
+<span >
+        $5,000 goal
+    </span>
+    </div>
+    </div>
+<div >
+        <div class='flex justify-between mb-2'>
+        <h4 class='font-medium'>
+        Emergency Fund
+    </h4>
+<span class='text-sm text-text-secondary'>
+        82%
+    </span>
+    </div>
+<div class='progress-bar'>
+        <div class='progress-value' style='width: 82%'>
+        </div>
+    </div>
+<div class='flex justify-between mt-2 text-sm'>
+        <span class='text-text-secondary'>
+        $41,000 raised
+    </span>
+<span >
+        $50,000 goal
+    </span>
+    </div>
+    </div>
+<div >
+        <div class='flex justify-between mb-2'>
+        <h4 class='font-medium'>
+        Home Down Payment
+    </h4>
+<span class='text-sm text-text-secondary'>
+        28%
+    </span>
+    </div>
+<div class='progress-bar'>
+        <div class='progress-value' style='width: 28%'>
+        </div>
+    </div>
+<div class='flex justify-between mt-2 text-sm'>
+        <span class='text-text-secondary'>
+        $28,000 raised
+    </span>
+<span >
+        $100,000 goal
+    </span>
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] n3o_Saving Goals -- 显示储蓄目标进度条，包含目标名称、完成百分比、已筹集金额和目标金额 -->
+    </div>
+<!-- [/MODULE] l1m_Row 3 - Recent Transactions & Saving Goals -- 包含最近交易记录表格和储蓄目标进度 -->
+    </div>
+<!-- [/MODULE] g6h_Dashboard Content -- 包含仪表板所有内容区域 -->
+    </main>
+<!-- [/MODULE] b2c_Main Content Area -- 右侧主内容区域，包含仪表板所有内容 -->
+<!-- [JSMOD] p4q_Charts Initialization -->
+<script id='charts-init'>// Wait for window load to initialize charts
+window.addEventListener('load', function () {
+  // Initialize Income vs Expense Chart
+  var incomeExpenseChart = echarts.init(document.getElementById('incomeExpenseChart'));
+  var incomeExpenseOption = {
+    color: ['#00C896', '#FF5757'],
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      },
+      backgroundColor: 'rgba(10, 6, 33, 0.8)',
+      borderColor: 'rgba(87, 90, 208, 0.3)',
+      borderWidth: 1,
+      textStyle: {
+        color: '#E2E8F0'
+      },
+      padding: 10,
+      borderRadius: 8
+    },
+    legend: {
+      data: ['Income', 'Expense'],
+      textStyle: {
+        color: '#94A3B8'
+      },
+      top: 0,
+      right: 0
+    },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true
+    },
+    xAxis: {
+      type: 'category',
+      data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      axisLine: {
+        lineStyle: {
+          color: 'rgba(255, 255, 255, 0.1)'
+        }
+      },
+      axisLabel: {
+        color: '#94A3B8'
+      },
+      splitLine: {
+        show: false
+      }
+    },
+    yAxis: {
+      type: 'value',
+      axisLine: {
+        show: false
+      },
+      axisLabel: {
+        color: '#94A3B8',
+        formatter: '${value}'
+      },
+      splitLine: {
+        lineStyle: {
+          color: 'rgba(255, 255, 255, 0.05)'
+        }
+      }
+    },
+    series: [{
+      name: 'Income',
+      type: 'line',
+      data: [6500, 7200, 6800, 7800, 8200, 8450],
+      smooth: true,
+      lineStyle: {
+        width: 3
+      },
+      symbol: 'circle',
+      symbolSize: 6,
+      itemStyle: {
+        borderWidth: 2,
+        borderColor: '#030112'
+      }
+    }, {
+      name: 'Expense',
+      type: 'line',
+      data: [3200, 3500, 2900, 3100, 3300, 3240],
+      smooth: true,
+      lineStyle: {
+        width: 3
+      },
+      symbol: 'circle',
+      symbolSize: 6,
+      itemStyle: {
+        borderWidth: 2,
+        borderColor: '#030112'
+      }
+    }]
+  };
+  incomeExpenseChart.setOption(incomeExpenseOption);
+
+  // Initialize Budget Utilization Chart
+  var budgetChart = echarts.init(document.getElementById('budgetChart'));
+  var budgetOption = {
+    tooltip: {
+      trigger: 'item',
+      backgroundColor: 'rgba(10, 6, 33, 0.8)',
+      borderColor: 'rgba(87, 90, 208, 0.3)',
+      borderWidth: 1,
+      textStyle: {
+        color: '#E2E8F0'
+      },
+      padding: 10,
+      borderRadius: 8,
+      formatter: '{b}: {c} ({d}%)'
+    },
+    legend: {
+      show: false
+    },
+    series: [{
+      name: 'Budget',
+      type: 'pie',
+      radius: ['60%', '80%'],
+      avoidLabelOverlap: false,
+      itemStyle: {
+        borderRadius: 10,
+        borderColor: '#030112',
+        borderWidth: 2
+      },
+      label: {
+        show: false,
+        position: 'center'
+      },
+      emphasis: {
+        label: {
+          show: true,
+          fontSize: '16',
+          fontWeight: 'bold',
+          color: '#fff'
+        }
+      },
+      labelLine: {
+        show: false
+      },
+      data: [{
+        value: 65,
+        name: 'Used',
+        itemStyle: {
+          color: '#575AD0'
+        }
+      }, {
+        value: 35,
+        name: 'Remaining',
+        itemStyle: {
+          color: 'rgba(255, 255, 255, 0.1)'
+        }
+      }]
+    }]
+  };
+  budgetChart.setOption(budgetOption);
+
+  // Handle window resize for charts
+  window.addEventListener('resize', function () {
+    incomeExpenseChart.resize();
+    budgetChart.resize();
+  });
+
+  // Add animation to progress bars
+  var progressBars = document.querySelectorAll('.progress-value');
+  progressBars.forEach(function (bar) {
+    var width = bar.style.width;
+    bar.style.width = '0';
+    setTimeout(function () {
+      bar.style.width = width;
+    }, 300);
+  });
+});</script>
+<!-- [/JSMOD] p4q_Charts Initialization -- 初始化收入支出折线图和预算使用饼图，处理窗口大小调整事件，添加进度条动画效果 -->
+<!-- [JSMOD] q5r_Sidebar Interactions -->
+<script id='sidebar-interactions'>// Add click handlers to sidebar menu items
+document.addEventListener('DOMContentLoaded', function () {
+  var sidebarItems = document.querySelectorAll('.sidebar-item');
+  sidebarItems.forEach(function (item) {
+    item.addEventListener('click', function () {
+      // Remove active class from all items
+      sidebarItems.forEach(function (i) {
+        return i.classList.remove('active');
+      });
+      // Add active class to clicked item
+      this.classList.add('active');
+    });
+  });
+});</script>
+<!-- [/JSMOD] q5r_Sidebar Interactions -- 处理侧边栏菜单项点击事件，实现激活状态切换 -->
+    </body>
+    </html>

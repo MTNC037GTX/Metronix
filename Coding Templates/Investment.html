@@ -1,0 +1,1020 @@
+<html lang='en'>
+        <head >
+        <meta charset='UTF-8'/>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+<title >Investment Tracking</title>
+<link href='https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css' rel='stylesheet'/>
+<script src='https://res.gemcoder.com/js/reload.js'></script>
+<script src='https://cdn.tailwindcss.com'></script>
+<script src='https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js'></script>
+<link href='https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap' rel='stylesheet'/>
+<script >tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#575AD0',
+        secondary: '#7B61FF',
+        dark: '#030112',
+        'dark-card': '#0A0721',
+        'dark-hover': '#110E2C',
+        'text-primary': '#E2E8F0',
+        'text-secondary': '#94A3B8',
+        'gain-color': '#10B981',
+        'loss-color': '#EF4444',
+        'neutral-850': '#1E293B'
+      },
+      fontFamily: {
+        'dm-sans': ['"DM Sans"', 'sans-serif']
+      },
+      spacing: {
+        '18': '4.5rem',
+        '22': '5.5rem'
+      }
+    }
+  }
+};</script>
+<style type='text/tailwindcss'>
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/10;
+            }
+            .table-row-hover {
+                @apply transition-colors duration-200 hover:bg-dark-hover;
+            }
+            .scrollbar-thin {
+                scrollbar-width: thin;
+            }
+            .scrollbar-thin::-webkit-scrollbar {
+                width: 4px;
+            }
+            .scrollbar-thin::-webkit-scrollbar-thumb {
+                background-color: rgba(87, 90, 208, 0.5);
+                border-radius: 2px;
+            }
+        }
+    </style>
+    </head>
+<body class='bg-dark text-text-primary font-dm-sans min-h-screen flex flex-col'>
+        <!-- [MODULE] a1b_主内容区域 -->
+<div class='flex flex-1 overflow-hidden'>
+        <!-- [MODULE] c2d_左侧侧边导航栏 -->
+<aside class='w-64 bg-dark-card border-r border-gray-800 flex-shrink-0 hidden md:flex flex-col'>
+        <div class='p-6 border-b border-gray-800'>
+        <h1 class='text-2xl font-bold text-white flex items-center'>
+        <i class='fas fa-chart-pie text-primary mr-3'>
+        </i>
+<span >
+        FinTrack
+    </span>
+    </h1>
+    </div>
+<nav class='flex-1 overflow-y-auto scrollbar-thin p-4'>
+        <ul class='space-y-1'>
+        <li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-tachometer-alt w-5 h-5 mr-3'>
+        </i>
+<span >
+        Dashboard
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-exchange-alt w-5 h-5 mr-3'>
+        </i>
+<span >
+        Transaction
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-wallet w-5 h-5 mr-3'>
+        </i>
+<span >
+        Account
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-piggy-bank w-5 h-5 mr-3'>
+        </i>
+<span >
+        Budget
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-bullseye w-5 h-5 mr-3'>
+        </i>
+<span >
+        Goals
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-balance-scale w-5 h-5 mr-3'>
+        </i>
+<span >
+        Balance
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 bg-primary/10 text-primary rounded-lg border-l-4 border-primary'>
+        <i class='fas fa-chart-line w-5 h-5 mr-3'>
+        </i>
+<span >
+        Investment
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-chart-bar w-5 h-5 mr-3'>
+        </i>
+<span >
+        Analytics
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-file-alt w-5 h-5 mr-3'>
+        </i>
+<span >
+        Report
+    </span>
+    </a>
+    </li>
+    </ul>
+    </nav>
+<div class='p-4 border-t border-gray-800'>
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-sign-out-alt w-5 h-5 mr-3'>
+        </i>
+<span >
+        Logout
+    </span>
+    </a>
+    </div>
+    </aside>
+<!-- [/MODULE] c2d_左侧侧边导航栏 -- 包含系统各功能模块导航链接，当前选中Investment -->
+<!-- [MODULE] d3e_投资页面主内容 -->
+<main class='flex-1 overflow-y-auto bg-dark p-6 scrollbar-thin'>
+        <!-- [MODULE] e4f_页面标题区域 -->
+<div class='mb-8'>
+        <h1 class='text-[clamp(1.75rem,3vw,2.5rem)] font-bold text-white mb-2'>
+        Investments
+    </h1>
+<p class='text-text-secondary'>
+        Track your investment holdings and performance
+    </p>
+    </div>
+<!-- [/MODULE] e4f_页面标题区域 -- 包含页面标题"Investments"和副标题"Track your investment holdings and performance" -->
+<!-- [MODULE] f5g_Investment Summary -->
+<div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
+        <!-- Total Investment Value Card -->
+<div class='bg-dark-card rounded-xl p-6 card-hover border border-gray-800'>
+        <div class='flex items-start justify-between mb-4'>
+        <div >
+        <p class='text-text-secondary text-sm font-medium'>
+        Total Investment Value
+    </p>
+<h3 class='text-2xl font-bold text-white mt-1'>
+        $124,850.00
+    </h3>
+    </div>
+<div class='w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary'>
+        <i class='fas fa-wallet'>
+        </i>
+    </div>
+    </div>
+<p class='text-xs text-text-secondary'>
+        Based on last recorded value
+    </p>
+    </div>
+<!-- Total Cost Basis Card -->
+<div class='bg-dark-card rounded-xl p-6 card-hover border border-gray-800'>
+        <div class='flex items-start justify-between mb-4'>
+        <div >
+        <p class='text-text-secondary text-sm font-medium'>
+        Total Cost Basis
+    </p>
+<h3 class='text-2xl font-bold text-white mt-1'>
+        $112,340.50
+    </h3>
+    </div>
+<div class='w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary'>
+        <i class='fas fa-coins'>
+        </i>
+    </div>
+    </div>
+<p class='text-xs text-text-secondary'>
+        Total amount invested
+    </p>
+    </div>
+<!-- Total Gain/Loss Card -->
+<div class='bg-dark-card rounded-xl p-6 card-hover border border-gray-800'>
+        <div class='flex items-start justify-between mb-4'>
+        <div >
+        <p class='text-text-secondary text-sm font-medium'>
+        Total Gain / Loss
+    </p>
+<h3 class='text-2xl font-bold text-[#10B981] mt-1'>
+        +$12,509.50
+    </h3>
+<p class='text-sm text-[#10B981]/80 mt-1'>
+        +11.14%
+    </p>
+    </div>
+<div class='w-10 h-10 rounded-lg bg-[#10B981]/10 flex items-center justify-center text-[#10B981]'>
+        <i class='fas fa-arrow-up'>
+        </i>
+    </div>
+    </div>
+<p class='text-xs text-text-secondary'>
+        Based on last recorded value
+    </p>
+    </div>
+<!-- Investment Allocation Card -->
+<div class='bg-dark-card rounded-xl p-6 card-hover border border-gray-800'>
+        <div class='flex items-start justify-between mb-4'>
+        <div >
+        <p class='text-text-secondary text-sm font-medium'>
+        Allocation
+    </p>
+<div class='flex flex-col space-y-2 mt-3'>
+        <div class='flex items-center'>
+        <span class='w-3 h-3 rounded-full bg-primary mr-2'>
+        </span>
+<span class='text-sm'>
+        Stocks: 45%
+    </span>
+    </div>
+<div class='flex items-center'>
+        <span class='w-3 h-3 rounded-full bg-secondary mr-2'>
+        </span>
+<span class='text-sm'>
+        ETFs: 30%
+    </span>
+    </div>
+<div class='flex items-center'>
+        <span class='w-3 h-3 rounded-full bg-[#8B5CF6] mr-2'>
+        </span>
+<span class='text-sm'>
+        Crypto: 15%
+    </span>
+    </div>
+<div class='flex items-center'>
+        <span class='w-3 h-3 rounded-full bg-[#EC4899] mr-2'>
+        </span>
+<span class='text-sm'>
+        Other: 10%
+    </span>
+    </div>
+    </div>
+    </div>
+<div class='w-10 h-10 rounded-lg bg-[#575AD0]/10 flex items-center justify-center text-primary'>
+        <i class='fas fa-pie-chart'>
+        </i>
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] f5g_Investment Summary -- 横向信息卡片展示投资概览，包含Total Investment Value、Total Cost Basis、Total Gain / Loss和Allocation -->
+<!-- [MODULE] g6h_Investment Type 分组 -->
+<div class='mb-6'>
+        <div class='flex flex-wrap gap-3'>
+        <button class='px-4 py-2 rounded-lg bg-primary/10 text-primary text-sm font-medium'>
+        All Types
+    </button>
+<button class='px-4 py-2 rounded-lg bg-dark-card text-text-secondary text-sm font-medium hover:bg-dark-hover transition-colors'>
+        Stock
+    </button>
+<button class='px-4 py-2 rounded-lg bg-dark-card text-text-secondary text-sm font-medium hover:bg-dark-hover transition-colors'>
+        ETF
+    </button>
+<button class='px-4 py-2 rounded-lg bg-dark-card text-text-secondary text-sm font-medium hover:bg-dark-hover transition-colors'>
+        Crypto
+    </button>
+<button class='px-4 py-2 rounded-lg bg-dark-card text-text-secondary text-sm font-medium hover:bg-dark-hover transition-colors'>
+        Other
+    </button>
+    </div>
+    </div>
+<!-- [/MODULE] g6h_Investment Type 分组 -- 按投资类型分组筛选按钮，包含All Types、Stock、ETF、Crypto、Other选项 -->
+<!-- [MODULE] h7i_Investment 列表 -->
+<div class='bg-dark-card rounded-xl border border-gray-800 overflow-hidden mb-8'>
+        <div class='overflow-x-auto'>
+        <table class='w-full'>
+        <thead >
+        <tr class='border-b border-gray-800'>
+        <th class='px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider'>
+        Investment Name
+    </th>
+<th class='px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider'>
+        Type
+    </th>
+<th class='px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider'>
+        Linked Account
+    </th>
+<th class='px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider'>
+        Quantity Held
+    </th>
+<th class='px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider'>
+        Cost Basis
+    </th>
+<th class='px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider'>
+        Last Recorded Value
+    </th>
+<th class='px-6 py-4 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider'>
+        Gain / Loss
+    </th>
+    </tr>
+    </thead>
+<tbody class='divide-y divide-gray-800'>
+        <!-- Stock 1 -->
+<tr class='table-row-hover cursor-pointer investment-row' data-id='1'>
+        <td class='px-6 py-4 whitespace-nowrap'>
+        <div class='flex items-center'>
+        <div class='w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary mr-3'>
+        <i class='fas fa-building'>
+        </i>
+    </div>
+<div >
+        <div class='text-sm font-medium text-white'>
+        Apple Inc.
+    </div>
+<div class='text-xs text-text-secondary'>
+        AAPL
+    </div>
+    </div>
+    </div>
+    </td>
+<td class='px-6 py-4 whitespace-nowrap'>
+        <span class='px-2 py-1 text-xs rounded-full bg-primary/10 text-primary'>
+        Stock
+    </span>
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        Investment Account
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        15
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        $14,250.00
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        $18,450.00
+    </td>
+<td class='px-6 py-4 whitespace-nowrap'>
+        <div class='text-sm text-[#10B981] font-medium'>
+        $4,200.00
+    </div>
+<div class='text-xs text-[#10B981]/70'>
+        +29.48%
+    </div>
+    </td>
+    </tr>
+<!-- ETF 1 -->
+<tr class='table-row-hover cursor-pointer investment-row' data-id='2'>
+        <td class='px-6 py-4 whitespace-nowrap'>
+        <div class='flex items-center'>
+        <div class='w-8 h-8 rounded bg-secondary/10 flex items-center justify-center text-secondary mr-3'>
+        <i class='fas fa-cubes'>
+        </i>
+    </div>
+<div >
+        <div class='text-sm font-medium text-white'>
+        Vanguard S
+&
+P 500
+    </div>
+<div class='text-xs text-text-secondary'>
+        VOO
+    </div>
+    </div>
+    </div>
+    </td>
+<td class='px-6 py-4 whitespace-nowrap'>
+        <span class='px-2 py-1 text-xs rounded-full bg-secondary/10 text-secondary'>
+        ETF
+    </span>
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        Retirement Account
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        25
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        $8,750.00
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        $9,875.00
+    </td>
+<td class='px-6 py-4 whitespace-nowrap'>
+        <div class='text-sm text-[#10B981] font-medium'>
+        $1,125.00
+    </div>
+<div class='text-xs text-[#10B981]/70'>
+        +12.86%
+    </div>
+    </td>
+    </tr>
+<!-- Crypto 1 -->
+<tr class='table-row-hover cursor-pointer investment-row' data-id='3'>
+        <td class='px-6 py-4 whitespace-nowrap'>
+        <div class='flex items-center'>
+        <div class='w-8 h-8 rounded bg-[#8B5CF6]/10 flex items-center justify-center text-[#8B5CF6] mr-3'>
+        <i class='fab fa-bitcoin'>
+        </i>
+    </div>
+<div >
+        <div class='text-sm font-medium text-white'>
+        Bitcoin
+    </div>
+<div class='text-xs text-text-secondary'>
+        BTC
+    </div>
+    </div>
+    </div>
+    </td>
+<td class='px-6 py-4 whitespace-nowrap'>
+        <span class='px-2 py-1 text-xs rounded-full bg-[#8B5CF6]/10 text-[#8B5CF6]'>
+        Crypto
+    </span>
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        Crypto Wallet
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        0.75
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        $22,500.00
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        $19,875.00
+    </td>
+<td class='px-6 py-4 whitespace-nowrap'>
+        <div class='text-sm text-[#EF4444] font-medium'>
+        -$2,625.00
+    </div>
+<div class='text-xs text-[#EF4444]/70'>
+        -11.67%
+    </div>
+    </td>
+    </tr>
+<!-- Stock 2 -->
+<tr class='table-row-hover cursor-pointer investment-row' data-id='4'>
+        <td class='px-6 py-4 whitespace-nowrap'>
+        <div class='flex items-center'>
+        <div class='w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary mr-3'>
+        <i class='fas fa-building'>
+        </i>
+    </div>
+<div >
+        <div class='text-sm font-medium text-white'>
+        Microsoft Corp
+    </div>
+<div class='text-xs text-text-secondary'>
+        MSFT
+    </div>
+    </div>
+    </div>
+    </td>
+<td class='px-6 py-4 whitespace-nowrap'>
+        <span class='px-2 py-1 text-xs rounded-full bg-primary/10 text-primary'>
+        Stock
+    </span>
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        Investment Account
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        10
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        $2,800.00
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        $3,420.00
+    </td>
+<td class='px-6 py-4 whitespace-nowrap'>
+        <div class='text-sm text-[#10B981] font-medium'>
+        $620.00
+    </div>
+<div class='text-xs text-[#10B981]/70'>
+        +22.14%
+    </div>
+    </td>
+    </tr>
+<!-- ETF 2 -->
+<tr class='table-row-hover cursor-pointer investment-row' data-id='5'>
+        <td class='px-6 py-4 whitespace-nowrap'>
+        <div class='flex items-center'>
+        <div class='w-8 h-8 rounded bg-secondary/10 flex items-center justify-center text-secondary mr-3'>
+        <i class='fas fa-cubes'>
+        </i>
+    </div>
+<div >
+        <div class='text-sm font-medium text-white'>
+        ARK Innovation ETF
+    </div>
+<div class='text-xs text-text-secondary'>
+        ARKK
+    </div>
+    </div>
+    </div>
+    </td>
+<td class='px-6 py-4 whitespace-nowrap'>
+        <span class='px-2 py-1 text-xs rounded-full bg-secondary/10 text-secondary'>
+        ETF
+    </span>
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        Investment Account
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        20
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        $8,400.00
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        $7,140.00
+    </td>
+<td class='px-6 py-4 whitespace-nowrap'>
+        <div class='text-sm text-[#EF4444] font-medium'>
+        -$1,260.00
+    </div>
+<div class='text-xs text-[#EF4444]/70'>
+        -15.00%
+    </div>
+    </td>
+    </tr>
+<!-- Other Investment -->
+<tr class='table-row-hover cursor-pointer investment-row' data-id='6'>
+        <td class='px-6 py-4 whitespace-nowrap'>
+        <div class='flex items-center'>
+        <div class='w-8 h-8 rounded bg-[#EC4899]/10 flex items-center justify-center text-[#EC4899] mr-3'>
+        <i class='fas fa-hand-holding-usd'>
+        </i>
+    </div>
+<div >
+        <div class='text-sm font-medium text-white'>
+        Real Estate Fund
+    </div>
+<div class='text-xs text-text-secondary'>
+        REIT
+    </div>
+    </div>
+    </div>
+    </td>
+<td class='px-6 py-4 whitespace-nowrap'>
+        <span class='px-2 py-1 text-xs rounded-full bg-[#EC4899]/10 text-[#EC4899]'>
+        Other
+    </span>
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        Retirement Account
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        50
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        $5,000.00
+    </td>
+<td class='px-6 py-4 whitespace-nowrap text-sm'>
+        $5,750.00
+    </td>
+<td class='px-6 py-4 whitespace-nowrap'>
+        <div class='text-sm text-[#10B981] font-medium'>
+        $750.00
+    </div>
+<div class='text-xs text-[#10B981]/70'>
+        +15.00%
+    </div>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+<div class='px-6 py-4 border-t border-gray-800 flex items-center justify-between'>
+        <div class='text-sm text-text-secondary'>
+        Showing 6 of 12 investments
+    </div>
+<div class='flex space-x-2'>
+        <button class='w-8 h-8 flex items-center justify-center rounded border border-gray-800 text-text-secondary hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-chevron-left text-xs'>
+        </i>
+    </button>
+<button class='w-8 h-8 flex items-center justify-center rounded bg-primary text-white'>
+        1
+    </button>
+<button class='w-8 h-8 flex items-center justify-center rounded border border-gray-800 text-text-secondary hover:bg-dark-hover transition-colors'>
+        2
+    </button>
+<button class='w-8 h-8 flex items-center justify-center rounded border border-gray-800 text-text-secondary hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-chevron-right text-xs'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] h7i_Investment 列表 -- 表格形式展示所有投资项目，包含Investment Name、Type、Linked Account、Quantity Held、Cost Basis、Last Recorded Value、Gain / Loss等列 -->
+<!-- [MODULE] i8j_Balance Sheet 集成提示 -->
+<div class='bg-dark-card/50 border border-gray-800 rounded-lg p-4 text-sm text-text-secondary'>
+        <p class='flex items-start'>
+        <i class='fas fa-info-circle text-primary mt-0.5 mr-2'>
+        </i>
+<span >
+        Investments are treated as assets. Investment values contribute to total assets and net worth.
+    </span>
+    </p>
+    </div>
+<!-- [/MODULE] i8j_Balance Sheet 集成提示 -- 轻量呈现投资与资产负债表的关系，说明投资作为资产计入总资产和净值 -->
+    </main>
+<!-- [/MODULE] d3e_投资页面主内容 -- 包含投资追踪所需的所有内容模块 -->
+    </div>
+<!-- [/MODULE] a1b_主内容区域 -->
+<!-- [MODULE] j9k_投资详情侧边面板 -->
+<div id='investment-detail-panel' class='fixed inset-y-0 right-0 w-full md:w-96 bg-dark-card border-l border-gray-800 transform translate-x-full transition-transform duration-300 ease-in-out z-50 flex flex-col'>
+        <div class='p-6 border-b border-gray-800 flex items-center justify-between'>
+        <div >
+        <h2 class='text-xl font-bold text-white' id='detail-title'>
+        Investment Details
+    </h2>
+<p class='text-text-secondary text-sm' id='detail-subtitle'>
+        Stock • AAPL
+    </p>
+    </div>
+<button id='close-panel' class='w-8 h-8 flex items-center justify-center rounded-full hover:bg-dark-hover transition-colors'>
+        <i class='fas fa-times text-text-secondary'>
+        </i>
+    </button>
+    </div>
+<div class='flex-1 overflow-y-auto p-6 scrollbar-thin'>
+        <!-- [MODULE] k1l_投资基本信息 -->
+<div class='mb-8'>
+        <h3 class='text-sm font-medium text-text-secondary mb-4'>
+        Investment Information
+    </h3>
+<div class='space-y-4'>
+        <div >
+        <p class='text-xs text-text-secondary mb-1'>
+        Investment Name
+    </p>
+<p class='text-sm font-medium' id='info-name'>
+        Apple Inc.
+    </p>
+    </div>
+<div >
+        <p class='text-xs text-text-secondary mb-1'>
+        Type
+    </p>
+<p class='text-sm font-medium' id='info-type'>
+        Stock
+    </p>
+    </div>
+<div >
+        <p class='text-xs text-text-secondary mb-1'>
+        Ticker Symbol
+    </p>
+<p class='text-sm font-medium' id='info-symbol'>
+        AAPL
+    </p>
+    </div>
+<div >
+        <p class='text-xs text-text-secondary mb-1'>
+        Linked Account
+    </p>
+<p class='text-sm font-medium' id='info-account'>
+        Investment Account
+    </p>
+    </div>
+<div >
+        <p class='text-xs text-text-secondary mb-1'>
+        Quantity Held
+    </p>
+<p class='text-sm font-medium' id='info-quantity'>
+        15
+    </p>
+    </div>
+<div >
+        <p class='text-xs text-text-secondary mb-1'>
+        Cost Basis
+    </p>
+<p class='text-sm font-medium' id='info-cost'>
+        $14,250.00
+    </p>
+    </div>
+<div >
+        <p class='text-xs text-text-secondary mb-1'>
+        Last Recorded Value
+    </p>
+<p class='text-sm font-medium' id='info-value'>
+        $18,450.00
+    </p>
+    </div>
+<div >
+        <p class='text-xs text-text-secondary mb-1'>
+        Gain / Loss
+    </p>
+<div class='flex items-center'>
+        <p class='text-sm font-medium text-[#10B981]' id='info-gain'>
+        $4,200.00
+    </p>
+<p class='text-xs text-[#10B981]/70 ml-2' id='info-gain-percent'>
+        +29.48%
+    </p>
+    </div>
+    </div>
+<div >
+        <p class='text-xs text-text-secondary mb-1'>
+        Last Updated
+    </p>
+<p class='text-sm font-medium' id='info-updated'>
+        May 15, 2023
+    </p>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] k1l_投资基本信息 -- 显示投资的详细信息，包括名称、类型、代码、关联账户、持有数量、成本、最新价值、盈亏和最后更新时间 -->
+<!-- [MODULE] l2m_更新当前价值 -->
+<div class='mb-8 bg-dark/50 rounded-lg p-4'>
+        <h3 class='text-sm font-medium text-text-secondary mb-4'>
+        Update Current Value
+    </h3>
+<div class='space-y-4'>
+        <div >
+        <label for='new-value' class='block text-xs text-text-secondary mb-1'>
+        New Value per Unit
+    </label>
+<input type='text' id='new-value' class='w-full bg-dark border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary'/>
+    </div>
+<div >
+        <label for='update-date' class='block text-xs text-text-secondary mb-1'>
+        Date
+    </label>
+<input type='date' id='update-date' class='w-full bg-dark border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary'/>
+    </div>
+<button id='save-update' class='w-full bg-primary hover:bg-primary/90 text-white py-2 rounded-lg text-sm font-medium transition-colors'>
+        Save Update
+    </button>
+    </div>
+    </div>
+<!-- [/MODULE] l2m_更新当前价值 -- 提供手动更新投资价值的功能，包含New Value per Unit输入框、Date选择框和Save Update按钮 -->
+<!-- [MODULE] m3n_历史价值列表 -->
+<div class='mb-8'>
+        <div class='flex items-center justify-between mb-4'>
+        <h3 class='text-sm font-medium text-text-secondary'>
+        Historical Values
+    </h3>
+<button class='text-xs text-primary hover:text-primary/80 transition-colors'>
+        View All
+    </button>
+    </div>
+<div class='space-y-3'>
+        <div class='flex items-center justify-between p-3 rounded-lg bg-dark'>
+        <div >
+        <p class='text-sm font-medium'>
+        May 15, 2023
+    </p>
+<p class='text-xs text-text-secondary'>
+        Last Updated
+    </p>
+    </div>
+<p class='text-sm font-medium'>
+        $1,230.00
+    </p>
+    </div>
+<div class='flex items-center justify-between p-3 rounded-lg bg-dark'>
+        <div >
+        <p class='text-sm font-medium'>
+        April 30, 2023
+    </p>
+<p class='text-xs text-text-secondary'>
+        Monthly Update
+    </p>
+    </div>
+<p class='text-sm font-medium'>
+        $1,185.00
+    </p>
+    </div>
+<div class='flex items-center justify-between p-3 rounded-lg bg-dark'>
+        <div >
+        <p class='text-sm font-medium'>
+        March 31, 2023
+    </p>
+<p class='text-xs text-text-secondary'>
+        Monthly Update
+    </p>
+    </div>
+<p class='text-sm font-medium'>
+        $1,150.00
+    </p>
+    </div>
+<div class='flex items-center justify-between p-3 rounded-lg bg-dark'>
+        <div >
+        <p class='text-sm font-medium'>
+        February 28, 2023
+    </p>
+<p class='text-xs text-text-secondary'>
+        Monthly Update
+    </p>
+    </div>
+<p class='text-sm font-medium'>
+        $1,090.00
+    </p>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] m3n_历史价值列表 -- 展示投资的历史价值记录，包含日期、更新类型和价值 -->
+<!-- [MODULE] n4o_价值变化图表 -->
+<div >
+        <h3 class='text-sm font-medium text-text-secondary mb-4'>
+        Value Change
+    </h3>
+<div id='value-chart' class='w-full h-64'>
+        </div>
+<p class='text-xs text-text-secondary text-center mt-2'>
+        Based on recorded values only
+    </p>
+    </div>
+<!-- [/MODULE] n4o_价值变化图表 -- 使用折线图展示投资价值变化趋势 -->
+    </div>
+    </div>
+<!-- [/MODULE] j9k_投资详情侧边面板 -- 点击投资行时弹出的侧边面板，包含投资基本信息、更新价值功能、历史价值列表和价值变化图表 -->
+<!-- [MODULE] o5p_背景遮罩 -->
+<div id='overlay' class='fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden transition-opacity duration-300'>
+        </div>
+<!-- [/MODULE] o5p_背景遮罩 -- 侧边面板弹出时显示的半透明背景遮罩 -->
+<!-- [JSMOD] p6q_侧边面板交互 -->
+<script id='panel-script'>document.addEventListener('DOMContentLoaded', function () {
+  var panel = document.getElementById('investment-detail-panel');
+  var overlay = document.getElementById('overlay');
+  var closeButton = document.getElementById('close-panel');
+  var investmentRows = document.querySelectorAll('.investment-row');
+
+  // Open panel when clicking on an investment row
+  investmentRows.forEach(function (row) {
+    row.addEventListener('click', function () {
+      panel.classList.remove('translate-x-full');
+      overlay.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+
+      // Here you would typically load the actual data for the selected investment
+      // For demo purposes, we're just showing static data
+    });
+  });
+
+  // Close panel functions
+  function closePanel() {
+    panel.classList.add('translate-x-full');
+    overlay.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+  }
+  closeButton.addEventListener('click', closePanel);
+  overlay.addEventListener('click', closePanel);
+
+  // Close panel with Escape key
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !panel.classList.contains('translate-x-full')) {
+      closePanel();
+    }
+  });
+});</script>
+<!-- [/JSMOD] p6q_侧边面板交互 -- 处理投资详情侧边面板的显示和隐藏交互，包括点击投资行打开、点击关闭按钮和遮罩关闭、按ESC键关闭 -->
+<!-- [JSMOD] q7r_图表初始化 -->
+<script id='chart-script'>window.addEventListener('load', function () {
+  // Initialize chart when panel is opened and when window resizes
+  var valueChart = null;
+  var panel = document.getElementById('investment-detail-panel');
+  var chartContainer = document.getElementById('value-chart');
+
+  // Check if panel is visible and initialize chart
+  function initChartIfNeeded() {
+    if (!panel.classList.contains('translate-x-full') && !valueChart && chartContainer) {
+      initValueChart();
+    }
+  }
+
+  // Initialize value change chart
+  function initValueChart() {
+    valueChart = echarts.init(chartContainer);
+    var option = {
+      backgroundColor: 'transparent',
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        },
+        formatter: '{b}: ${c}'
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+        axisLine: {
+          lineStyle: {
+            color: '#374151'
+          }
+        },
+        axisLabel: {
+          color: '#94A3B8'
+        }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: {
+          show: false
+        },
+        axisLabel: {
+          color: '#94A3B8',
+          formatter: '${value}'
+        },
+        splitLine: {
+          lineStyle: {
+            color: 'rgba(107, 114, 128, 0.1)'
+          }
+        }
+      },
+      series: [{
+        data: [1100, 1090, 1150, 1185, 1230],
+        type: 'line',
+        smooth: true,
+        lineStyle: {
+          width: 2,
+          color: '#575AD0'
+        },
+        itemStyle: {
+          color: '#575AD0',
+          borderColor: '#030112',
+          borderWidth: 2
+        },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: 'rgba(87, 90, 208, 0.3)'
+          }, {
+            offset: 1,
+            color: 'rgba(87, 90, 208, 0)'
+          }])
+        },
+        symbolSize: 6
+      }]
+    };
+    valueChart.setOption(option);
+
+    // Handle window resize for chart
+    window.addEventListener('resize', function () {
+      if (valueChart && !panel.classList.contains('translate-x-full')) {
+        valueChart.resize();
+      }
+    });
+  }
+
+  // Check panel visibility on initial load
+  initChartIfNeeded();
+
+  // Check panel visibility when panel is opened
+  var observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      if (mutation.attributeName === 'class') {
+        initChartIfNeeded();
+
+        // Resize chart when panel becomes visible
+        if (valueChart && !panel.classList.contains('translate-x-full')) {
+          setTimeout(function () {
+            valueChart.resize();
+          }, 300); // Wait for animation to complete
+        }
+      }
+    });
+  });
+  observer.observe(panel, {
+    attributes: true
+  });
+});</script>
+<!-- [/JSMOD] q7r_图表初始化 -- 初始化投资价值变化折线图，处理图表容器尺寸变化和侧边面板显示状态变化时的图表调整 -->
+    </body>
+    </html>

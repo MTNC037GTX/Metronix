@@ -1,0 +1,1249 @@
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>
+   Transaction | Personal Finance System
+  </title>
+  <script src="https://res.gemcoder.com/js/reload.js">
+  </script>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <script>tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#575AD0',
+        secondary: '#1E293B',
+        income: '#00C48C',
+        expense: '#FF5757',
+        dark: '#030112',
+        'dark-card': '#0A0721',
+        'dark-hover': '#110E31',
+        'text-primary': '#F8FAFC',
+        'text-secondary': '#94A3B8'
+      },
+      fontFamily: {
+        'dm-sans': ['"DM Sans"', 'sans-serif']
+      },
+      spacing: {
+        '18': '4.5rem',
+        '22': '5.5rem',
+        '26': '6.5rem',
+        '72': '18rem',
+        '80': '20rem'
+      },
+      boxShadow: {
+        'card': '0 4px 20px rgba(0, 0, 0, 0.15)',
+        'card-hover': '0 8px 30px rgba(0, 0, 0, 0.25)'
+      }
+    }
+  }
+};</script>
+  <style type="text/tailwindcss">@layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .bg-gradient-dark {
+                background: linear-gradient(135deg, #030112 0%, #0A0721 100%);
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .skeleton-loading {
+                background: linear-gradient(90deg, #110E31 25%, #1E293B 50%, #110E31 75%);
+                background-size: 200% 100%;
+                animation: skeleton-loading 1.5s infinite;
+            }
+            @keyframes skeleton-loading {
+                0% { background-position: 200% 0; }
+                100% { background-position: -200% 0; }
+            }
+        }</style>
+ </head>
+ <body class="bg-dark font-dm-sans text-text-primary min-h-screen flex overflow-hidden">
+  <!-- [MODULE] a1b_左侧导航栏 -->
+  <aside class="w-64 bg-dark-card shadow-lg z-20 flex-shrink-0 transition-all duration-300 ease-in-out">
+   <!-- [MODULE] c2d_导航栏Logo -->
+   <div class="p-6 border-b border-gray-800">
+    <div class="flex items-center space-x-3">
+     <div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
+      <i class="fas fa-wallet text-white text-xl">
+      </i>
+     </div>
+     <h1 class="text-xl font-bold text-white">
+      FinTrack
+     </h1>
+    </div>
+   </div>
+   <!-- [/MODULE] c2d_导航栏Logo -- 显示系统Logo和名称 -->
+   <!-- [MODULE] d3e_导航菜单 -->
+   <nav class="flex-1 overflow-y-auto scrollbar-hide p-4">
+    <ul class="space-y-1">
+     <li>
+      <a class="flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-all-300" href="javascript:void(0);">
+       <i class="fas fa-chart-line w-5 h-5 mr-3">
+       </i>
+       <span>
+        Dashboard
+       </span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center px-4 py-3 bg-primary/10 text-white rounded-lg transition-all-300" href="javascript:void(0);">
+       <i class="fas fa-exchange-alt w-5 h-5 mr-3">
+       </i>
+       <span>
+        Transaction
+       </span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-all-300" href="javascript:void(0);">
+       <i class="fas fa-credit-card w-5 h-5 mr-3">
+       </i>
+       <span>
+        Account
+       </span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-all-300" href="javascript:void(0);">
+       <i class="fas fa-piggy-bank w-5 h-5 mr-3">
+       </i>
+       <span>
+        Budget
+       </span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-all-300" href="javascript:void(0);">
+       <i class="fas fa-bullseye w-5 h-5 mr-3">
+       </i>
+       <span>
+        Goals
+       </span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-all-300" href="javascript:void(0);">
+       <i class="fas fa-balance-scale w-5 h-5 mr-3">
+       </i>
+       <span>
+        Balance
+       </span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-all-300" href="javascript:void(0);">
+       <i class="fas fa-chart-pie w-5 h-5 mr-3">
+       </i>
+       <span>
+        Investment
+       </span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-all-300" href="javascript:void(0);">
+       <i class="fas fa-chart-bar w-5 h-5 mr-3">
+       </i>
+       <span>
+        Analytics
+       </span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center px-4 py-3 text-text-secondary rounded-lg hover:bg-dark-hover transition-all-300" href="javascript:void(0);">
+       <i class="fas fa-file-alt w-5 h-5 mr-3">
+       </i>
+       <span>
+        Report
+       </span>
+      </a>
+     </li>
+    </ul>
+   </nav>
+   <!-- [/MODULE] d3e_导航菜单 -- 包含所有导航菜单项，当前Transaction为激活状态 -->
+   <!-- [MODULE] e4f_登出按钮 -->
+   <div class="p-4 border-t border-gray-800">
+    <button class="w-full flex items-center justify-center px-4 py-3 text-text-secondary bg-dark-hover rounded-lg hover:bg-primary/10 hover:text-white transition-all-300">
+     <i class="fas fa-sign-out-alt w-5 h-5 mr-3">
+     </i>
+     <span>
+      Logout
+     </span>
+    </button>
+   </div>
+   <!-- [/MODULE] e4f_登出按钮 -- 固定在导航栏底部的登出功能 -->
+  </aside>
+  <!-- [/MODULE] a1b_左侧导航栏 -- 包含系统导航菜单和用户登出功能 -->
+  <!-- [MODULE] b2c_右侧主内容区域 -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+   <!-- [MODULE] f5g_顶部状态栏 -->
+   <header class="h-16 bg-dark-card border-b border-gray-800 flex items-center justify-between px-6 z-10">
+    <div class="flex items-center">
+     <button class="mr-4 text-text-secondary hover:text-white transition-all-300 md:hidden" id="mobile-menu-button">
+      <i class="fas fa-bars text-xl">
+      </i>
+     </button>
+     <div class="relative">
+      <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+       <i class="fas fa-search text-text-secondary">
+       </i>
+      </span>
+      <input class="bg-dark border border-gray-700 text-text-secondary rounded-lg py-2 pl-10 pr-4 w-64 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300" placeholder="Search..." type="text">
+     </div>
+    </div>
+    <div class="flex items-center space-x-4">
+     <button class="relative p-2 text-text-secondary hover:text-white transition-all-300">
+      <i class="fas fa-bell text-xl">
+      </i>
+      <span class="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full">
+      </span>
+     </button>
+     <div class="flex items-center space-x-3">
+      <img alt="User Avatar" class="w-10 h-10 rounded-full object-cover border-2 border-primary" src="https://design.gemcoder.com/api/searchImage?query=user profile avatar, minimalist design, white background, professional photography&amp;width=40&amp;height=40">
+      <div class="hidden md:block">
+       <p class="text-sm font-medium text-white">
+        Alex Morgan
+       </p>
+       <p class="text-xs text-text-secondary">
+        Premium Account
+       </p>
+      </div>
+     </div>
+    </div>
+   </header>
+   <!-- [/MODULE] f5g_顶部状态栏 -- 包含搜索功能、通知和用户信息 -->
+   <!-- [MODULE] g6h_Transaction页面主体 -->
+   <main class="flex-1 overflow-y-auto bg-dark p-6">
+<!-- [MODULE] h7i_页面标题区域 -->
+    <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
+     <div>
+      <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-white mb-2">
+       Transaction
+      </h1>
+      <p class="text-text-secondary">
+       Manage and review all financial activities
+      </p>
+     </div>
+     <div class="mt-4 md:mt-0 flex items-center space-x-4">
+      <div class="relative">
+       <select class="bg-dark-card border border-gray-700 text-text-primary rounded-lg py-2 px-4 pr-10 appearance-none focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300">
+        <option>November 2023</option>
+        <option>October 2023</option>
+        <option>September 2023</option>
+       </select>
+       <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+        <i class="fas fa-chevron-down text-text-secondary"></i>
+       </div>
+      </div>
+     </div>
+    </div>
+    <!-- [/MODULE] h7i_页面标题区域 -- 显示页面标题、副标题和月份选择器 -->
+    <!-- [MODULE] i8j_主操作按钮 -->
+    <div class="mb-8 flex justify-end space-x-4">
+     <button class="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-lg flex items-center transition-all-300 shadow-lg hover:shadow-primary/20" id="add-transaction-btn">
+      <i class="fas fa-plus mr-2"></i>
+      <span>Add Transaction</span>
+     </button>
+     <button class="bg-dark-card border border-gray-700 hover:border-primary text-white font-medium py-2 px-6 rounded-lg flex items-center transition-all-300" id="add-transfer-btn">
+      <i class="fas fa-exchange-alt mr-2"></i>
+      <span>Add Transfer</span>
+     </button>
+    </div>
+    <!-- [/MODULE] i8j_主操作按钮 -- 用于添加新交易的主要操作按钮 -->
+<!-- [MODULE] l8m_Monthly Summary区域 -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+     <div class="bg-dark-card rounded-xl shadow-card p-6 transition-all-300 hover:shadow-card-hover">
+      <div class="flex items-center justify-between mb-4">
+       <h3 class="text-sm font-medium text-text-secondary">Total Income</h3>
+       <i class="fas fa-arrow-up text-income"></i>
+      </div>
+      <p class="text-3xl font-bold text-income">$3,735.20</p>
+      <p class="text-xs text-text-secondary mt-2">+12.5% from last month</p>
+     </div>
+     <div class="bg-dark-card rounded-xl shadow-card p-6 transition-all-300 hover:shadow-card-hover">
+      <div class="flex items-center justify-between mb-4">
+       <h3 class="text-sm font-medium text-text-secondary">Total Expense</h3>
+       <i class="fas fa-arrow-down text-expense"></i>
+      </div>
+      <p class="text-3xl font-bold text-expense">$1,490.50</p>
+      <p class="text-xs text-text-secondary mt-2">+5.2% from last month</p>
+     </div>
+     <div class="bg-dark-card rounded-xl shadow-card p-6 transition-all-300 hover:shadow-card-hover">
+      <div class="flex items-center justify-between mb-4">
+       <h3 class="text-sm font-medium text-text-secondary">Net Cash Flow</h3>
+       <i class="fas fa-balance-scale text-primary"></i>
+      </div>
+      <p class="text-3xl font-bold text-primary">$2,244.70</p>
+      <p class="text-xs text-text-secondary mt-2">+8.3% from last month</p>
+     </div>
+    </div>
+    <!-- [/MODULE] l8m_Monthly Summary区域 -- 显示当月收入、支出和净现金流汇总 -->
+    <!-- [MODULE] j9k_筛选与搜索区域 -->
+    <div class="bg-dark-card rounded-xl shadow-card p-6 mb-8 transition-all-300 hover:shadow-card-hover">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div>
+       <label class="block text-sm font-medium text-text-secondary mb-2">Search transactions</label>
+       <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+         <i class="fas fa-search text-text-secondary"></i>
+        </span>
+        <input class="w-full bg-dark border border-gray-700 text-text-primary rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300" placeholder="Search by description..." type="text">
+       </div>
+      </div>
+      <div>
+       <label class="block text-sm font-medium text-text-secondary mb-2">Transaction Type</label>
+       <div class="grid grid-cols-4 gap-3">
+        <label class="flex items-center p-3 bg-dark border border-gray-700 rounded-lg cursor-pointer hover:border-primary transition-all-300">
+         <input class="hidden peer" name="transaction-type-filter" type="radio" value="all" checked="">
+         <div class="w-5 h-5 rounded-full border-2 border-gray-600 peer-checked:border-primary flex items-center justify-center mr-3">
+          <div class="w-3 h-3 rounded-full bg-primary hidden peer-checked:block"></div>
+         </div>
+         <span class="text-text-primary text-sm">All</span>
+        </label>
+        <label class="flex items-center p-3 bg-dark border border-gray-700 rounded-lg cursor-pointer hover:border-primary transition-all-300">
+         <input class="hidden peer" name="transaction-type-filter" type="radio" value="income">
+         <div class="w-5 h-5 rounded-full border-2 border-gray-600 peer-checked:border-income flex items-center justify-center mr-3">
+          <div class="w-3 h-3 rounded-full bg-income hidden peer-checked:block"></div>
+         </div>
+         <span class="text-text-primary text-sm">Income</span>
+        </label>
+        <label class="flex items-center p-3 bg-dark border border-gray-700 rounded-lg cursor-pointer hover:border-primary transition-all-300">
+         <input class="hidden peer" name="transaction-type-filter" type="radio" value="expense">
+         <div class="w-5 h-5 rounded-full border-2 border-gray-600 peer-checked:border-expense flex items-center justify-center mr-3">
+          <div class="w-3 h-3 rounded-full bg-expense hidden peer-checked:block"></div>
+         </div>
+         <span class="text-text-primary text-sm">Expense</span>
+        </label>
+        <label class="flex items-center p-3 bg-dark border border-gray-700 rounded-lg cursor-pointer hover:border-primary transition-all-300">
+         <input class="hidden peer" name="transaction-type-filter" type="radio" value="transfer">
+         <div class="w-5 h-5 rounded-full border-2 border-gray-600 peer-checked:border-primary flex items-center justify-center mr-3">
+          <div class="w-3 h-3 rounded-full bg-primary hidden peer-checked:block"></div>
+         </div>
+         <span class="text-text-primary text-sm">Transfer</span>
+        </label>
+       </div>
+      </div>
+      <div>
+       <label class="block text-sm font-medium text-text-secondary mb-2">
+        Category
+       </label>
+       <div class="relative">
+        <select class="w-full bg-dark border border-gray-700 text-text-primary rounded-lg py-2 pl-4 pr-10 appearance-none focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300">
+         <option>
+          All Categories
+         </option>
+         <option>
+          Food
+&amp;
+Dining
+         </option>
+         <option>
+          Transportation
+         </option>
+         <option>
+          Housing
+         </option>
+         <option>
+          Entertainment
+         </option>
+         <option>
+          Utilities
+         </option>
+         <option>
+          Salary
+         </option>
+         <option>
+          Investment
+         </option>
+         <option>
+          Other
+         </option>
+        </select>
+        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+         <i class="fas fa-chevron-down text-text-secondary">
+         </i>
+        </div>
+       </div>
+      </div>
+      <div>
+       <label class="block text-sm font-medium text-text-secondary mb-2">
+        Date Range
+       </label>
+       <div class="grid grid-cols-2 gap-3">
+        <div class="relative">
+         <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+          <i class="fas fa-calendar text-text-secondary">
+          </i>
+         </span>
+         <input class="w-full bg-dark border border-gray-700 text-text-primary rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300" type="date">
+        </div>
+        <div class="relative">
+         <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+          <i class="fas fa-calendar text-text-secondary">
+          </i>
+         </span>
+         <input class="w-full bg-dark border border-gray-700 text-text-primary rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300" type="date">
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="mt-4 flex justify-end">
+      <button class="text-text-secondary hover:text-white transition-all-300 flex items-center">
+       <i class="fas fa-redo mr-2">
+       </i>
+       <span>
+        Reset Filters
+       </span>
+      </button>
+     </div>
+    </div>
+    <!-- [/MODULE] j9k_筛选与搜索区域 -- 包含交易搜索框、类型筛选、分类筛选、日期范围选择和重置筛选按钮 -->
+    <!-- [MODULE] k9l_交易列表表格 -->
+    <div class="bg-dark-card rounded-xl shadow-card overflow-hidden transition-all-300 hover:shadow-card-hover">
+     <div class="overflow-x-auto">
+      <table class="w-full">
+<thead>
+        <tr class="bg-dark border-b border-gray-800">
+         <th class="px-6 py-4 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+          <div class="flex items-center">
+           <span>Date</span>
+           <button class="ml-2 text-text-secondary hover:text-white transition-all-300">
+            <i class="fas fa-sort"></i>
+           </button>
+          </div>
+         </th>
+         <th class="px-6 py-4 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+          <div class="flex items-center">
+           <span>Description</span>
+           <button class="ml-2 text-text-secondary hover:text-white transition-all-300">
+            <i class="fas fa-sort"></i>
+           </button>
+          </div>
+         </th>
+         <th class="px-6 py-4 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+          <div class="flex items-center">
+           <span>Category</span>
+           <button class="ml-2 text-text-secondary hover:text-white transition-all-300">
+            <i class="fas fa-sort"></i>
+           </button>
+          </div>
+         </th>
+         <th class="px-6 py-4 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+          <div class="flex items-center">
+           <span>Account</span>
+           <button class="ml-2 text-text-secondary hover:text-white transition-all-300">
+            <i class="fas fa-sort"></i>
+           </button>
+          </div>
+         </th>
+         <th class="px-6 py-4 text-right text-xs font-medium text-text-secondary uppercase tracking-wider">
+          <div class="flex items-center justify-end">
+           <span>Amount</span>
+           <button class="ml-2 text-text-secondary hover:text-white transition-all-300">
+            <i class="fas fa-sort"></i>
+           </button>
+          </div>
+         </th>
+         <th class="px-6 py-4 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+          <div class="flex items-center">
+           <span>Type</span>
+           <button class="ml-2 text-text-secondary hover:text-white transition-all-300">
+            <i class="fas fa-sort"></i>
+           </button>
+          </div>
+         </th>
+         <th class="px-6 py-4 text-right text-xs font-medium text-text-secondary uppercase tracking-wider">
+          Actions
+         </th>
+        </tr>
+       </thead>
+       <tbody class="divide-y divide-gray-800" id="transactions-table-body">
+        <!-- Transaction rows will be added dynamically via JavaScript -->
+       </tbody>
+      </table>
+     </div>
+     <!-- [MODULE] l0m_分页控件 -->
+     <div class="px-6 py-4 border-t border-gray-800 flex items-center justify-between">
+      <div class="text-sm text-text-secondary">
+       Showing
+       <span class="font-medium text-white">
+        1
+       </span>
+       to
+       <span class="font-medium text-white">
+        10
+       </span>
+       of
+       <span class="font-medium text-white">
+        42
+       </span>
+       transactions
+      </div>
+      <div class="flex space-x-2">
+       <button class="px-3 py-1 rounded-lg border border-gray-700 bg-dark text-text-secondary hover:bg-dark-hover hover:text-white transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled="">
+        <i class="fas fa-chevron-left text-xs">
+        </i>
+       </button>
+       <button class="px-3 py-1 rounded-lg bg-primary text-white hover:bg-primary/90 transition-all-300">
+        1
+       </button>
+       <button class="px-3 py-1 rounded-lg border border-gray-700 bg-dark text-text-secondary hover:bg-dark-hover hover:text-white transition-all-300">
+        2
+       </button>
+       <button class="px-3 py-1 rounded-lg border border-gray-700 bg-dark text-text-secondary hover:bg-dark-hover hover:text-white transition-all-300">
+        3
+       </button>
+       <button class="px-3 py-1 rounded-lg border border-gray-700 bg-dark text-text-secondary hover:bg-dark-hover hover:text-white transition-all-300">
+        4
+       </button>
+       <button class="px-3 py-1 rounded-lg border border-gray-700 bg-dark text-text-secondary hover:bg-dark-hover hover:text-white transition-all-300">
+        5
+       </button>
+       <button class="px-3 py-1 rounded-lg border border-gray-700 bg-dark text-text-secondary hover:bg-dark-hover hover:text-white transition-all-300">
+        <i class="fas fa-chevron-right text-xs">
+        </i>
+       </button>
+      </div>
+     </div>
+     <!-- [/MODULE] l0m_分页控件 -- 包含页码导航和显示记录数量信息 -->
+    </div>
+    <!-- [/MODULE] k9l_交易列表表格 -- 显示交易数据表格，包含日期、描述、分类、账户、金额、类型、状态列和操作按钮 -->
+    <!-- [MODULE] m1n_空状态显示 -->
+    <div class="hidden bg-dark-card rounded-xl shadow-card p-12 text-center transition-all-300 hover:shadow-card-hover" id="empty-state">
+     <div class="w-24 h-24 mx-auto mb-6 bg-dark rounded-full flex items-center justify-center">
+      <i class="fas fa-file-invoice text-text-secondary text-4xl">
+      </i>
+     </div>
+     <h3 class="text-xl font-semibold text-white mb-2">
+      No transactions found
+     </h3>
+     <p class="text-text-secondary mb-6 max-w-md mx-auto">
+      There are no transactions matching your current filters. Try adjusting your search criteria or add a new transaction.
+     </p>
+     <button class="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-lg flex items-center mx-auto transition-all-300 shadow-lg hover:shadow-primary/20" id="empty-state-add-transaction">
+      <i class="fas fa-plus mr-2">
+      </i>
+      <span>
+       Add Transaction
+      </span>
+     </button>
+    </div>
+    <!-- [/MODULE] m1n_空状态显示 -- 当没有符合条件的交易时显示，包含添加交易按钮 -->
+    <!-- [MODULE] n2o_加载状态 -->
+    <div class="hidden bg-dark-card rounded-xl shadow-card p-12 transition-all-300 hover:shadow-card-hover" id="loading-state">
+     <div class="space-y-4">
+      <div class="h-6 bg-dark rounded skeleton-loading">
+      </div>
+      <div class="grid grid-cols-8 gap-4">
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-2">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+      </div>
+      <div class="grid grid-cols-8 gap-4">
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-2">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+      </div>
+      <div class="grid grid-cols-8 gap-4">
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-2">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+      </div>
+      <div class="grid grid-cols-8 gap-4">
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-2">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+      </div>
+      <div class="grid grid-cols-8 gap-4">
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-2">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+       <div class="h-4 bg-dark rounded skeleton-loading col-span-1">
+       </div>
+      </div>
+     </div>
+    </div>
+    <!-- [/MODULE] n2o_加载状态 -- 表格数据加载过程中显示的骨架屏 -->
+   </main>
+   <!-- [/MODULE] g6h_Transaction页面主体 -- 包含交易管理页面的所有内容 -->
+  </div>
+  <!-- [/MODULE] b2c_右侧主内容区域 -- 包含Transaction页面的所有内容 -->
+  <!-- [MODULE] o3p_添加交易模态框 -->
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden" id="add-transaction-modal">
+   <div class="bg-dark-card rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all-300 scale-95 opacity-0" id="modal-content">
+    <div class="p-6 border-b border-gray-800 flex items-center justify-between">
+     <h2 class="text-xl font-bold text-white">
+      Add New Transaction
+     </h2>
+     <button class="text-text-secondary hover:text-white transition-all-300" id="close-modal-btn">
+      <i class="fas fa-times text-xl">
+      </i>
+     </button>
+    </div>
+    <div class="p-6">
+     <form id="add-transaction-form">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+       <div>
+        <label class="block text-sm font-medium text-text-secondary mb-2">
+         Transaction Type
+        </label>
+        <div class="grid grid-cols-2 gap-3">
+         <label class="flex items-center p-3 bg-dark border border-gray-700 rounded-lg cursor-pointer hover:border-primary transition-all-300">
+          <input class="hidden peer" name="transaction-type" type="radio" value="income">
+          <div class="w-5 h-5 rounded-full border-2 border-gray-600 peer-checked:border-income flex items-center justify-center mr-3">
+           <div class="w-3 h-3 rounded-full bg-income hidden peer-checked:block">
+           </div>
+          </div>
+          <span class="text-text-primary">
+           Income
+          </span>
+         </label>
+         <label class="flex items-center p-3 bg-dark border border-gray-700 rounded-lg cursor-pointer hover:border-primary transition-all-300">
+          <input checked="" class="hidden peer" name="transaction-type" type="radio" value="expense">
+          <div class="w-5 h-5 rounded-full border-2 border-gray-600 peer-checked:border-expense flex items-center justify-center mr-3">
+           <div class="w-3 h-3 rounded-full bg-expense hidden peer-checked:block">
+           </div>
+          </div>
+          <span class="text-text-primary">
+           Expense
+          </span>
+         </label>
+        </div>
+       </div>
+       <div>
+        <label class="block text-sm font-medium text-text-secondary mb-2">
+         Amount
+        </label>
+        <div class="relative">
+         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-text-secondary">
+          $
+         </span>
+         <input class="w-full bg-dark border border-gray-700 text-text-primary rounded-lg py-2 pl-8 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300" min="0" placeholder="0.00" step="0.01" type="number">
+        </div>
+       </div>
+       <div>
+        <label class="block text-sm font-medium text-text-secondary mb-2">
+         Description
+        </label>
+        <input class="w-full bg-dark border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300" placeholder="Transaction description" type="text">
+       </div>
+       <div>
+        <label class="block text-sm font-medium text-text-secondary mb-2">
+         Category
+        </label>
+        <select class="w-full bg-dark border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300">
+         <option>
+          Select Category
+         </option>
+         <option>
+          Food
+&amp;
+Dining
+         </option>
+         <option>
+          Transportation
+         </option>
+         <option>
+          Housing
+         </option>
+         <option>
+          Entertainment
+         </option>
+         <option>
+          Utilities
+         </option>
+         <option>
+          Salary
+         </option>
+         <option>
+          Investment
+         </option>
+         <option>
+          Other
+         </option>
+        </select>
+       </div>
+       <div>
+        <label class="block text-sm font-medium text-text-secondary mb-2">
+         Account
+        </label>
+        <select class="w-full bg-dark border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300">
+         <option>
+          Select Account
+         </option>
+         <option>
+          Main Checking
+         </option>
+         <option>
+          Savings Account
+         </option>
+         <option>
+          Credit Card
+         </option>
+         <option>
+          Investment Account
+         </option>
+        </select>
+       </div>
+       <div>
+        <label class="block text-sm font-medium text-text-secondary mb-2">
+         Date
+        </label>
+        <div class="relative">
+         <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+          <i class="fas fa-calendar text-text-secondary">
+          </i>
+         </span>
+         <input class="w-full bg-dark border border-gray-700 text-text-primary rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300" type="date">
+        </div>
+       </div>
+       <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-text-secondary mb-2">
+         Notes (Optional)
+        </label>
+        <textarea class="w-full bg-dark border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300" placeholder="Add any additional notes..." rows="3">        </textarea>
+       </div>
+      </div>
+     </form>
+    </div>
+    <div class="p-6 border-t border-gray-800 flex justify-end space-x-4">
+     <button class="px-6 py-2 border border-gray-700 bg-dark text-text-secondary rounded-lg hover:bg-dark-hover hover:text-white transition-all-300" id="cancel-transaction-btn">
+      Cancel
+     </button>
+     <button class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-300" id="save-transaction-btn">
+      Save Transaction
+     </button>
+    </div>
+   </div>
+  </div>
+<!-- [/MODULE] o3p_添加交易模态框 -- 用于添加新交易的表单，包含交易类型、金额、描述、分类、账户、日期和备注字段 -->
+  <!-- [MODULE] r5s_Add Transfer模态框 -->
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden" id="add-transfer-modal">
+   <div class="bg-dark-card rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all-300 scale-95 opacity-0" id="transfer-modal-content">
+    <div class="p-6 border-b border-gray-800 flex items-center justify-between">
+     <h2 class="text-xl font-bold text-white">Add Transfer</h2>
+     <button class="text-text-secondary hover:text-white transition-all-300" id="close-transfer-modal-btn">
+      <i class="fas fa-times text-xl"></i>
+     </button>
+    </div>
+    <div class="p-6">
+     <form id="add-transfer-form">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+       <div>
+        <label class="block text-sm font-medium text-text-secondary mb-2">From Account</label>
+        <select class="w-full bg-dark border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300">
+         <option>Main Checking</option>
+         <option>Savings Account</option>
+         <option>Credit Card</option>
+         <option>Investment Account</option>
+        </select>
+       </div>
+       <div>
+        <label class="block text-sm font-medium text-text-secondary mb-2">To Account</label>
+        <select class="w-full bg-dark border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300">
+         <option>Savings Account</option>
+         <option>Main Checking</option>
+         <option>Credit Card</option>
+         <option>Investment Account</option>
+        </select>
+       </div>
+       <div>
+        <label class="block text-sm font-medium text-text-secondary mb-2">Amount</label>
+        <div class="relative">
+         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-text-secondary">$</span>
+         <input class="w-full bg-dark border border-gray-700 text-text-primary rounded-lg py-2 pl-8 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300" min="0" placeholder="0.00" step="0.01" type="number">
+        </div>
+       </div>
+       <div>
+        <label class="block text-sm font-medium text-text-secondary mb-2">Date</label>
+        <div class="relative">
+         <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+          <i class="fas fa-calendar text-text-secondary"></i>
+         </span>
+         <input class="w-full bg-dark border border-gray-700 text-text-primary rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300" type="date">
+        </div>
+       </div>
+       <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-text-secondary mb-2">Notes (Optional)</label>
+        <textarea class="w-full bg-dark border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300" placeholder="Add any additional notes..." rows="3"></textarea>
+       </div>
+      </div>
+     </form>
+    </div>
+    <div class="p-6 border-t border-gray-800 flex justify-end space-x-4">
+     <button class="px-6 py-2 border border-gray-700 bg-dark text-text-secondary rounded-lg hover:bg-dark-hover hover:text-white transition-all-300" id="cancel-transfer-btn">
+      Cancel
+     </button>
+     <button class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-300" id="save-transfer-btn">
+      Save Transfer
+     </button>
+    </div>
+   </div>
+  </div>
+  <!-- [/MODULE] r5s_Add Transfer模态框 -- 用于添加账户之间转账的表单，包含转出账户、转入账户、金额、日期和备注字段 -->
+  <!-- [MODULE] p4q_确认删除模态框 -->
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden" id="delete-confirmation-modal">
+   <div class="bg-dark-card rounded-xl shadow-xl w-full max-w-md transform transition-all-300 scale-95 opacity-0" id="delete-modal-content">
+    <div class="p-6 text-center">
+     <div class="w-16 h-16 bg-dark rounded-full flex items-center justify-center mx-auto mb-4">
+      <i class="fas fa-exclamation-triangle text-expense text-2xl">
+      </i>
+     </div>
+     <h3 class="text-xl font-bold text-white mb-2">
+      Confirm Deletion
+     </h3>
+     <p class="text-text-secondary mb-6">
+      Are you sure you want to delete this transaction? This action cannot be undone.
+     </p>
+     <div class="flex space-x-4 justify-center">
+      <button class="px-6 py-2 border border-gray-700 bg-dark text-text-secondary rounded-lg hover:bg-dark-hover hover:text-white transition-all-300" id="cancel-delete-btn">
+       Cancel
+      </button>
+      <button class="px-6 py-2 bg-expense text-white rounded-lg hover:bg-expense/90 transition-all-300" id="confirm-delete-btn">
+       Delete
+      </button>
+     </div>
+    </div>
+   </div>
+  </div>
+  <!-- [/MODULE] p4q_确认删除模态框 -- 删除交易前的确认提示，包含取消和确认删除按钮 -->
+  <!-- [JSMOD] q5r_页面交互逻辑 -->
+  <script id="page-interactions">
+// Sample transaction data
+var transactions = [{
+  id: 1,
+  date: "2023-11-15",
+  description: "Grocery Shopping",
+  category: "Food & Dining",
+  account: "Main Checking",
+  amount: 89.45,
+  type: "expense"
+}, {
+  id: 2,
+  date: "2023-11-14",
+  description: "Salary Deposit",
+  category: "Salary",
+  account: "Main Checking",
+  amount: 3200.00,
+  type: "income"
+}, {
+  id: 3,
+  date: "2023-11-12",
+  description: "Electricity Bill",
+  category: "Utilities",
+  account: "Credit Card",
+  amount: 124.80,
+  type: "expense"
+}, {
+  id: 4,
+  date: "2023-11-10",
+  description: "Uber Ride",
+  category: "Transportation",
+  account: "Credit Card",
+  amount: 15.50,
+  type: "expense"
+}, {
+  id: 5,
+  date: "2023-11-08",
+  description: "Freelance Payment",
+  category: "Income",
+  account: "Main Checking",
+  amount: 450.00,
+  type: "income"
+}, {
+  id: 6,
+  date: "2023-11-05",
+  description: "Movie Tickets",
+  category: "Entertainment",
+  account: "Credit Card",
+  amount: 36.00,
+  type: "expense"
+}, {
+  id: 7,
+  date: "2023-11-03",
+  description: "Gym Membership",
+  category: "Health & Fitness",
+  account: "Main Checking",
+  amount: 45.00,
+  type: "expense"
+}, {
+  id: 8,
+  date: "2023-11-01",
+  description: "Rent Payment",
+  category: "Housing",
+  account: "Main Checking",
+  amount: 1200.00,
+  type: "expense"
+}, {
+  id: 9,
+  date: "2023-10-30",
+  description: "Investment Dividend",
+  category: "Investment",
+  account: "Investment Account",
+  amount: 85.20,
+  type: "income"
+}, {
+  id: 10,
+  date: "2023-10-28",
+  description: "Coffee Shop",
+  category: "Food & Dining",
+  account: "Credit Card",
+  amount: 4.75,
+  type: "expense"
+}, {
+  id: 11,
+  date: "2023-11-16",
+  description: "Transfer to Savings",
+  category: "Transfer",
+  account: "Main Checking",
+  amount: 500.00,
+  type: "transfer"
+}];
+// DOM Elements
+var transactionsTableBody = document.getElementById('transactions-table-body');
+var addTransactionBtn = document.getElementById('add-transaction-btn');
+var addTransferBtn = document.getElementById('add-transfer-btn');
+var addTransactionModal = document.getElementById('add-transaction-modal');
+var addTransferModal = document.getElementById('add-transfer-modal');
+var modalContent = document.getElementById('modal-content');
+var transferModalContent = document.getElementById('transfer-modal-content');
+var closeModalBtn = document.getElementById('close-modal-btn');
+var closeTransferModalBtn = document.getElementById('close-transfer-modal-btn');
+var cancelTransactionBtn = document.getElementById('cancel-transaction-btn');
+var cancelTransferBtn = document.getElementById('cancel-transfer-btn');
+var saveTransactionBtn = document.getElementById('save-transaction-btn');
+var saveTransferBtn = document.getElementById('save-transfer-btn');
+var deleteConfirmationModal = document.getElementById('delete-confirmation-modal');
+var deleteModalContent = document.getElementById('delete-modal-content');
+var cancelDeleteBtn = document.getElementById('cancel-delete-btn');
+var confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+var emptyState = document.getElementById('empty-state');
+var loadingState = document.getElementById('loading-state');
+var emptyStateAddTransactionBtn = document.getElementById('empty-state-add-transaction');
+// Initialize the page
+document.addEventListener('DOMContentLoaded', function () {
+  // Show loading state
+  showLoadingState();
+
+  // Simulate API call delay
+  setTimeout(function () {
+    hideLoadingState();
+    renderTransactions(transactions);
+  }, 1500);
+
+  // Event Listeners
+  addTransactionBtn.addEventListener('click', openAddTransactionModal);
+  addTransferBtn.addEventListener('click', openAddTransferModal);
+  closeModalBtn.addEventListener('click', closeAddTransactionModal);
+  closeTransferModalBtn.addEventListener('click', closeAddTransferModal);
+  cancelTransactionBtn.addEventListener('click', closeAddTransactionModal);
+  cancelTransferBtn.addEventListener('click', closeAddTransferModal);
+  saveTransactionBtn.addEventListener('click', saveTransaction);
+  saveTransferBtn.addEventListener('click', saveTransfer);
+  cancelDeleteBtn.addEventListener('click', closeDeleteConfirmationModal);
+  confirmDeleteBtn.addEventListener('click', confirmDeleteTransaction);
+  emptyStateAddTransactionBtn.addEventListener('click', openAddTransactionModal);
+
+  // Close modals when clicking outside
+  window.addEventListener('click', function (e) {
+    if (e.target === addTransactionModal) {
+      closeAddTransactionModal();
+    }
+    if (e.target === addTransferModal) {
+      closeAddTransferModal();
+    }
+    if (e.target === deleteConfirmationModal) {
+      closeDeleteConfirmationModal();
+    }
+  });
+});
+// Render transactions table
+function renderTransactions(transactions) {
+  if (transactions.length === 0) {
+    showEmptyState();
+    return;
+  }
+  hideEmptyState();
+  transactionsTableBody.innerHTML = '';
+  transactions.forEach(function (transaction) {
+    var row = document.createElement('tr');
+    row.className = 'bg-dark hover:bg-dark-hover transition-all-300';
+    row.setAttribute('data-id', transaction.id);
+
+    // Format date
+    var formattedDate = new Date(transaction.date).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+
+    // Format amount
+    var formattedAmount = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2
+    }).format(transaction.amount);
+
+    // Determine amount color based on type
+    var amountColorClass = '';
+    var typeBadgeClass = '';
+    if (transaction.type === 'income') {
+      amountColorClass = 'text-income';
+      typeBadgeClass = 'bg-income/20 text-income';
+    } else if (transaction.type === 'expense') {
+      amountColorClass = 'text-expense';
+      typeBadgeClass = 'bg-expense/20 text-expense';
+    } else if (transaction.type === 'transfer') {
+      amountColorClass = 'text-primary';
+      typeBadgeClass = 'bg-primary/20 text-primary';
+    }
+
+    row.innerHTML = "<td class=\"px-6 py-4 whitespace-nowrap text-sm text-text-primary\">".concat(formattedDate, "</td>\n                    <td class=\"px-6 py-4 whitespace-nowrap\">\n                        <div class=\"text-sm font-medium text-white\">").concat(transaction.description, "</div>\n                    </td>\n                    <td class=\"px-6 py-4 whitespace-nowrap text-sm text-text-primary\">").concat(transaction.category, "</td>\n                    <td class=\"px-6 py-4 whitespace-nowrap text-sm text-text-primary\">").concat(transaction.account, "</td>\n                    <td class=\"px-6 py-4 whitespace-nowrap text-sm font-medium ").concat(amountColorClass, " text-right\">").concat(formattedAmount, "</td>\n                    <td class=\"px-6 py-4 whitespace-nowrap\">\n                        <span class=\"px-2 py-1 text-xs rounded-full ").concat(typeBadgeClass, "\">").concat(transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1), "</span>\n                    </td>\n                    <td class=\"px-6 py-4 whitespace-nowrap text-right text-sm font-medium\">\n                        <button class=\"text-text-secondary hover:text-primary mr-3 edit-transaction-btn transition-all-300\">\n                            <i class=\"fas fa-edit\"></i>\n                        </button>\n                        <button class=\"text-text-secondary hover:text-expense delete-transaction-btn transition-all-300\" data-id=\"").concat(transaction.id, "\">\n                            <i class=\"fas fa-trash\"></i>\n                        </button>\n                    </td>");
+    transactionsTableBody.appendChild(row);
+  });
+
+  // Add event listeners to delete buttons
+  document.querySelectorAll('.delete-transaction-btn').forEach(function (button) {
+    button.addEventListener('click', function (e) {
+      var transactionId = parseInt(e.currentTarget.getAttribute('data-id'));
+      openDeleteConfirmationModal(transactionId);
+    });
+  });
+}
+// Show loading state
+function showLoadingState() {
+  loadingState.classList.remove('hidden');
+  transactionsTableBody.parentElement.parentElement.classList.add('hidden');
+  emptyState.classList.add('hidden');
+}
+// Hide loading state
+function hideLoadingState() {
+  loadingState.classList.add('hidden');
+  transactionsTableBody.parentElement.parentElement.classList.remove('hidden');
+}
+// Show empty state
+function showEmptyState() {
+  emptyState.classList.remove('hidden');
+  transactionsTableBody.parentElement.parentElement.classList.add('hidden');
+}
+// Hide empty state
+function hideEmptyState() {
+  emptyState.classList.add('hidden');
+  transactionsTableBody.parentElement.parentElement.classList.remove('hidden');
+}
+// Open Add Transaction Modal
+function openAddTransactionModal() {
+  addTransactionModal.classList.remove('hidden');
+  // Animate modal in
+  setTimeout(function () {
+    modalContent.classList.remove('scale-95', 'opacity-0');
+    modalContent.classList.add('scale-100', 'opacity-100');
+  }, 10);
+  document.body.style.overflow = 'hidden';
+}
+// Close Add Transaction Modal
+function closeAddTransactionModal() {
+  // Animate modal out
+  modalContent.classList.remove('scale-100', 'opacity-100');
+  modalContent.classList.add('scale-95', 'opacity-0');
+  setTimeout(function () {
+    addTransactionModal.classList.add('hidden');
+    document.body.style.overflow = '';
+    // Reset form
+    document.getElementById('add-transaction-form').reset();
+  }, 300);
+}
+// Open Add Transfer Modal
+function openAddTransferModal() {
+  addTransferModal.classList.remove('hidden');
+  // Animate modal in
+  setTimeout(function () {
+    transferModalContent.classList.remove('scale-95', 'opacity-0');
+    transferModalContent.classList.add('scale-100', 'opacity-100');
+  }, 10);
+  document.body.style.overflow = 'hidden';
+}
+// Close Add Transfer Modal
+function closeAddTransferModal() {
+  // Animate modal out
+  transferModalContent.classList.remove('scale-100', 'opacity-100');
+  transferModalContent.classList.add('scale-95', 'opacity-0');
+  setTimeout(function () {
+    addTransferModal.classList.add('hidden');
+    document.body.style.overflow = '';
+    // Reset form
+    document.getElementById('add-transfer-form').reset();
+  }, 300);
+}
+// Open Delete Confirmation Modal
+function openDeleteConfirmationModal(transactionId) {
+  deleteConfirmationModal.classList.remove('hidden');
+  deleteConfirmationModal.setAttribute('data-transaction-id', transactionId);
+
+  // Animate modal in
+  setTimeout(function () {
+    deleteModalContent.classList.remove('scale-95', 'opacity-0');
+    deleteModalContent.classList.add('scale-100', 'opacity-100');
+  }, 10);
+  document.body.style.overflow = 'hidden';
+}
+// Close Delete Confirmation Modal
+function closeDeleteConfirmationModal() {
+  // Animate modal out
+  deleteModalContent.classList.remove('scale-100', 'opacity-100');
+  deleteModalContent.classList.add('scale-95', 'opacity-0');
+  setTimeout(function () {
+    deleteConfirmationModal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }, 300);
+}
+// Save Transaction
+function saveTransaction() {
+  // In a real application, this would submit the form data to an API
+  // For demo purposes, we'll just close the modal and show a success message
+
+  // Show loading state
+  saveTransactionBtn.disabled = true;
+  saveTransactionBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
+
+  // Simulate API call
+  setTimeout(function () {
+    closeAddTransactionModal();
+
+    // Reset button state
+    saveTransactionBtn.disabled = false;
+    saveTransactionBtn.innerHTML = 'Save Transaction';
+
+    // Show success notification (in a real app)
+    alert('Transaction added successfully!');
+
+    // Refresh transactions list (in a real app, you would fetch the updated list from API)
+  }, 1500);
+}
+// Save Transfer
+function saveTransfer() {
+  // In a real application, this would submit the form data to an API
+  // For demo purposes, we'll just close the modal and show a success message
+
+  // Show loading state
+  saveTransferBtn.disabled = true;
+  saveTransferBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Transferring...';
+
+  // Simulate API call
+  setTimeout(function () {
+    closeAddTransferModal();
+
+    // Reset button state
+    saveTransferBtn.disabled = false;
+    saveTransferBtn.innerHTML = 'Save Transfer';
+
+    // Show success notification (in a real app)
+    alert('Transfer completed successfully!');
+
+    // Refresh transactions list (in a real app, you would fetch the updated list from API)
+  }, 1500);
+}
+// Confirm Delete Transaction
+function confirmDeleteTransaction() {
+  var transactionId = parseInt(deleteConfirmationModal.getAttribute('data-transaction-id'));
+
+  // Show loading state
+  confirmDeleteBtn.disabled = true;
+  confirmDeleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
+
+  // Simulate API call
+  setTimeout(function () {
+    closeDeleteConfirmationModal();
+
+    // Reset button state
+    confirmDeleteBtn.disabled = false;
+    confirmDeleteBtn.innerHTML = 'Delete';
+
+    // Remove transaction from list (in a real app, you would update the list from API)
+    var updatedTransactions = transactions.filter(function (t) {
+      return t.id !== transactionId;
+    });
+
+    // Show empty state if no transactions left
+    if (updatedTransactions.length === 0) {
+      showEmptyState();
+    } else {
+      renderTransactions(updatedTransactions);
+    }
+
+    // Show success notification (in a real app)
+    alert('Transaction deleted successfully!');
+  }, 1500);
+}
+  </script>
+  <!-- [/JSMOD] q5r_页面交互逻辑 -- 处理交易列表渲染、添加交易模态框、删除确认模态框、加载状态和空状态的显示逻辑 -->
+ 
+
+</body></html>

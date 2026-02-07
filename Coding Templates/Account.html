@@ -1,0 +1,959 @@
+<html lang='en'>
+        <head >
+        <meta charset='UTF-8'/>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+<title >Account - Personal Finance Management</title>
+<link href='https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css' rel='stylesheet'/>
+<script src='https://res.gemcoder.com/js/reload.js'></script>
+<script src='https://cdn.tailwindcss.com'></script>
+<link href='https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap' rel='stylesheet'/>
+<script >tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#575AD0',
+        secondary: '#1E1B4B',
+        dark: '#030112',
+        light: '#E2E8F0',
+        danger: '#EF4444',
+        success: '#10B981',
+        warning: '#F59E0B',
+        info: '#3B82F6',
+        muted: '#64748B',
+        'card-bg': '#0F172A',
+        'card-hover': '#1E293B'
+      },
+      fontFamily: {
+        'dm-sans': ['"DM Sans"', 'sans-serif']
+      },
+      spacing: {
+        '128': '32rem'
+      },
+      boxShadow: {
+        'card': '0 4px 20px rgba(0, 0, 0, 0.15)',
+        'card-hover': '0 10px 30px rgba(87, 90, 208, 0.2)'
+      }
+    }
+  }
+};</script>
+<style type='text/tailwindcss'>
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .text-gradient {
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .bg-glass {
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+        }
+    </style>
+    </head>
+<body class='bg-dark font-dm-sans text-light min-h-screen flex overflow-hidden'>
+        <!-- [MODULE] abc_主内容区域 -->
+<div class='flex w-full h-screen overflow-hidden'>
+        <!-- [MODULE] d23_左侧导航栏 -->
+<aside class='w-64 bg-secondary h-full fixed left-0 top-0 z-30 flex flex-col transition-all duration-300 ease-in-out shadow-lg'>
+        <!-- [MODULE] 33f_导航栏:Logo区域 -->
+<div class='p-6 border-b border-gray-700'>
+        <div class='flex items-center space-x-3'>
+        <div class='w-10 h-10 rounded-lg bg-primary flex items-center justify-center'>
+        <i class='fas fa-wallet text-white text-xl'>
+        </i>
+    </div>
+<h1 class='text-xl font-bold text-white'>
+        FinTrack
+    </h1>
+    </div>
+    </div>
+<!-- [/MODULE] 33f_导航栏:Logo区域 -- 包含系统Logo和名称 -->
+<!-- [MODULE] 45g_导航栏:菜单列表 -->
+<nav class='flex-1 overflow-y-auto scrollbar-hide p-4'>
+        <ul class='space-y-1'>
+        <li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-gray-400 hover:bg-primary/10 hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-chart-line w-5 h-5 mr-3'>
+        </i>
+<span >
+        Dashboard
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-gray-400 hover:bg-primary/10 hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-exchange-alt w-5 h-5 mr-3'>
+        </i>
+<span >
+        Transaction
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 bg-primary/20 text-white rounded-lg transition-colors'>
+        <i class='fas fa-wallet w-5 h-5 mr-3'>
+        </i>
+<span >
+        Account
+    </span>
+<span class='ml-auto bg-primary text-white text-xs px-2 py-1 rounded-full'>
+        Current
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-gray-400 hover:bg-primary/10 hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-piggy-bank w-5 h-5 mr-3'>
+        </i>
+<span >
+        Budget
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-gray-400 hover:bg-primary/10 hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-bullseye w-5 h-5 mr-3'>
+        </i>
+<span >
+        Goals
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-gray-400 hover:bg-primary/10 hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-balance-scale w-5 h-5 mr-3'>
+        </i>
+<span >
+        Balance
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-gray-400 hover:bg-primary/10 hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-chart-pie w-5 h-5 mr-3'>
+        </i>
+<span >
+        Investment
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-gray-400 hover:bg-primary/10 hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-chart-bar w-5 h-5 mr-3'>
+        </i>
+<span >
+        Analytics
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-4 py-3 text-gray-400 hover:bg-primary/10 hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-file-alt w-5 h-5 mr-3'>
+        </i>
+<span >
+        Report
+    </span>
+    </a>
+    </li>
+    </ul>
+    </nav>
+<!-- [/MODULE] 45g_导航栏:菜单列表 -- 包含系统所有功能菜单链接，当前选中Account菜单项 -->
+<!-- [MODULE] 67h_导航栏:用户信息和退出 -->
+<div class='p-4 border-t border-gray-700'>
+        <div class='flex items-center justify-between'>
+        <div class='flex items-center space-x-3'>
+        <img src='https://design.gemcoder.com/staticResource/echoAiSystemImages/4fbc96bd22a2fc6ca4c485b1a5ce9abf.png' alt='User Avatar' class='w-10 h-10 rounded-full object-cover border-2 border-primary'/>
+<div >
+        <h4 class='text-white font-medium'>
+        Alex Morgan
+    </h4>
+<p class='text-gray-400 text-sm'>
+        Premium User
+    </p>
+    </div>
+    </div>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-sign-out-alt'>
+        </i>
+    </button>
+    </div>
+    </div>
+<!-- [/MODULE] 67h_导航栏:用户信息和退出 -- 包含用户头像、名称、账户类型和退出按钮 -->
+    </aside>
+<!-- [/MODULE] d23_左侧导航栏 -- 系统主导航菜单，固定在左侧 -->
+<!-- [MODULE] efg_主内容区域 -->
+<main class='flex-1 ml-64 overflow-y-auto h-screen bg-dark p-6'>
+        <!-- [MODULE] hij_账户页面:页面头部 -->
+<div class='mb-8'>
+        <div class='flex flex-col md:flex-row md:items-center md:justify-between'>
+        <div >
+        <h1 class='text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-white mb-2'>
+        Accounts
+    </h1>
+<p class='text-gray-400'>
+        Overview of where your money is stored
+    </p>
+    </div>
+<button id='addAccountBtn' class='mt-4 md:mt-0 bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 flex items-center shadow-lg hover:shadow-primary/30 transform hover:-translate-y-0.5'>
+        <i class='fas fa-plus-circle mr-2'>
+        </i>
+<span >
+        Add Account
+    </span>
+    </button>
+    </div>
+    </div>
+<!-- [/MODULE] hij_账户页面:页面头部 -- 包含页面标题、副标题和添加账户按钮 -->
+<!-- [MODULE] klm_账户页面:账户概览摘要 -->
+<div class='grid grid-cols-1 md:grid-cols-3 gap-6 mb-10'>
+        <div class='bg-card-bg rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-0.5'>
+        <div class='flex items-center justify-between mb-4'>
+        <h3 class='text-gray-400 font-medium'>
+        Total Accounts
+    </h3>
+<div class='w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center'>
+        <i class='fas fa-sitemap text-primary'>
+        </i>
+    </div>
+    </div>
+<p class='text-3xl font-bold text-white'>
+        8
+    </p>
+<p class='text-success text-sm mt-2 flex items-center'>
+        <i class='fas fa-arrow-up mr-1'>
+        </i>
+2 accounts this month
+    </p>
+    </div>
+<div class='bg-card-bg rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-0.5'>
+        <div class='flex items-center justify-between mb-4'>
+        <h3 class='text-gray-400 font-medium'>
+        Active Accounts
+    </h3>
+<div class='w-10 h-10 rounded-full bg-success/20 flex items-center justify-center'>
+        <i class='fas fa-check-circle text-success'>
+        </i>
+    </div>
+    </div>
+<p class='text-3xl font-bold text-white'>
+        6
+    </p>
+<p class='text-gray-400 text-sm mt-2'>
+        2 archived accounts
+    </p>
+    </div>
+<div class='bg-card-bg rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-0.5'>
+        <div class='flex items-center justify-between mb-4'>
+        <h3 class='text-gray-400 font-medium'>
+        Total Active Balance
+    </h3>
+<div class='w-10 h-10 rounded-full bg-info/20 flex items-center justify-center'>
+        <i class='fas fa-wallet text-info'>
+        </i>
+    </div>
+    </div>
+<p class='text-3xl font-bold text-white'>
+        $24,580.50
+    </p>
+<p class='text-success text-sm mt-2 flex items-center'>
+        <i class='fas fa-arrow-up mr-1'>
+        </i>
+$1,240 from last month
+    </p>
+    </div>
+    </div>
+<!-- [/MODULE] klm_账户页面:账户概览摘要 -- 包含总账户数、活跃账户数和总活跃余额三个统计卡片 -->
+<!-- [MODULE] nop_账户页面:账户列表按类型分组 -->
+<div class='space-y-10'>
+        <!-- [MODULE] qrs_账户类型:Cash -->
+<div >
+        <div class='flex items-center mb-6'>
+        <div class='w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center mr-3'>
+        <i class='fas fa-money-bill-wave text-green-500'>
+        </i>
+    </div>
+<h2 class='text-xl font-bold text-white'>
+        Cash Accounts
+    </h2>
+    </div>
+<div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <!-- [MODULE] tuv_现金账户:Wallet -->
+<div class='bg-card-bg rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-0.5 border border-gray-800 group'>
+        <div class='flex justify-between items-start mb-4'>
+        <div class='flex items-center'>
+        <div class='w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center mr-4'>
+        <i class='fas fa-wallet text-green-500 text-xl'>
+        </i>
+    </div>
+<div >
+        <h3 class='text-white font-semibold'>
+        Wallet
+    </h3>
+<span class='text-gray-400 text-sm'>
+        Cash
+    </span>
+    </div>
+    </div>
+<span class='bg-green-500/20 text-green-500 text-xs px-2 py-1 rounded-full'>
+        Active
+    </span>
+    </div>
+<div class='mb-4'>
+        <p class='text-gray-400 text-sm mb-1'>
+        Current Balance
+    </p>
+<p class='text-2xl font-bold text-white'>
+        $1,250.00
+    </p>
+    </div>
+<div class='flex justify-between items-center mt-6 pt-4 border-t border-gray-800 opacity-0 group-hover:opacity-100 transition-opacity'>
+        <span class='text-sm text-gray-400'>
+        Opening Balance: $1,000.00
+    </span>
+<div class='flex space-x-2'>
+        <button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-edit'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-eye'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-archive'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] tuv_现金账户:Wallet -- 显示现金账户Wallet的详细信息，包括名称、类型、状态、当前余额、期初余额和操作按钮 -->
+    </div>
+    </div>
+<!-- [/MODULE] qrs_账户类型:Cash -- 显示所有现金类型账户 -->
+<!-- [MODULE] wxy_账户类型:Debit Card -->
+<div >
+        <div class='flex items-center mb-6'>
+        <div class='w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center mr-3'>
+        <i class='fas fa-credit-card text-blue-500'>
+        </i>
+    </div>
+<h2 class='text-xl font-bold text-white'>
+        Debit Card Accounts
+    </h2>
+    </div>
+<div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <!-- [MODULE] z12_借记卡账户:Main Checking -->
+<div class='bg-card-bg rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-0.5 border border-gray-800 group'>
+        <div class='flex justify-between items-start mb-4'>
+        <div class='flex items-center'>
+        <div class='w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mr-4'>
+        <i class='fas fa-credit-card text-blue-500 text-xl'>
+        </i>
+    </div>
+<div >
+        <h3 class='text-white font-semibold'>
+        Main Checking
+    </h3>
+<span class='text-gray-400 text-sm'>
+        Debit Card
+    </span>
+    </div>
+    </div>
+<span class='bg-green-500/20 text-green-500 text-xs px-2 py-1 rounded-full'>
+        Active
+    </span>
+    </div>
+<div class='mb-4'>
+        <p class='text-gray-400 text-sm mb-1'>
+        Current Balance
+    </p>
+<p class='text-2xl font-bold text-white'>
+        $8,540.25
+    </p>
+    </div>
+<div class='flex justify-between items-center mt-6 pt-4 border-t border-gray-800 opacity-0 group-hover:opacity-100 transition-opacity'>
+        <span class='text-sm text-gray-400'>
+        Opening Balance: $5,000.00
+    </span>
+<div class='flex space-x-2'>
+        <button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-edit'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-eye'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-archive'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] z12_借记卡账户:Main Checking -- 显示借记卡账户Main Checking的详细信息，包括名称、类型、状态、当前余额、期初余额和操作按钮 -->
+<!-- [MODULE] a34_借记卡账户:Secondary Checking -->
+<div class='bg-card-bg rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-0.5 border border-gray-800 group'>
+        <div class='flex justify-between items-start mb-4'>
+        <div class='flex items-center'>
+        <div class='w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mr-4'>
+        <i class='fas fa-credit-card text-blue-500 text-xl'>
+        </i>
+    </div>
+<div >
+        <h3 class='text-white font-semibold'>
+        Secondary Checking
+    </h3>
+<span class='text-gray-400 text-sm'>
+        Debit Card
+    </span>
+    </div>
+    </div>
+<span class='bg-gray-500/20 text-gray-400 text-xs px-2 py-1 rounded-full'>
+        Archived
+    </span>
+    </div>
+<div class='mb-4'>
+        <p class='text-gray-400 text-sm mb-1'>
+        Current Balance
+    </p>
+<p class='text-2xl font-bold text-gray-400'>
+        $2,450.75
+    </p>
+    </div>
+<div class='flex justify-between items-center mt-6 pt-4 border-t border-gray-800 opacity-0 group-hover:opacity-100 transition-opacity'>
+        <span class='text-sm text-gray-400'>
+        Opening Balance: $3,000.00
+    </span>
+<div class='flex space-x-2'>
+        <button class='text-gray-500 cursor-not-allowed'>
+        <i class='fas fa-edit'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-eye'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-archive'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] a34_借记卡账户:Secondary Checking -- 显示已归档的借记卡账户Secondary Checking的详细信息，包括名称、类型、状态、当前余额、期初余额和操作按钮 -->
+    </div>
+    </div>
+<!-- [/MODULE] wxy_账户类型:Debit Card -- 显示所有借记卡类型账户 -->
+<!-- [MODULE] b56_账户类型:Credit Card -->
+<div >
+        <div class='flex items-center mb-6'>
+        <div class='w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center mr-3'>
+        <i class='fas fa-credit-card text-red-500'>
+        </i>
+    </div>
+<h2 class='text-xl font-bold text-white'>
+        Credit Card Accounts
+    </h2>
+    </div>
+<div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <!-- [MODULE] c78_信用卡账户:Visa Platinum -->
+<div class='bg-card-bg rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-0.5 border border-gray-800 group'>
+        <div class='flex justify-between items-start mb-4'>
+        <div class='flex items-center'>
+        <div class='w-12 h-12 rounded-lg bg-red-500/20 flex items-center justify-center mr-4'>
+        <i class='fas fa-credit-card text-red-500 text-xl'>
+        </i>
+    </div>
+<div >
+        <h3 class='text-white font-semibold'>
+        Visa Platinum
+    </h3>
+<span class='text-gray-400 text-sm'>
+        Credit Card
+    </span>
+    </div>
+    </div>
+<span class='bg-green-500/20 text-green-500 text-xs px-2 py-1 rounded-full'>
+        Active
+    </span>
+    </div>
+<div class='mb-4'>
+        <p class='text-gray-400 text-sm mb-1'>
+        Current Balance
+    </p>
+<p class='text-2xl font-bold text-danger'>
+        -$3,250.50
+    </p>
+    </div>
+<div class='flex justify-between items-center mt-6 pt-4 border-t border-gray-800 opacity-0 group-hover:opacity-100 transition-opacity'>
+        <span class='text-sm text-gray-400'>
+        Opening Balance: $0.00
+    </span>
+<div class='flex space-x-2'>
+        <button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-edit'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-eye'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-archive'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] c78_信用卡账户:Visa Platinum -- 显示信用卡账户Visa Platinum的详细信息，包括名称、类型、状态、当前欠款余额、期初余额和操作按钮 -->
+    </div>
+    </div>
+<!-- [/MODULE] b56_账户类型:Credit Card -- 显示所有信用卡类型账户 -->
+<!-- [MODULE] d90_账户类型:E-Wallet -->
+<div >
+        <div class='flex items-center mb-6'>
+        <div class='w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center mr-3'>
+        <i class='fas fa-mobile-alt text-purple-500'>
+        </i>
+    </div>
+<h2 class='text-xl font-bold text-white'>
+        E-Wallet Accounts
+    </h2>
+    </div>
+<div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <!-- [MODULE] e12_电子钱包:PayPal -->
+<div class='bg-card-bg rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-0.5 border border-gray-800 group'>
+        <div class='flex justify-between items-start mb-4'>
+        <div class='flex items-center'>
+        <div class='w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center mr-4'>
+        <i class='fab fa-paypal text-purple-500 text-xl'>
+        </i>
+    </div>
+<div >
+        <h3 class='text-white font-semibold'>
+        PayPal
+    </h3>
+<span class='text-gray-400 text-sm'>
+        E-Wallet
+    </span>
+    </div>
+    </div>
+<span class='bg-green-500/20 text-green-500 text-xs px-2 py-1 rounded-full'>
+        Active
+    </span>
+    </div>
+<div class='mb-4'>
+        <p class='text-gray-400 text-sm mb-1'>
+        Current Balance
+    </p>
+<p class='text-2xl font-bold text-white'>
+        $4,850.00
+    </p>
+    </div>
+<div class='flex justify-between items-center mt-6 pt-4 border-t border-gray-800 opacity-0 group-hover:opacity-100 transition-opacity'>
+        <span class='text-sm text-gray-400'>
+        Opening Balance: $2,500.00
+    </span>
+<div class='flex space-x-2'>
+        <button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-edit'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-eye'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-archive'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] e12_电子钱包:PayPal -- 显示电子钱包账户PayPal的详细信息，包括名称、类型、状态、当前余额、期初余额和操作按钮 -->
+<!-- [MODULE] f34_电子钱包:Apple Pay -->
+<div class='bg-card-bg rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-0.5 border border-gray-800 group'>
+        <div class='flex justify-between items-start mb-4'>
+        <div class='flex items-center'>
+        <div class='w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center mr-4'>
+        <i class='fab fa-apple text-purple-500 text-xl'>
+        </i>
+    </div>
+<div >
+        <h3 class='text-white font-semibold'>
+        Apple Pay
+    </h3>
+<span class='text-gray-400 text-sm'>
+        E-Wallet
+    </span>
+    </div>
+    </div>
+<span class='bg-green-500/20 text-green-500 text-xs px-2 py-1 rounded-full'>
+        Active
+    </span>
+    </div>
+<div class='mb-4'>
+        <p class='text-gray-400 text-sm mb-1'>
+        Current Balance
+    </p>
+<p class='text-2xl font-bold text-white'>
+        $1,250.50
+    </p>
+    </div>
+<div class='flex justify-between items-center mt-6 pt-4 border-t border-gray-800 opacity-0 group-hover:opacity-100 transition-opacity'>
+        <span class='text-sm text-gray-400'>
+        Opening Balance: $800.00
+    </span>
+<div class='flex space-x-2'>
+        <button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-edit'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-eye'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-archive'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] f34_电子钱包:Apple Pay -- 显示电子钱包账户Apple Pay的详细信息，包括名称、类型、状态、当前余额、期初余额和操作按钮 -->
+    </div>
+    </div>
+<!-- [/MODULE] d90_账户类型:E-Wallet -- 显示所有电子钱包类型账户 -->
+<!-- [MODULE] g56_账户类型:Savings -->
+<div >
+        <div class='flex items-center mb-6'>
+        <div class='w-10 h-10 rounded-lg bg-teal-500/20 flex items-center justify-center mr-3'>
+        <i class='fas fa-piggy-bank text-teal-500'>
+        </i>
+    </div>
+<h2 class='text-xl font-bold text-white'>
+        Savings Accounts
+    </h2>
+    </div>
+<div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <!-- [MODULE] h78_储蓄账户:Emergency Fund -->
+<div class='bg-card-bg rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-0.5 border border-gray-800 group'>
+        <div class='flex justify-between items-start mb-4'>
+        <div class='flex items-center'>
+        <div class='w-12 h-12 rounded-lg bg-teal-500/20 flex items-center justify-center mr-4'>
+        <i class='fas fa-piggy-bank text-teal-500 text-xl'>
+        </i>
+    </div>
+<div >
+        <h3 class='text-white font-semibold'>
+        Emergency Fund
+    </h3>
+<span class='text-gray-400 text-sm'>
+        Savings
+    </span>
+    </div>
+    </div>
+<span class='bg-green-500/20 text-green-500 text-xs px-2 py-1 rounded-full'>
+        Active
+    </span>
+    </div>
+<div class='mb-4'>
+        <p class='text-gray-400 text-sm mb-1'>
+        Current Balance
+    </p>
+<p class='text-2xl font-bold text-white'>
+        $7,500.00
+    </p>
+    </div>
+<div class='flex justify-between items-center mt-6 pt-4 border-t border-gray-800 opacity-0 group-hover:opacity-100 transition-opacity'>
+        <span class='text-sm text-gray-400'>
+        Opening Balance: $5,000.00
+    </span>
+<div class='flex space-x-2'>
+        <button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-edit'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-eye'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-archive'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] h78_储蓄账户:Emergency Fund -- 显示储蓄账户Emergency Fund的详细信息，包括名称、类型、状态、当前余额、期初余额和操作按钮 -->
+    </div>
+    </div>
+<!-- [/MODULE] g56_账户类型:Savings -- 显示所有储蓄类型账户 -->
+<!-- [MODULE] i90_账户类型:Investment -->
+<div >
+        <div class='flex items-center mb-6'>
+        <div class='w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center mr-3'>
+        <i class='fas fa-chart-line text-amber-500'>
+        </i>
+    </div>
+<h2 class='text-xl font-bold text-white'>
+        Investment Accounts
+    </h2>
+    </div>
+<div class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <!-- [MODULE] j12_投资账户:Stock Portfolio -->
+<div class='bg-card-bg rounded-xl p-6 shadow-card hover:shadow-card-hover transition-all duration-300 transform hover:-translate-y-0.5 border border-gray-800 group'>
+        <div class='flex justify-between items-start mb-4'>
+        <div class='flex items-center'>
+        <div class='w-12 h-12 rounded-lg bg-amber-500/20 flex items-center justify-center mr-4'>
+        <i class='fas fa-chart-line text-amber-500 text-xl'>
+        </i>
+    </div>
+<div >
+        <h3 class='text-white font-semibold'>
+        Stock Portfolio
+    </h3>
+<span class='text-gray-400 text-sm'>
+        Investment
+    </span>
+    </div>
+    </div>
+<span class='bg-green-500/20 text-green-500 text-xs px-2 py-1 rounded-full'>
+        Active
+    </span>
+    </div>
+<div class='mb-4'>
+        <p class='text-gray-400 text-sm mb-1'>
+        Current Balance
+    </p>
+<p class='text-2xl font-bold text-white'>
+        $12,300.25
+    </p>
+    </div>
+<div class='flex justify-between items-center mt-6 pt-4 border-t border-gray-800 opacity-0 group-hover:opacity-100 transition-opacity'>
+        <span class='text-sm text-gray-400'>
+        Opening Balance: $10,000.00
+    </span>
+<div class='flex space-x-2'>
+        <button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-edit'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-eye'>
+        </i>
+    </button>
+<button class='text-gray-400 hover:text-white transition-colors'>
+        <i class='fas fa-archive'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] j12_投资账户:Stock Portfolio -- 显示投资账户Stock Portfolio的详细信息，包括名称、类型、状态、当前余额、期初余额和操作按钮 -->
+    </div>
+    </div>
+<!-- [/MODULE] i90_账户类型:Investment -- 显示所有投资类型账户 -->
+    </div>
+<!-- [/MODULE] nop_账户页面:账户列表按类型分组 -- 按账户类型分组显示所有账户信息 -->
+    </main>
+<!-- [/MODULE] efg_主内容区域 -- 账户页面的主要内容区域 -->
+<!-- [MODULE] klm_添加账户弹窗 -->
+<div id='addAccountModal' class='fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden'>
+        <div class='bg-card-bg rounded-xl w-full max-w-md mx-4 shadow-2xl transform transition-all duration-300 scale-95 opacity-0' id='modalContent'>
+        <div class='p-6 border-b border-gray-800'>
+        <h2 class='text-xl font-bold text-white'>
+        Add New Account
+    </h2>
+<p class='text-gray-400 text-sm'>
+        Create a new financial account
+    </p>
+    </div>
+<div class='p-6'>
+        <form id='addAccountForm'>
+        <div class='mb-5'>
+        <label for='accountName' class='block text-sm font-medium text-gray-300 mb-2'>
+        Account Name
+    </label>
+<input type='text' id='accountName' class='w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary' placeholder='Enter account name' required/>
+    </div>
+<div class='mb-5'>
+        <label for='accountType' class='block text-sm font-medium text-gray-300 mb-2'>
+        Account Type
+    </label>
+<select id='accountType' class='w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary' required>
+        <option value>
+        Select account type
+    </option>
+<option value='cash'>
+        Cash
+    </option>
+<option value='debit'>
+        Debit Card
+    </option>
+<option value='credit'>
+        Credit Card
+    </option>
+<option value='ewallet'>
+        E-Wallet
+    </option>
+<option value='savings'>
+        Savings
+    </option>
+<option value='investment'>
+        Investment
+    </option>
+<option value='other'>
+        Other
+    </option>
+    </select>
+    </div>
+<div class='mb-5'>
+        <label for='openingBalance' class='block text-sm font-medium text-gray-300 mb-2'>
+        Opening Balance
+    </label>
+<input type='number' step='0.01' id='openingBalance' class='w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary' placeholder='0.00' required/>
+    </div>
+<div class='mb-5'>
+        <label class='block text-sm font-medium text-gray-300 mb-2'>
+        Account Status
+    </label>
+<div class='flex space-x-4'>
+        <label class='flex items-center'>
+        <input type='radio' name='accountStatus' value='active' class='w-4 h-4 text-primary focus:ring-primary border-gray-600' checked/>
+<span class='ml-2 text-gray-300'>
+        Active
+    </span>
+    </label>
+<label class='flex items-center'>
+        <input type='radio' name='accountStatus' value='archived' class='w-4 h-4 text-primary focus:ring-primary border-gray-600'/>
+<span class='ml-2 text-gray-300'>
+        Archived
+    </span>
+    </label>
+    </div>
+    </div>
+    </form>
+    </div>
+<div class='p-6 border-t border-gray-800 flex justify-end space-x-3'>
+        <button id='cancelAccountBtn' class='px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors'>
+        Cancel
+    </button>
+<button id='saveAccountBtn' class='px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg transition-colors'>
+        Create Account
+    </button>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] klm_添加账户弹窗 -- 添加新账户的模态窗口，包含账户名称、类型、期初余额和状态的表单 -->
+    </div>
+<!-- [/MODULE] abc_主内容区域 -- 包含账户管理页面的完整布局 -->
+<!-- [JSMOD] acc_账户页面交互逻辑 -->
+<script id='accountPageScript'>document.addEventListener('DOMContentLoaded', function () {
+  // Modal elements
+  var modal = document.getElementById('addAccountModal');
+  var modalContent = document.getElementById('modalContent');
+  var addAccountBtn = document.getElementById('addAccountBtn');
+  var cancelAccountBtn = document.getElementById('cancelAccountBtn');
+  var saveAccountBtn = document.getElementById('saveAccountBtn');
+  var addAccountForm = document.getElementById('addAccountForm');
+
+  // Open modal
+  addAccountBtn.addEventListener('click', function () {
+    modal.classList.remove('hidden');
+    setTimeout(function () {
+      modalContent.classList.remove('scale-95', 'opacity-0');
+      modalContent.classList.add('scale-100', 'opacity-100');
+    }, 10);
+  });
+
+  // Close modal
+  function closeModal() {
+    modalContent.classList.remove('scale-100', 'opacity-100');
+    modalContent.classList.add('scale-95', 'opacity-0');
+    setTimeout(function () {
+      modal.classList.add('hidden');
+      addAccountForm.reset();
+    }, 300);
+  }
+  cancelAccountBtn.addEventListener('click', closeModal);
+
+  // Close modal when clicking outside
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Save account
+  saveAccountBtn.addEventListener('click', function () {
+    if (addAccountForm.checkValidity()) {
+      // Here you would typically send data to an API
+      // For demo purposes, we'll just show an alert and close the modal
+      alert('Account created successfully!');
+      closeModal();
+    } else {
+      addAccountForm.reportValidity();
+    }
+  });
+
+  // Account action buttons (edit, view, archive)
+  var actionButtons = document.querySelectorAll('.grid [class*="bg-card-bg"] button');
+  actionButtons.forEach(function (button) {
+    button.addEventListener('click', function (e) {
+      var action = this.querySelector('i').classList[1];
+      var accountName = this.closest('[class*="bg-card-bg"]').querySelector('h3').textContent;
+      if (action === 'fa-edit') {
+        alert("Edit account:".concat(accountName));
+      } else if (action === 'fa-eye') {
+        alert("View account details:".concat(accountName));
+      } else if (action === 'fa-archive') {
+        if (confirm("Are you sure you want to archive".concat(accountName, "?"))) {
+          alert("".concat(accountName, "has been archived"));
+        }
+      }
+      e.stopPropagation();
+    });
+  });
+
+  // Animate cards on scroll
+  var animateOnScroll = function animateOnScroll() {
+    var cards = document.querySelectorAll('[class*="bg-card-bg"]');
+    cards.forEach(function (card) {
+      var cardTop = card.getBoundingClientRect().top;
+      var triggerBottom = window.innerHeight * 0.8;
+      if (cardTop < triggerBottom) {
+        card.classList.add('opacity-100', 'translate-y-0');
+        card.classList.remove('opacity-0', 'translate-y-10');
+      }
+    });
+  };
+
+  // Initialize card animations
+  var cards = document.querySelectorAll('[class*="bg-card-bg"]');
+  cards.forEach(function (card, index) {
+    card.classList.add('transition-all', 'duration-700', 'ease-out', 'opacity-0', 'translate-y-10');
+    card.style.transitionDelay = "".concat(index * 50, "ms");
+  });
+
+  // Run animation on load and scroll
+  window.addEventListener('load', animateOnScroll);
+  window.addEventListener('scroll', animateOnScroll);
+
+  // Trigger initial animation
+  setTimeout(animateOnScroll, 100);
+});</script>
+<!-- [/JSMOD] acc_账户页面交互逻辑 -- 处理添加账户弹窗的显示/隐藏、表单提交、账户操作按钮点击事件以及卡片滚动动画效果 -->
+    </body>
+    </html>

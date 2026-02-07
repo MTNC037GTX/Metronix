@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metronix | Personal Balance</title>
+    <link rel="icon" href="/static/images/logo.ico">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- ECharts Library -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+    tailwind.config = {
+        theme: {
+        extend: {
+            colors: {
+            'bg-main':'#030112',
+            'bg-sidebar':'#0A0621',
+            'accent':'#575AD0',
+            'income':'#00C896',
+            'expense':'#FF5757',
+            'text-primary':'#E2E8F0',
+            'text-secondary':'#94A3B8',
+            'card-bg':'rgba(255,255,255,0.05)',
+            'card-border':'rgba(255,255,255,0.1)',
+            'glass':'rgba(97,93,161,0.15)'
+            },
+            fontFamily:{'dm-sans':['"DM Sans"','sans-serif']},
+            spacing:{'18':'4.5rem','22':'5.5rem'},
+            boxShadow:{'card':'0 8px 32px rgba(0,0,0,0.2)','card-hover':'0 12px 40px rgba(87,90,208,0.15)'},
+            borderRadius:{'xl':'1rem','2xl':'1.5rem'}
+        }
+        }
+    };
+    </script>
+
+    <!-- Scrollbar -->
+    <style>
+    /* Modal and main scrollable containers */
+    .scrollbar-custom::-webkit-scrollbar {
+        width: 8px;
+    }
+    .scrollbar-custom::-webkit-scrollbar-track {
+        background: #0a0721;
+        border-radius: 4px;
+    }
+    .scrollbar-custom::-webkit-scrollbar-thumb {
+        background-color: #1e1d42;
+        border-radius: 4px;
+        border: 2px solid #0a0721;
+    }
+    .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+        background-color: #35325f;
+    }
+    .scrollbar-custom {
+        scrollbar-width: thin;
+        scrollbar-color: #1e1d42 #0a0721;
+    }
+
+    /* Global page scrollbar */
+    body::-webkit-scrollbar {
+        width: 8px;
+    }
+    body::-webkit-scrollbar-track {
+        background: #0a0721;
+        border-radius: 4px;
+    }
+    body::-webkit-scrollbar-thumb {
+        background-color: #1e1d42;
+        border-radius: 4px;
+        border: 2px solid #0a0721;
+    }
+    body::-webkit-scrollbar-thumb:hover {
+        background-color: #35325f;
+    }
+
+    /* Firefox support for global scrollbar */
+    body {
+        scrollbar-width: thin;
+        scrollbar-color: #1e1d42 #0a0721;
+    }
+    </style>
+
+    <style type="text/tailwindcss">
+    @layer utilities {
+        .glass-effect { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        
+        /* Sidebar items */
+        .sidebar-item { 
+        @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 cursor-pointer text-text-secondary; 
+        }
+        .sidebar-item.active { 
+        @apply bg-accent/20 text-accent; 
+        }
+        .sidebar-item:not(.active):hover { 
+        @apply bg-white/5; 
+        }
+
+        /* Other dashboard styles */
+        .card { @apply bg-card-bg rounded-xl p-6 shadow-card border border-card-border transition-all duration-300 hover:shadow-card-hover; }
+        .progress-bar { @apply h-2 rounded-full overflow-hidden bg-white/10; }
+        .progress-value { @apply h-full rounded-full bg-accent transition-all duration-1000 ease-out; }
+    }
+    </style>
+
+
+    <!-- Global styles -->
+    <style>
+        body { font-family: 'DM Sans', sans-serif; }
+
+        .sidebar-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;      /* same as dashboard */
+        border-radius: 1rem;        /* same as dashboard */
+        color: #94A3B8;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        }
+
+        .sidebar-item:hover {
+        background-color: rgba(87, 90, 208, 0.12);
+        color: #ffffff;
+        }
+
+        .sidebar-item.active {
+        background-color: rgba(87, 90, 208, 0.18);
+        color: #ffffff;
+        }
+
+        .sidebar-item i {
+        width: 1.25rem;
+        text-align: center;
+        }
+    </style>
+</head>
+
+<body class="bg-bg-main font-dm-sans text-text-primary min-h-screen flex overflow-hidden">
+
+  <!-- Sidebar -->
+    <aside class="bg-bg-sidebar w-64 flex flex-col h-screen fixed left-0 top-0 z-10">
+
+        <!-- Logo -->
+        <div class="p-4 border-b border-white/10 flex justify-center">
+        <img src="../static/images/logo.png" alt="Metronix Logo" class="w-40 object-contain">
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6 px-3">
+            <ul class="space-y-1">
+                {% set sidebar_items = [
+                {'icon':'fas fa-chart-line','label':'Dashboard','page':'dashboard'},
+                {'icon':'fas fa-exchange-alt','label':'Transaction','page':'transaction'},
+                {'icon':'fas fa-credit-card','label':'Account','page':'account'},
+                {'icon':'fas fa-piggy-bank','label':'Budget','page':'budget'},
+                {'icon':'fas fa-bullseye','label':'Goals','page':'goals'},
+                {'icon':'fas fa-balance-scale','label':'Balance','page':'balance'},
+                {'icon':'fas fa-chart-pie','label':'Investment','page':'investment'},
+                {'icon':'fas fa-chart-bar','label':'Analytics','page':'analytics'},
+                {'icon':'fas fa-file-alt','label':'Report','page':'report'}
+                ] %}
+
+                {% set existing_pages = {
+                    'dashboard': 'dashboard.dashboard',
+                    'transaction': 'transaction.transaction_page',
+                    'account': 'account.account_dashboard',
+                    'budget': 'budget.budget_page',
+                    'goals': 'goals.goals_page',
+                    'balance': 'balance.balance_page'
+                } %}
+
+                {% for item in sidebar_items %}
+                <li>
+                {% if item.page in existing_pages %}
+                    <a href="{{ url_for(existing_pages[item.page]) }}" 
+                    class="sidebar-item {% if current_page == item.page %}active{% endif %}" 
+                    style="color: #E2E8F0;">
+                    <i class="{{ item.icon }} w-5 text-center"></i>
+                    <span>{{ item.label }}</span>
+                    </a>
+                {% else %}
+                    <div class="sidebar-item" style="color: #A0AEC0; cursor: default;">
+                    <i class="{{ item.icon }} w-5 text-center"></i>
+                    <span>{{ item.label }}</span>
+                    </div>
+                {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <!-- Logout -->
+        <div class="p-4 border-t border-white/10 mt-auto">
+            <a href="{{ url_for('auth.logout') }}" class="sidebar-item">
+                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+
+    </aside>
+
+  <!-- Main -->
+    <main class="flex-1 ml-64 p-8 overflow-y-auto h-screen">
+        <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            
+            <!-- Title -->
+            <div>
+                <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-white mb-1">
+                    Accounts
+                </h1>
+                <p class="text-text-secondary">
+                    Overview of where your money is stored
+                </p>
+            </div>
+
+            <!-- Action -->
+            <button class="bg-accent hover:bg-accent/90 text-white font-medium py-2 px-6 rounded-lg flex items-center transition-all shadow-card hover:shadow-card-hover"
+                id="add-account-btn"
+            >
+            <i class="fas fa-plus mr-2"></i>
+            <span>Add Account</span>
+            </button>
+
+        </div>
+
+    <!-- Account Overview Cards -->
+    </main>
+
+    
+
+</body>
+</html>

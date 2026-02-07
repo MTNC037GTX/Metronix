@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metronix | Personal Balance</title>
+    <link rel="icon" href="/static/images/logo.ico">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- ECharts Library -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+    tailwind.config = {
+        theme: {
+        extend: {
+            colors: {
+            'bg-main':'#030112',
+            'bg-sidebar':'#0A0621',
+            'accent':'#575AD0',
+            'income':'#00C896',
+            'expense':'#FF5757',
+            'text-primary':'#E2E8F0',
+            'text-secondary':'#94A3B8',
+            'card-bg':'rgba(255,255,255,0.05)',
+            'card-border':'rgba(255,255,255,0.1)',
+            'glass':'rgba(97,93,161,0.15)'
+            },
+            fontFamily:{'dm-sans':['"DM Sans"','sans-serif']},
+            spacing:{'18':'4.5rem','22':'5.5rem'},
+            boxShadow:{'card':'0 8px 32px rgba(0,0,0,0.2)','card-hover':'0 12px 40px rgba(87,90,208,0.15)'},
+            borderRadius:{'xl':'1rem','2xl':'1.5rem'}
+        }
+        }
+    };
+    </script>
+
+    <!-- Scrollbar -->
+    <style>
+    /* Modal and main scrollable containers */
+    .scrollbar-custom::-webkit-scrollbar {
+        width: 8px;
+    }
+    .scrollbar-custom::-webkit-scrollbar-track {
+        background: #0a0721;
+        border-radius: 4px;
+    }
+    .scrollbar-custom::-webkit-scrollbar-thumb {
+        background-color: #1e1d42;
+        border-radius: 4px;
+        border: 2px solid #0a0721;
+    }
+    .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+        background-color: #35325f;
+    }
+    .scrollbar-custom {
+        scrollbar-width: thin;
+        scrollbar-color: #1e1d42 #0a0721;
+    }
+
+    /* Global page scrollbar */
+    body::-webkit-scrollbar {
+        width: 8px;
+    }
+    body::-webkit-scrollbar-track {
+        background: #0a0721;
+        border-radius: 4px;
+    }
+    body::-webkit-scrollbar-thumb {
+        background-color: #1e1d42;
+        border-radius: 4px;
+        border: 2px solid #0a0721;
+    }
+    body::-webkit-scrollbar-thumb:hover {
+        background-color: #35325f;
+    }
+
+    /* Firefox support for global scrollbar */
+    body {
+        scrollbar-width: thin;
+        scrollbar-color: #1e1d42 #0a0721;
+    }
+    </style>
+
+  <style type="text/tailwindcss">
+  @layer utilities {
+    .glass-effect { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    
+    /* Sidebar items */
+    .sidebar-item { 
+      @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 cursor-pointer text-text-secondary; 
+    }
+    .sidebar-item.active { 
+      @apply bg-accent/20 text-accent; 
+    }
+    .sidebar-item:not(.active):hover { 
+      @apply bg-white/5; 
+    }
+
+    /* Other dashboard styles */
+    .card { @apply bg-card-bg rounded-xl p-6 shadow-card border border-card-border transition-all duration-300 hover:shadow-card-hover; }
+    .progress-bar { @apply h-2 rounded-full overflow-hidden bg-white/10; }
+    .progress-value { @apply h-full rounded-full bg-accent transition-all duration-1000 ease-out; }
+  }
+  </style>
+
+
+  <!-- Global styles -->
+  <style>
+    body { font-family: 'DM Sans', sans-serif; }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;      /* same as dashboard */
+      border-radius: 1rem;        /* same as dashboard */
+      color: #94A3B8;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-item:hover {
+      background-color: rgba(87, 90, 208, 0.12);
+      color: #ffffff;
+    }
+
+    .sidebar-item.active {
+      background-color: rgba(87, 90, 208, 0.18);
+      color: #ffffff;
+    }
+
+    .sidebar-item i {
+      width: 1.25rem;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body class="bg-bg-main font-dm-sans text-text-primary min-h-screen flex overflow-hidden">
+
+  <!-- Sidebar -->
+    <aside class="bg-bg-sidebar w-64 flex flex-col h-screen fixed left-0 top-0 z-10">
+
+        <!-- Logo -->
+        <div class="p-4 border-b border-white/10 flex justify-center">
+        <img src="../static/images/logo.png" alt="Metronix Logo" class="w-40 object-contain">
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6 px-3">
+            <ul class="space-y-1">
+                {% set sidebar_items = [
+                {'icon':'fas fa-chart-line','label':'Dashboard','page':'dashboard'},
+                {'icon':'fas fa-exchange-alt','label':'Transaction','page':'transaction'},
+                {'icon':'fas fa-credit-card','label':'Account','page':'account'},
+                {'icon':'fas fa-piggy-bank','label':'Budget','page':'budget'},
+                {'icon':'fas fa-bullseye','label':'Goals','page':'goals'},
+                {'icon':'fas fa-balance-scale','label':'Balance','page':'balance'},
+                {'icon':'fas fa-chart-pie','label':'Investment','page':'investment'},
+                {'icon':'fas fa-chart-bar','label':'Analytics','page':'analytics'},
+                {'icon':'fas fa-file-alt','label':'Report','page':'report'}
+                ] %}
+
+                {% set existing_pages = {
+                    'dashboard': 'dashboard.dashboard',
+                    'transaction': 'transaction.transaction_page',
+                    'account': 'account.account_dashboard',
+                    'budget': 'budget.budget_page',
+                    'goals': 'goals.goals_page',
+                    'balance': 'balance.balance_page'
+                } %}
+
+                {% for item in sidebar_items %}
+                <li>
+                {% if item.page in existing_pages %}
+                    <a href="{{ url_for(existing_pages[item.page]) }}" 
+                    class="sidebar-item {% if current_page == item.page %}active{% endif %}" 
+                    style="color: #E2E8F0;">
+                    <i class="{{ item.icon }} w-5 text-center"></i>
+                    <span>{{ item.label }}</span>
+                    </a>
+                {% else %}
+                    <div class="sidebar-item" style="color: #A0AEC0; cursor: default;">
+                    <i class="{{ item.icon }} w-5 text-center"></i>
+                    <span>{{ item.label }}</span>
+                    </div>
+                {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <!-- Logout -->
+        <div class="p-4 border-t border-white/10 mt-auto">
+            <a href="{{ url_for('auth.logout') }}" class="sidebar-item">
+                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+
+    </aside>
+
+  <!-- Main -->
+    <main class="flex-1 ml-64 p-8 overflow-y-auto h-screen">
+        <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            
+            <!-- Title -->
+            <div>
+                <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-white mb-1">
+                    Financial Goals
+                </h1>
+                <p class="text-text-secondary">
+                    Overview of financial goals and progress.
+                </p>
+            </div>
+
+            <!-- Action -->
+            <button class="bg-accent hover:bg-accent/90 text-white font-medium py-2 px-6 rounded-lg flex items-center transition-all shadow-card hover:shadow-card-hover"
+                id="openAddGoal"
+            >
+            <i class="fas fa-plus mr-2"></i>
+            <span>Add Goal</span>
+            </button>
+
+        </div>
+
+
+        <!-- Goals Overview -->
+        <section class="mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+                <!-- Total Goals -->
+                <div class="card">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-text-secondary text-sm font-medium">
+                                Total Goals
+                            </p>
+                            <h3 class="text-3xl font-bold text-indigo-500 mt-1">
+                                {{ total_goals }}
+                            </h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-indigo-500/10 text-indigo-500 flex items-center justify-center">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- On Track Count -->
+                <div class="card">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-text-secondary text-sm font-medium">
+                                On Track
+                            </p>
+                            <h3 class="text-3xl font-bold text-amber-500 mt-1">
+                                {{ on_track_count }}
+                            </h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- At Risk Count -->
+                <div class="card">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-text-secondary text-sm font-medium">
+                                At Risk
+                            </p>
+                            <h3 class="text-3xl font-bold text-expense mt-1">
+                                {{ at_risk_count }}
+                            </h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-expense/20 text-expense flex items-center justify-center">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Completed Count -->
+                <div class="card">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="text-text-secondary text-sm font-medium">
+                                Completed
+                            </p>
+                            <h3 class="text-3xl font-bold text-income mt-1">
+                                {{ completed_count }}
+                            </h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-income/20 text-income flex items-center justify-center">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Goals List -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            {% for goal in goals %}
+            <div
+                class="card bg-card-bg rounded-xl border border-card-border overflow-hidden card-hover goal-card"
+                data-goal-type="{{ goal.goal_type }}">
+
+                <div>
+
+                    <!-- Header -->
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-white">
+                                {{ goal.name }}
+                            </h3>
+
+                            <div class="flex items-center mt-1">
+                                <span class="text-xs px-2 py-1 bg-accent/10 text-accent rounded-full">
+                                    {{ goal.goal_type_label }}
+                                </span>
+
+                                {% if goal.linked_name %}
+                                <span class="ml-2 text-xs text-text-secondary">
+                                    • {{ goal.linked_name }}
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <span
+                            class="px-2 py-1 text-xs rounded-full
+                            {% if goal.status == 'on_track' %}
+                                bg-income/10 text-income
+                            {% elif goal.status == 'at_risk' %}
+                                bg-expense/10 text-expense
+                            {% else %}
+                                bg-accent/10 text-accent
+                            {% endif %}">
+                            {{ goal.status_label }}
+                        </span>
+                    </div>
+
+                    <!-- Progress -->
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-text-secondary">
+                                RM {{ "{:,.2f}".format(goal.current_amount) }}
+                            </span>
+                            <span class="font-medium text-white">
+                                RM {{ "{:,.2f}".format(goal.target_amount) }}
+                            </span>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="w-full rounded-full h-2.5" style="background-color: #1e1a35;">
+                            <div
+                                class="h-2.5 rounded-full
+                                {% if goal.status == 'on_track' %}
+                                    bg-income
+                                {% elif goal.status == 'at_risk' %}
+                                    bg-expense
+                                {% else %}
+                                    bg-accent
+                                {% endif %}"
+                                style="width: {{ goal.progress_percent }}%">
+                            </div>
+                        </div>
+
+                        <div class="text-right text-xs text-text-secondary mt-1">
+                            {{ goal.progress_percent }}% complete
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="flex justify-between items-center text-sm">
+                        <div class="flex items-center text-text-secondary">
+                            <i class="fas fa-calendar-alt mr-1"></i>
+                            <span>
+                                {{ goal.target_label }}
+                            </span>
+                        </div>
+
+                        <div
+                            class="font-medium
+                            {% if goal.status == 'on_track' %}
+                                text-income
+                            {% elif goal.status == 'at_risk' %}
+                                text-expense
+                            {% else %}
+                                text-accent
+                            {% endif %}">
+                            {{ goal.delta_label }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+
+        </section>
+
+
+        <!-- Add Goal Popup -->
+        <div id="addGoalModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+            <div
+                id="modalContent"
+                class="rounded-xl shadow-2xl border border-gray-700 w-full max-w-lg max-h-[90vh] overflow-y-auto transform transition-all-300 scale-95 opacity-0"
+                style="background-color:#0a0721;"
+            >
+
+                <!-- Header -->
+                <div class="flex justify-between items-center px-6 py-4 border-b border-gray-700">
+                    <h2 class="text-lg font-semibold text-white">Add New Goal</h2>
+                    <button id="closeAddGoal" class="text-text-secondary hover:text-white">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- Body -->
+                <form class="p-6 space-y-4" method="POST" action="{{ url_for('goals.add_goal') }}">
+
+                    <!-- Goal Name -->
+                    <div>
+                        <label class="block text-sm text-text-secondary mb-1">Goal Name</label>
+                        <input type="text" name="name" class="w-full bg-card-bg border border-gray-700 rounded-lg px-3 py-2 text-white" required autocomplete="off">
+                    </div>
+
+                    <!-- Goal Type -->
+                    <div>
+                        <label class="block text-sm text-text-secondary mb-1">Goal Type</label>
+                        <select
+                            id="goalType" name="goal_type"
+                            class="w-full bg-card-bg border border-gray-700 rounded-lg px-3 py-2 text-white appearance-none"
+                            style="background-color: #16142c; color: white;"
+                            required
+                        >
+                            <option value="">Select type</option>
+                            <option value="savings">Savings Goal</option>
+                            <option value="debt">Debt Reduction Goal</option>
+                            <option value="net_worth">Net Worth Goal</option>
+                            <option value="investment">Investment Goal</option>
+                            <option value="income">Income Target Goal</option>
+                        </select>
+                    </div>
+
+                    <!-- Linked Account -->
+                    <div id="linkedAccountWrapper" class="hidden">
+                        <label class="block text-sm text-text-secondary mb-1">
+                            Linked Account
+                        </label>
+
+                        <select
+                            name="linked_account_id"
+                            class="w-full bg-card-bg border border-gray-700 rounded-lg px-3 py-2 text-white appearance-none"
+                            style="
+                                background-color: #16142c;
+                                color: white;
+                                max-height: 160px;
+                                overflow-y: auto;
+                            "
+                        >
+                            <option value="">Select account</option>
+                            {% for acc in accounts %}
+                                <option value="{{ acc.id }}">
+                                    {{ acc.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+
+                    <!-- Target Amount -->
+                    <div>
+                        <label class="block text-sm text-text-secondary mb-1">Target Amount</label>
+                        <input type="number" name="target_amount" step="0.01" class="w-full bg-card-bg border border-gray-700 rounded-lg px-3 py-2 text-white" required>
+                    </div>
+
+                    <!-- Target Date -->
+                    <div>
+                        <label class="block text-sm text-text-secondary mb-1">Target Date</label>
+                        <input type="date" name="target_date" class="w-full bg-card-bg border border-gray-700 rounded-lg px-3 py-2 text-white" required>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="flex justify-end pt-4 border-t border-gray-700">
+                        <button type="button" id="cancelAddGoal" class="px-4 py-2 text-text-secondary hover:text-white mr-3">
+                            Cancel
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-accent text-white rounded-lg hover:opacity-90">
+                            Create Goal
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+
+    </main>
+
+    <!-- JS for Add Goal Popup -->
+    <script>
+        const modal = document.getElementById('addGoalModal');
+        const modalContent = document.getElementById('modalContent');
+        const openBtn = document.getElementById('openAddGoal');
+        const closeBtn = document.getElementById('closeAddGoal');
+        const cancelBtn = document.getElementById('cancelAddGoal');
+        const goalTypeSelect = document.getElementById('goalType');
+        const linkedAccountWrapper = document.getElementById('linkedAccountWrapper');
+
+        const linkedRequiredTypes = ['savings', 'debt', 'investment'];
+
+        openBtn.onclick = () => {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => modalContent.classList.remove('scale-95', 'opacity-0'), 20);
+        };
+
+        const closeModal = () => {
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 200);
+        };
+
+        closeBtn.onclick = closeModal;
+        cancelBtn.onclick = closeModal;
+
+        goalTypeSelect.onchange = () => {
+            if (linkedRequiredTypes.includes(goalTypeSelect.value)) {
+                linkedAccountWrapper.classList.remove('hidden');
+            } else {
+                linkedAccountWrapper.classList.add('hidden');
+            }
+        };
+    </script>
+
+    
+
+</body>
+</html>

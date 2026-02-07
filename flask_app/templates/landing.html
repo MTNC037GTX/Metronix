@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Metronix</title>
+<link rel="icon" href="/static/images/logo.ico">
+
+<!-- Tailwind & Fonts -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+
+<!-- Tailwind Config -->
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        bgMain: '#030112',
+        cardBg: '#0A0721',
+        inputBg: '#141230',
+        primary: '#575AD0',
+        secondary: '#8A8CD9',
+        textPrimary: '#E2E2FF',
+        textSecondary: '#9CA3AF',
+        error: '#FF5252'
+      },
+      fontFamily: {
+        dmSans: ['"DM Sans"', 'sans-serif']
+      },
+      boxShadow: {
+        glow: '0 0 12px rgba(87,90,208,0.35)'
+      }
+    }
+  }
+};
+</script>
+
+<style>
+  body {
+    background-color: #030112;
+    color: #E2E2FF;
+    font-family: 'DM Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  #vanta-bg {
+    position: fixed;
+    inset: 0;
+    top: 0;
+    left: 0;
+    z-index: -10;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .shadow-glow {
+    box-shadow:
+      0 0 8px rgba(87,90,208,0.25),
+      0 0 20px rgba(138,140,217,0.18);
+    transition: box-shadow 0.4s ease;
+  }
+
+  .shadow-glow:hover {
+    box-shadow:
+      0 0 16px rgba(87,90,208,0.4),
+      0 0 32px rgba(138,140,217,0.3);
+  }
+
+  .bg-gradient-brand {
+    background: linear-gradient(135deg, #575AD0 0%, #8A8CD9 100%);
+  }
+
+  .text-gradient {
+    background-image: linear-gradient(90deg, #575AD0, #8A8CD9);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+</style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4">
+
+<div id="vanta-bg"></div>
+
+<!-- Main Content -->
+<div class="relative z-10 w-full max-w-7xl flex flex-col lg:flex-row items-center gap-12">
+
+  <!-- Left Brand Section -->
+  <div class="w-full lg:w-1/2">
+    <div class="max-w-md">
+      <img src="../static/images/logo.png" alt="Metronix Logo" class="mb-4 w-full object-contain">
+      <p class="text-[clamp(1.1rem,2vw,1.3rem)] text-textSecondary mb-8">
+        A clear view of your personal finances
+      </p>
+      <div class="flex items-center gap-4 mt-12">
+        <div class="h-px flex-grow bg-gradient-to-r from-primary/40 to-transparent"></div>
+        <span class="text-sm text-textSecondary">Trusted by 10,000+ users</span>
+        <div class="h-px flex-grow bg-gradient-to-l from-primary/40 to-transparent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Card -->
+  <div class="w-full lg:w-1/2 max-w-md">
+    <div class="bg-cardBg rounded-2xl p-8 border border-white/10 shadow-glow">
+
+      <h2 class="text-2xl font-bold mb-1">Sign in</h2>
+      <p class="text-textSecondary mb-6">Access your financial dashboard</p>
+
+      <form method="POST" action="{{ url_for('auth.login') }}" class="space-y-6">
+
+        <!-- Email -->
+        <div>
+          <label class="block text-sm mb-1">Email</label>
+          <div class="relative">
+            <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-textSecondary"></i>
+            <input
+              type="email"
+              name="email"
+              required
+              class="w-full bg-inputBg border border-white/10 rounded-lg py-3 pl-10 pr-4 focus:ring-2 focus:ring-primary/60 focus:outline-none"
+              placeholder="your.email@example.com">
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <div class="flex justify-between mb-1">
+            <label class="text-sm">Password</label>
+            <a class="text-sm text-primary hover:underline">Forgot password</a>
+          </div>
+          <div class="relative">
+            <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-textSecondary"></i>
+            <input
+              type="password"
+              name="password"
+              required
+              class="w-full bg-inputBg border border-white/10 rounded-lg py-3 pl-10 pr-10 focus:ring-2 focus:ring-primary/60 focus:outline-none"
+              placeholder="••••••••">
+            <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-textSecondary">
+              <i class="fas fa-eye-slash"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Remember -->
+        <div class="flex items-center">
+          <input type="checkbox" name="remember" class="w-4 h-4 text-primary bg-inputBg border-white/20 rounded">
+          <span class="ml-2 text-sm text-textSecondary">Remember me for 30 days</span>
+        </div>
+
+        <!-- Button -->
+        <button
+          type="submit"
+          class="w-full bg-gradient-brand text-white py-3 rounded-lg font-medium
+                 hover:brightness-110 transition-all duration-300
+                 flex items-center justify-center gap-2">
+          <span>Sign in</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+
+      </form>
+
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="mt-4">
+            {% for category, message in messages %}
+              <div class="bg-error/10 border border-error/30 text-error text-sm rounded-lg p-3 mb-2">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+    </div>
+  </div>
+
+</div>
+
+<!-- VANTA -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.fog.min.js"></script>
+
+<script>
+VANTA.FOG({
+  el: "#vanta-bg",
+  baseColor: 0x030112,
+  highlightColor: 0x0f0b26,
+  midtoneColor: 0x28165f,
+  lowlightColor: 0x030112,
+  backgroundColor: 0x030112,
+  blurFactor: 0.8,
+  speed: 1.2,
+  zoom: 0.85,
+  mouseControls: false,
+  touchControls: false
+});
+</script>
+
+</body>
+</html>

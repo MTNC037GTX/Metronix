@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metronix | Transaction</title>
+  <link rel="icon" href="/static/images/logo.ico">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind Config -->
+  <script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'bg-main':'#030112',
+          'bg-sidebar':'#0A0621',
+          'accent':'#575AD0',
+          'income':'#00C896',
+          'expense':'#FF5757',
+          'text-primary':'#E2E8F0',
+          'text-secondary':'#94A3B8',
+          'card-bg':'rgba(255,255,255,0.05)',
+          'card-border':'rgba(255,255,255,0.1)',
+          'glass':'rgba(97,93,161,0.15)'
+        },
+        fontFamily:{'dm-sans':['"DM Sans"','sans-serif']},
+        spacing:{'18':'4.5rem','22':'5.5rem'},
+        boxShadow:{'card':'0 8px 32px rgba(0,0,0,0.2)','card-hover':'0 12px 40px rgba(87,90,208,0.15)'},
+        borderRadius:{'xl':'1rem','2xl':'1.5rem'}
+      }
+    }
+  };
+  </script>
+
+  <!-- Scrollbar -->
+    <style>
+    /* Modal and main scrollable containers */
+    .scrollbar-custom::-webkit-scrollbar {
+        width: 8px;
+    }
+    .scrollbar-custom::-webkit-scrollbar-track {
+        background: #0a0721;
+        border-radius: 4px;
+    }
+    .scrollbar-custom::-webkit-scrollbar-thumb {
+        background-color: #1e1d42;
+        border-radius: 4px;
+        border: 2px solid #0a0721;
+    }
+    .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+        background-color: #35325f;
+    }
+    .scrollbar-custom {
+        scrollbar-width: thin;
+        scrollbar-color: #1e1d42 #0a0721;
+    }
+
+    /* Global page scrollbar */
+    body::-webkit-scrollbar {
+        width: 8px;
+    }
+    body::-webkit-scrollbar-track {
+        background: #0a0721;
+        border-radius: 4px;
+    }
+    body::-webkit-scrollbar-thumb {
+        background-color: #1e1d42;
+        border-radius: 4px;
+        border: 2px solid #0a0721;
+    }
+    body::-webkit-scrollbar-thumb:hover {
+        background-color: #35325f;
+    }
+
+    /* Firefox support for global scrollbar */
+    body {
+        scrollbar-width: thin;
+        scrollbar-color: #1e1d42 #0a0721;
+    }
+    </style>
+
+  <style type="text/tailwindcss">
+  @layer utilities {
+    .glass-effect { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    
+    /* Sidebar items */
+    .sidebar-item { 
+      @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 cursor-pointer text-text-secondary; 
+    }
+    .sidebar-item.active { 
+      @apply bg-accent/20 text-accent; 
+    }
+    .sidebar-item:not(.active):hover { 
+      @apply bg-white/5; 
+    }
+
+    /* Other dashboard styles */
+    .card { @apply bg-card-bg rounded-xl p-6 shadow-card border border-card-border transition-all duration-300 hover:shadow-card-hover; }
+    .progress-bar { @apply h-2 rounded-full overflow-hidden bg-white/10; }
+    .progress-value { @apply h-full rounded-full bg-accent transition-all duration-1000 ease-out; }
+  }
+  </style>
+
+
+  <!-- Global styles -->
+  <style>
+    body { font-family: 'DM Sans', sans-serif; }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;      /* same as dashboard */
+      border-radius: 1rem;        /* same as dashboard */
+      color: #94A3B8;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-item:hover {
+      background-color: rgba(87, 90, 208, 0.12);
+      color: #ffffff;
+    }
+
+    .sidebar-item.active {
+      background-color: rgba(87, 90, 208, 0.18);
+      color: #ffffff;
+    }
+
+    .sidebar-item i {
+      width: 1.25rem;
+      text-align: center;
+    }
+
+    select option {
+      background-color: #030112;
+      color: #E2E8F0;
+    }
+  </style>
+</head>
+
+<body class="bg-bg-main font-dm-sans text-text-primary min-h-screen flex overflow-hidden">
+
+  <!-- Sidebar -->
+  <aside class="bg-bg-sidebar w-64 flex flex-col h-screen fixed left-0 top-0 z-10">
+
+    <!-- Logo -->
+    <div class="p-4 border-b border-white/10 flex justify-center">
+      <img src="../static/images/logo.png" alt="Metronix Logo" class="w-40 object-contain">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 overflow-y-auto py-6 px-3">
+      <ul class="space-y-1">
+        {% set sidebar_items = [
+          {'icon':'fas fa-chart-line','label':'Dashboard','page':'dashboard'},
+          {'icon':'fas fa-exchange-alt','label':'Transaction','page':'transaction'},
+          {'icon':'fas fa-credit-card','label':'Account','page':'account'},
+          {'icon':'fas fa-piggy-bank','label':'Budget','page':'budget'},
+          {'icon':'fas fa-bullseye','label':'Goals','page':'goals'},
+          {'icon':'fas fa-balance-scale','label':'Balance','page':'balance'},
+          {'icon':'fas fa-chart-pie','label':'Investment','page':'investment'},
+          {'icon':'fas fa-chart-bar','label':'Analytics','page':'analytics'},
+          {'icon':'fas fa-file-alt','label':'Report','page':'report'}
+        ] %}
+
+        {% set existing_pages = {
+            'dashboard': 'dashboard.dashboard',
+            'transaction': 'transaction.transaction_page',
+            'account': 'account.account_dashboard',
+            'budget': 'budget.budget_page',
+            'goals': 'goals.goals_page',
+            'balance': 'balance.balance_page'
+        } %}
+
+        {% for item in sidebar_items %}
+        <li>
+          {% if item.page in existing_pages %}
+            <a href="{{ url_for(existing_pages[item.page]) }}" 
+              class="sidebar-item {% if current_page == item.page %}active{% endif %}" 
+              style="color: #E2E8F0;">
+              <i class="{{ item.icon }} w-5 text-center"></i>
+              <span>{{ item.label }}</span>
+            </a>
+          {% else %}
+            <div class="sidebar-item" style="color: #A0AEC0; cursor: default;">
+              <i class="{{ item.icon }} w-5 text-center"></i>
+              <span>{{ item.label }}</span>
+            </div>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </nav>
+    
+    <!-- Logout -->
+    <div class="p-4 border-t border-white/10 mt-auto">
+        <a href="{{ url_for('auth.logout') }}" class="sidebar-item">
+            <i class="fas fa-sign-out-alt w-5 text-center"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+
+  </aside>
+
+  <!-- Main -->
+  <main class="flex-1 ml-64 p-8 overflow-y-auto h-screen">
+  <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            
+        <!-- Title -->
+        <div>
+            <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-white mb-1">
+                Transactions
+            </h1>
+            <p class="text-text-secondary">
+                Manage and review all financial activities
+            </p>
+        </div>
+
+        <div class="mb-8 flex justify-end space-x-4">
+          <button
+            class="bg-accent hover:bg-accent/90 text-white font-medium py-2 px-6 rounded-lg
+                  flex items-center transition-all shadow-card hover:shadow-card-hover"
+            id="add-transaction-btn">
+            <i class="fas fa-plus mr-2"></i>
+            <span>Add Transaction</span>
+          </button>
+
+          <button id="add-transfer-btn"
+            class="bg-dark-card border border-gray-700 text-white font-medium py-2 px-6 rounded-lg flex items-center hover:border-primary transition-all-300">
+            <i class="fas fa-exchange-alt mr-2"></i>
+            <span>Add Transfer</span>
+          </button>
+        </div>
+
+    </div>
+
+    <!--
+    <div class="mt-4 md:mt-0 flex items-center space-x-3">
+      <div class="relative">
+        <select
+          class="bg-card-bg border border-card-border text-text-primary rounded-lg py-2 px-4 pr-10 appearance-none
+                focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all">
+          <option>2026</option>
+          <option>2025</option>
+          <option>2024</option>
+          <option>2023</option>
+        </select>
+        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+          <i class="fas fa-chevron-down text-text-secondary"></i>
+        </div>
+      </div>
+
+      <div class="relative">
+        <select
+          class="bg-card-bg border border-card-border text-text-primary
+                rounded-lg py-2 px-4 pr-10 appearance-none
+                focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent
+                transition-all"
+        >
+          <option value="1">January</option>
+          <option value="2">February</option>
+          <option value="3">March</option>
+          <option value="4">April</option>
+          <option value="5">May</option>
+          <option value="6">June</option>
+          <option value="7">July</option>
+          <option value="8">August</option>
+          <option value="9">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
+
+        <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+          <i class="fas fa-chevron-down text-text-secondary text-sm"></i>
+        </div>
+      </div>
+    </div>
+    -->
+  </div>
+
+
+  <!-- Summary Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="card">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-medium text-text-secondary">Total Income</h3>
+        <i class="fas fa-arrow-up text-income"></i>
+      </div>
+      <p class="text-3xl font-bold text-income">
+        RM {{ '{:,.2f}'.format(total_income) }}
+      </p>
+      <p class="text-xs text-text-secondary mt-2">
+        {% if income_change is not none %}
+          {{ '+' if income_change >= 0 else '' }}{{ income_change }}% from last month
+        {% else %}
+          --
+        {% endif %}
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-medium text-text-secondary">Total Expense</h3>
+        <i class="fas fa-arrow-down text-expense"></i>
+      </div>
+      <p class="text-3xl font-bold text-expense">
+        RM {{ '{:,.2f}'.format(total_expense) }}
+      </p>
+      <p class="text-xs text-text-secondary mt-2">
+        {% if expense_change is not none %}
+          {{ '+' if expense_change >= 0 else '' }}{{ expense_change }}% from last month
+        {% else %}
+          --
+        {% endif %}
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-medium text-text-secondary">Net Cash Flow</h3>
+        <i class="fa-solid fa-chart-line text-accent"></i>
+      </div>
+      <p class="text-3xl font-bold text-accent">
+        RM {{ '{:,.2f}'.format(net_cash_flow) }}
+      </p>
+      <p class="text-xs text-text-secondary mt-2">
+        {% if net_change is not none %}
+          {{ '+' if net_change >= 0 else '' }}{{ net_change }}% from last month
+        {% else %}
+          --
+        {% endif %}
+      </p>
+    </div>
+
+  </div>
+  
+  <!-- Filter Bar -->
+  <div class="card">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <!-- Search Transactions -->
+      <div>
+        <label class="block text-sm font-medium text-text-secondary mb-2">Search transactions</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+            <i class="fas fa-search text-text-secondary"></i>
+          </span>
+          <input type="text" placeholder="Search by description..." 
+                class="w-full bg-card-bg border border-card-border text-text-primary rounded-lg py-2 pl-10 pr-4
+                        focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all-300">
+        </div>
+      </div>
+
+      <!-- Transaction Type -->
+      <div>
+        <label class="block text-sm font-medium text-text-secondary mb-2">Transaction Type</label>
+        <div class="grid grid-cols-4 gap-3">
+          <label class="flex items-center p-3 bg-card-bg border border-card-border rounded-lg cursor-pointer hover:border-accent transition-all-300">
+            <input type="radio" name="transaction-type-filter" value="all" class="hidden peer" checked>
+            <div class="w-5 h-5 rounded-full border-2 border-gray-600 peer-checked:border-accent flex items-center justify-center mr-3">
+              <div class="w-3 h-3 rounded-full bg-accent hidden peer-checked:block"></div>
+            </div>
+            <span class="text-text-primary text-sm">All</span>
+          </label>
+
+          <label class="flex items-center p-3 bg-card-bg border border-card-border rounded-lg cursor-pointer hover:border-accent transition-all-300">
+            <input type="radio" name="transaction-type-filter" value="income" class="hidden peer">
+            <div class="w-5 h-5 rounded-full border-2 border-gray-600 peer-checked:border-income flex items-center justify-center mr-3">
+              <div class="w-3 h-3 rounded-full bg-income hidden peer-checked:block"></div>
+            </div>
+            <span class="text-text-primary text-sm">Income</span>
+          </label>
+
+          <label class="flex items-center p-3 bg-card-bg border border-card-border rounded-lg cursor-pointer hover:border-accent transition-all-300">
+            <input type="radio" name="transaction-type-filter" value="expense" class="hidden peer">
+            <div class="w-5 h-5 rounded-full border-2 border-gray-600 peer-checked:border-expense flex items-center justify-center mr-3">
+              <div class="w-3 h-3 rounded-full bg-expense hidden peer-checked:block"></div>
+            </div>
+            <span class="text-text-primary text-sm">Expense</span>
+          </label>
+
+          <label class="flex items-center p-3 bg-card-bg border border-card-border rounded-lg cursor-pointer hover:border-accent transition-all-300">
+            <input type="radio" name="transaction-type-filter" value="transfer" class="hidden peer">
+            <div class="w-5 h-5 rounded-full border-2 border-gray-600 peer-checked:border-accent flex items-center justify-center mr-3">
+              <div class="w-3 h-3 rounded-full bg-accent hidden peer-checked:block"></div>
+            </div>
+            <span class="text-text-primary text-sm">Transfer</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Category -->
+      <div>
+        <label class="block text-sm font-medium text-text-secondary mb-2">Category</label>
+        <div class="relative">
+          <select class="w-full bg-card-bg border border-card-border text-text-primary rounded-lg py-2 pl-4 pr-10
+                        appearance-none focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all-300">
+            <option>All Categories</option>
+            {% for c in categories %}
+            <option>{{ c.name }}</option>
+            {% endfor %}
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+            <i class="fas fa-chevron-down text-text-secondary"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Month Filter -->
+      <div>
+        <label class="block text-sm font-medium text-text-secondary mb-2">Month</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+            <i class="fas fa-calendar text-text-secondary"></i>
+          </span>
+          <input
+            id="month-filter"
+            type="month"
+            value="{{ selected_year }}-{{ '%02d' % selected_month }}"
+            class="w-full bg-card-bg border border-card-border text-text-primary rounded-lg py-2 pl-10 pr-4
+                  focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all-300"
+          >
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Reset Filters -->
+    <div class="mt-4 flex justify-end">
+      <button class="text-text-secondary hover:text-white transition-all-300 flex items-center">
+        <i class="fas fa-redo mr-2"></i>
+        <span>Reset Filters</span>
+      </button>
+    </div>
+  </div>
+
+
+  <!-- Transaction Table -->
+  <div class="mt-8 bg-dark-card rounded-xl shadow-card transition-all-300">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border-collapse bg-dark" style="font-size:14px;">
+        <thead>
+          <tr class="bg-dark border-b border-gray-800">
+            <th class="px-6 py-4 text-left font-medium text-text-secondary uppercase tracking-wider">Date</th>
+            <th class="px-6 py-4 text-left font-medium text-text-secondary uppercase tracking-wider">Description</th>
+            <th class="px-6 py-4 text-left font-medium text-text-secondary uppercase tracking-wider">Category</th>
+            <th class="px-6 py-4 text-left font-medium text-text-secondary uppercase tracking-wider">Account</th>
+            <th class="px-6 py-4 text-right font-medium text-text-secondary uppercase tracking-wider">Amount</th>
+            <th class="px-6 py-4 text-left font-medium text-text-secondary uppercase tracking-wider">Type</th>
+            <th class="px-6 py-4 text-center font-medium text-text-secondary uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-800">
+          {% for txn in transactions %}
+          <tr class="hover:bg-white/10 transition-colors">
+            <!-- Date -->
+            <td class="px-6 py-4 text-text-primary" style="font-size:14px;">
+              {{ txn.date.strftime('%b %#d, %Y') }}
+            </td>
+
+            <!-- Description -->
+            <td class="px-6 py-4">{{ txn.description }}</td>
+
+            <!-- Category -->
+            <td class="px-6 py-4">{{ txn.category if txn.category else '--' }}</td>
+
+            <!-- Account -->
+            <td class="px-6 py-4">
+              {% if txn.type == 'transfer' %}
+                {{ txn.account if txn.account else '--' }} → {{ txn.transfer_account_name if txn.transfer_account_name else '--' }}
+              {% else %}
+                {{ txn.account if txn.account else '--' }}
+              {% endif %}
+            </td>
+
+
+            <!-- Amount -->
+            <td class="px-6 py-4 text-right font-bold
+                      {% if txn.type == 'income' %}text-income
+                      {% elif txn.type == 'expense' %}text-expense
+                      {% elif txn.type == 'transfer' %}text-[#575ad0]
+                      {% else %}text-primary{% endif %}">
+              RM {{ "%.2f"|format(txn.amount) }}
+            </td>
+
+            <!-- Type Label -->
+            <td class="px-6 py-2">
+              <span class="px-2 py-1 rounded-full text-xs font-medium
+                          {% if txn.type == 'income' %}bg-income/20 text-income
+                          {% elif txn.type == 'expense' %}bg-expense/20 text-expense
+                          {% elif txn.type == 'transfer' %}bg-[#1f1d51] text-[#575ad0]
+                          {% else %}bg-primary/20 text-primary{% endif %}">
+                {{ txn.type|capitalize }}
+              </span>
+            </td>
+
+            <!-- Actions -->
+            <td class="px-6 py-4">
+              <div class="flex justify-center">
+                <button type="button" class="text-text-primary hover:text-white transition-all-300 delete-btn" data-transaction-id="{{ txn.id }}">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="7" class="text-center text-text-secondary py-6">
+              No transactions found.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+
+  <!-- Pagination -->
+  <div class="px-6 py-4 flex items-center justify-between rounded-b-xl"
+      style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);">
+    <div class="text-sm text-text-secondary">
+      Showing <span class="font-medium text-white">1</span> to
+      <span class="font-medium text-white">{{ transactions|length }}</span> of
+      <span class="font-medium text-white">{{ total_transactions }}</span> transactions
+    </div>
+    <div class="flex space-x-2">
+      <button class="px-3 py-1 rounded-lg border border-gray-700 bg-dark text-text-secondary hover:bg-dark-hover hover:text-white transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+        <i class="fas fa-chevron-left text-xs"></i>
+      </button>
+      <button class="px-3 py-1 rounded-lg bg-primary text-white hover:bg-primary/90 transition-all-300">1</button>
+      <button class="px-3 py-1 rounded-lg border border-gray-700 bg-dark text-text-secondary hover:bg-dark-hover hover:text-white transition-all-300">2</button>
+      <button class="px-3 py-1 rounded-lg border border-gray-700 bg-dark text-text-secondary hover:bg-dark-hover hover:text-white transition-all-300">3</button>
+      <button class="px-3 py-1 rounded-lg border border-gray-700 bg-dark text-text-secondary hover:bg-dark-hover hover:text-white transition-all-300">
+        <i class="fas fa-chevron-right text-xs"></i>
+      </button>
+    </div>
+  </div>
+
+  
+  <!-- Add Transaction Popup -->
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden" id="add-transaction-modal">
+    <div
+      class="rounded-xl shadow-2xl border border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all-300 scale-95 opacity-0"
+      id="modal-content"
+      style="background-color:#0a0721;"
+    >
+
+      <!-- Header -->
+      <div class="p-6 border-b border-gray-800 flex items-center justify-between">
+        <h2 class="text-xl font-bold text-white">Add New Transaction</h2>
+        <button class="text-text-secondary hover:text-white transition-all-300" id="close-modal-btn">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-6">
+        <form id="add-transaction-form" method="POST" action="{{ url_for('transaction.add_transaction') }}">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- Transaction Type -->
+            <div>
+              <label class="block text-sm font-medium text-text-secondary mb-2">Transaction Type</label>
+              <div class="grid grid-cols-2 gap-3">
+                <label class="flex items-center p-3 bg-dark border border-gray-700 rounded-lg cursor-pointer hover:border-primary transition-all-300">
+                  <input type="radio" name="type" value="income" class="hidden peer transaction-type" required>
+                  <div class="w-5 h-5 rounded-full border-2 border-gray-600 peer-checked:border-income flex items-center justify-center mr-3">
+                    <div class="w-3 h-3 rounded-full bg-income hidden peer-checked:block"></div>
+                  </div>
+                  <span class="text-text-primary">Income</span>
+                </label>
+
+                <label class="flex items-center p-3 bg-dark border border-gray-700 rounded-lg cursor-pointer hover:border-primary transition-all-300">
+                  <input type="radio" name="type" value="expense" checked class="hidden peer transaction-type" required>
+                  <div class="w-5 h-5 rounded-full border-2 border-gray-600 peer-checked:border-expense flex items-center justify-center mr-3">
+                    <div class="w-3 h-3 rounded-full bg-expense hidden peer-checked:block"></div>
+                  </div>
+                  <span class="text-text-primary">Expense</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Amount -->
+            <div>
+              <label class="block text-sm font-medium text-text-secondary mb-2">Amount</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pr-2 text-text-secondary">RM</span>
+                <input
+                  type="number"
+                  name="amount"
+                  min="0"
+                  step="0.01"
+                  placeholder="0.00"
+                  class="w-full border border-gray-700 text-text-primary rounded-lg py-2 pl-14 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300"
+                  style="background-color:#030112;"
+                  autocomplete="off"
+                  required
+                >
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+              <label class="block text-sm font-medium text-text-secondary mb-2">Description</label>
+              <input
+                type="text"
+                name="description"
+                placeholder="Transaction description"
+                class="w-full border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300"
+                style="background-color:#030112;"
+                autocomplete="off"
+                required
+              >
+            </div>
+
+            <!-- Category -->
+            <div>
+              <label class="block text-sm font-medium text-text-secondary mb-2">Category</label>
+              <select
+                name="category_id"
+                id="category-select"
+                class="w-full border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300"
+                style="background-color:#030112;"
+                required
+              >
+                <option value="">Select Category</option>
+                {% for category in categories %}
+                  <option value="{{ category.id }}" data-type="{{ category.type }}">{{ category.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Account -->
+            <div>
+              <label class="block text-sm font-medium text-text-secondary mb-2">Account</label>
+              <select
+                name="account_id"
+                id="account-select"
+                class="w-full border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300"
+                style="background-color:#030112;"
+                required
+              >
+                <option value="">Select Account</option>
+                {% for account in accounts %}
+                  <option value="{{ account.id }}">{{ account.name }}</option>
+                {% endfor %}
+              </select>
+              <p class="text-sm text-text-secondary mt-1" id="account-balance">Balance: RM 0.00</p>
+            </div>
+
+            <!-- Date -->
+            <div>
+              <label class="block text-sm font-medium text-text-secondary mb-2">Date</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <i class="fas fa-calendar text-text-secondary"></i>
+                </span>
+                <input
+                  type="date"
+                  name="date"
+                  class="w-full border border-gray-700 text-text-primary rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300"
+                  style="background-color:#030112;"
+                  value="{{ datetime.today().strftime('%Y-%m-%d') }}"
+                  required
+                >
+              </div>
+            </div>
+
+            <!-- Notes (Optional) -->
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-text-secondary mb-2">Notes (Optional)</label>
+              <textarea
+                rows="3"
+                name="notes"
+                placeholder="Add any additional notes..."
+                class="w-full border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300"
+                style="background-color:#030112;"
+                autocomplete="off"
+              ></textarea>
+            </div>
+
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="p-6 border-t border-gray-800 flex justify-end space-x-4">
+        <button
+          class="px-6 py-2 border border-gray-700 text-text-secondary rounded-lg hover:text-white transition-all-300"
+          style="background-color:#030112;"
+          id="cancel-transaction-btn"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          form="add-transaction-form"
+          class="px-6 py-2 rounded-lg text-white transition-all-300"
+          style="background-color:#4f52bf;"
+          id="save-transaction-btn"
+        >
+          Save Transaction
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Add Transfer Popup -->
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden" id="add-transfer-modal">
+    <div
+      class="rounded-xl shadow-2xl border border-gray-700 w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all-300 scale-95 opacity-0"
+      id="transfer-modal-content"
+      style="background-color:#0a0721;"
+    >
+
+      <!-- Header -->
+      <div class="p-6 border-b border-gray-800 flex items-center justify-between">
+        <h2 class="text-xl font-bold text-white">Add Transfer</h2>
+        <button class="text-text-secondary hover:text-white transition-all-300" id="close-transfer-modal-btn">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-6">
+        <form id="add-transfer-form" method="POST" action="{{ url_for('transaction.add_transfer') }}">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <!-- From Account -->
+            <div>
+              <label class="block text-sm font-medium text-text-secondary mb-2">From Account</label>
+              <select name="from_account_id" id="from-account" style="background-color:#030112;"
+                      class="w-full border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300"
+                      required>
+                <option value="">Select Account</option>
+                {% for account in accounts %}
+                  <option value="{{ account.id }}">{{ account.name }}</option>
+                {% endfor %}
+              </select>
+              <p class="text-text-secondary text-sm mt-1" id="from-account-balance">Balance: RM 0.00</p>
+            </div>
+
+            <!-- To Account -->
+            <div>
+              <label class="block text-sm font-medium text-text-secondary mb-2">To Account</label>
+              <select name="to_account_id" id="to-account" style="background-color:#030112;"
+                      class="w-full border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300"
+                      required>
+                <option value="">Select Account</option>
+                {% for account in accounts %}
+                  <option value="{{ account.id }}">{{ account.name }}</option>
+                {% endfor %}
+              </select>
+              <p class="text-text-secondary text-sm mt-1" id="to-account-balance">Balance: RM 0.00</p>
+            </div>
+
+            <!-- Amount -->
+            <div>
+              <label class="block text-sm font-medium text-text-secondary mb-2">Amount</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-text-secondary">RM</span>
+                <input name="amount" type="number" min="0" step="0.01" placeholder="0.00" required
+                      style="background-color:#030112;"
+                      class="w-full border border-gray-700 text-text-primary rounded-lg py-2 pl-14 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300">
+              </div>
+            </div>
+
+            <!-- Date -->
+            <div>
+              <label class="block text-sm font-medium text-text-secondary mb-2">Date</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <i class="fas fa-calendar text-text-secondary"></i>
+                </span>
+                <input
+                  name="date"
+                  type="date"
+                  style="background-color:#030112;"
+                  class="w-full border border-gray-700 text-text-primary rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300"
+                  value="{{ datetime.today().strftime('%Y-%m-%d') }}"
+                  required
+                >
+              </div>
+            </div>
+
+            <!-- Notes (Optional) -->
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-text-secondary mb-2">Notes (Optional)</label>
+              <textarea name="notes" rows="3" placeholder="Add any additional notes..."
+                        style="background-color:#030112;"
+                        class="w-full border border-gray-700 text-text-primary rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300"></textarea>
+            </div>
+
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="p-6 border-t border-gray-800 flex justify-end space-x-4">
+        <button
+          class="px-6 py-2 border border-gray-700 text-text-secondary rounded-lg hover:text-white transition-all-300"
+          style="background-color:#030112;"
+          id="cancel-transfer-btn"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          form="add-transfer-form"
+          class="px-6 py-2 rounded-lg text-white transition-all-300"
+          style="background-color:#4f52bf;"
+          id="save-transfer-btn"
+        >
+          Save Transfer
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Delete Confirmation Popup -->
+  <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden" id="delete-confirmation-modal">
+    <div
+      class="rounded-xl shadow-2xl border border-gray-700 w-full max-w-md transform transition-all-300 scale-95 opacity-0"
+      id="delete-modal-content"
+      style="background-color:#0a0721;"
+    >
+      <div class="p-6 text-center">
+        <div class="w-16 h-16 border border-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-exclamation-triangle text-expense text-2xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Confirm Deletion</h3>
+        <p class="text-text-secondary mb-6">
+          Are you sure you want to delete this transaction? This action cannot be undone.
+        </p>
+        <div class="flex space-x-4 justify-center">
+          <button class="px-6 py-2 border border-gray-700 bg-dark text-text-secondary rounded-lg hover:bg-dark-hover hover:text-white transition-all-300" id="cancel-delete-btn">
+            Cancel
+          </button>
+          <button class="px-6 py-2 bg-expense text-white rounded-lg hover:bg-expense/90 transition-all-300" id="confirm-delete-btn">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Add Transaction Popup Script -->
+  <script>
+    const addTransactionBtn = document.getElementById('add-transaction-btn');
+    const modal = document.getElementById('add-transaction-modal');
+    const modalContent = document.getElementById('modal-content');
+    const closeBtn = document.getElementById('close-modal-btn');
+    const cancelBtn = document.getElementById('cancel-transaction-btn');
+
+    function openModal() {
+      modal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        modalContent.classList.remove('scale-95', 'opacity-0');
+        modalContent.classList.add('scale-100', 'opacity-100');
+      });
+    }
+
+    function closeModal() {
+      modalContent.classList.remove('scale-100', 'opacity-100');
+      modalContent.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 200);
+    }
+
+    addTransactionBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // Dynamic category filtering
+    const typeRadios = document.querySelectorAll('.transaction-type');
+    const categorySelect = document.getElementById('category-select');
+    const allOptions = Array.from(categorySelect.options);
+
+    function filterCategories() {
+      const selectedType = document.querySelector('.transaction-type:checked').value;
+
+      categorySelect.innerHTML = '<option value="">Select Category</option>';
+
+      allOptions.forEach(option => {
+        if (!option.dataset.type) return; // skip default option
+        if (option.dataset.type === selectedType) {
+          categorySelect.appendChild(option);
+        }
+      });
+    }
+
+    typeRadios.forEach(radio => {
+      radio.addEventListener('change', filterCategories);
+    });
+
+    // Initial filter
+    filterCategories();
+
+
+    // Fetch balance
+    const accountSelect = document.getElementById('account-select');
+    const accountBalanceText = document.getElementById('account-balance');
+
+    async function updateAccountBalance() {
+      const accountId = accountSelect.value;
+      if (!accountId) {
+        accountBalanceText.textContent = "Balance: RM 0.00";
+        return;
+      }
+
+      try {
+        const res = await fetch(`/transaction/account_balance/${accountId}`);
+        const data = await res.json();
+        accountBalanceText.textContent = `Balance: RM ${data.balance.toFixed(2)}`;
+      } catch (err) {
+        console.error(err);
+        accountBalanceText.textContent = "Balance: RM 0.00";
+      }
+    }
+
+    accountSelect.addEventListener('change', updateAccountBalance);
+
+    // Initialize balance on page load if default selected
+    updateAccountBalance();
+
+  </script>
+
+
+  <!-- Add Transfer Popup Script -->
+  <script>
+    const addTransferBtn = document.getElementById('add-transfer-btn');
+    const addTransferModal = document.getElementById('add-transfer-modal');
+    const transferModalContent = document.getElementById('transfer-modal-content');
+    const closeTransferBtn = document.getElementById('close-transfer-modal-btn');
+    const cancelTransferBtn = document.getElementById('cancel-transfer-btn');
+
+    function openModal() {
+      addTransferModal.classList.remove('hidden');
+      setTimeout(() => {
+        transferModalContent.classList.remove('scale-95', 'opacity-0');
+      }, 10);
+    }
+
+    function closeModal() {
+      transferModalContent.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => {
+        addTransferModal.classList.add('hidden');
+      }, 200);
+    }
+
+    addTransferBtn.addEventListener('click', openModal);
+    closeTransferBtn.addEventListener('click', closeModal);
+    cancelTransferBtn.addEventListener('click', closeModal);
+
+    // Fetch balance
+    const accounts = {{ accounts|tojson }};
+    const fromSelect = document.getElementById('from-account');
+    const toSelect = document.getElementById('to-account');
+    const fromBalanceText = document.getElementById('from-account-balance');
+    const toBalanceText = document.getElementById('to-account-balance');
+
+    function updateBalance(accountId, balanceText) {
+        if (!accountId) {
+            balanceText.innerText = 'Balance: RM 0.00';
+            return;
+        }
+
+        const account = accounts.find(a => a.id == accountId);
+        if (!account) return;
+
+        // Calculate balance: opening_balance + sum(income) - sum(expense)
+        fetch(`/transaction/account_balance/${accountId}`)
+            .then(res => res.json())
+            .then(data => {
+                balanceText.innerText = `Balance: RM ${parseFloat(data.balance).toFixed(2)}`;
+            });
+    }
+
+    fromSelect.addEventListener('change', () => {
+        updateBalance(fromSelect.value, fromBalanceText);
+    });
+    toSelect.addEventListener('change', () => {
+        updateBalance(toSelect.value, toBalanceText);
+    });
+  </script>
+
+
+  <!-- Delete Popup -->
+   <script>
+    let currentTransactionId = null;
+
+    // Open modal when delete button clicked
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentTransactionId = btn.dataset.transactionId;
+        document.getElementById('delete-confirmation-modal').classList.remove('hidden');
+        setTimeout(() => {
+          document.getElementById('delete-modal-content').classList.remove('scale-95', 'opacity-0');
+        }, 10);
+      });
+    });
+
+    // Cancel button closes modal
+    document.getElementById('cancel-delete-btn').addEventListener('click', () => {
+      document.getElementById('delete-confirmation-modal').classList.add('hidden');
+      document.getElementById('delete-modal-content').classList.add('scale-95', 'opacity-0');
+      currentTransactionId = null;
+    });
+
+    // Confirm button submits form
+    document.getElementById('confirm-delete-btn').addEventListener('click', () => {
+      if (currentTransactionId) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/transaction/delete/${currentTransactionId}`;
+        document.body.appendChild(form);
+        form.submit();
+      }
+    });
+  </script>
+
+  <!-- Filter Bar Script -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.querySelector('input[placeholder="Search by description..."]');
+    const typeFilters = document.querySelectorAll('input[name="transaction-type-filter"]');
+    const categorySelect = document.querySelector('select');
+    const monthInput = document.querySelector('input[type="month"]'); // single month picker
+    const resetBtn = document.querySelector('.fa-redo').parentElement;
+    const tableRows = document.querySelectorAll('table tbody tr');
+
+    function parseDateString(dateStr) {
+      // Converts "Jan 5, 2025" into YYYY-MM
+      const d = new Date(dateStr);
+      if (isNaN(d)) return '';
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    }
+
+    function filterTransactions() {
+      const searchValue = searchInput.value.toLowerCase();
+      const selectedType = document.querySelector('input[name="transaction-type-filter"]:checked').value;
+      const selectedCategory = categorySelect.value.toLowerCase();
+      
+      // month filter is now backend-driven, so skip client-side filtering
+      tableRows.forEach(row => {
+        // Skip "No transactions found" row
+        if (row.querySelector('td[colspan="7"]')) return;
+
+        const desc = row.children[1].textContent.toLowerCase();
+        const category = row.children[2].textContent.toLowerCase();
+        const account = row.children[3].textContent.toLowerCase();
+        const type = row.children[5].textContent.trim().toLowerCase();
+
+        let match = true;
+
+        // Search across description, category, account
+        if (searchValue && !(desc.includes(searchValue) || category.includes(searchValue) || account.includes(searchValue))) {
+          match = false;
+        }
+
+        // Filter by transaction type
+        if (selectedType !== 'all' && type !== selectedType) match = false;
+
+        // Filter by category
+        if (selectedCategory !== 'all categories' && category !== selectedCategory) match = false;
+
+        row.style.display = match ? '' : 'none';
+      });
+
+      // Show "No transactions found" if all rows hidden
+      const visibleRows = Array.from(tableRows).filter(r => r.style.display !== 'none' && !r.querySelector('td[colspan="7"]'));
+      if (visibleRows.length === 0) {
+        tableRows.forEach(r => r.querySelector('td[colspan="7"]') ? r.style.display = '' : null);
+      } else {
+        tableRows.forEach(r => r.querySelector('td[colspan="7"]') ? r.style.display = 'none' : null);
+      }
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', filterTransactions);
+    typeFilters.forEach(r => r.addEventListener('change', filterTransactions));
+    categorySelect.addEventListener('change', filterTransactions);
+
+    // Month filter triggers backend reload
+    monthInput.addEventListener('change', () => {
+      const [year, month] = monthInput.value.split('-');
+      const params = new URLSearchParams(window.location.search);
+
+      // Set the year and month in query params
+      params.set('year', year);
+      params.set('month', month);
+
+      // Reload the page with new month/year
+      window.location.search = params.toString();
+    });
+
+    // Reset filters
+    resetBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      document.querySelector('input[name="transaction-type-filter"][value="all"]').checked = true;
+      categorySelect.value = 'All Categories';
+      monthInput.value = ''; // optionally clear month picker
+      filterTransactions();
+    });
+
+    // Run initial filter
+    filterTransactions();
+  });
+  </script>
+
+
+</body>
+</html>

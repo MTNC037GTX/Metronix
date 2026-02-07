@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metronix | Dashboard</title>
+<link rel="icon" href="/static/images/logo.ico">
+
+<!-- Scripts & Styles -->
+<script src="https://res.gemcoder.com/js/reload.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+  theme: { extend: { colors: { 'bg-main':'#030112','bg-sidebar':'#0A0621','accent':'#575AD0','income':'#00C896','expense':'#FF5757','text-primary':'#E2E8F0','text-secondary':'#94A3B8','card-bg':'rgba(255,255,255,0.05)','card-border':'rgba(255,255,255,0.1)','glass':'rgba(97,93,161,0.15)'},
+  fontFamily:{'dm-sans':['"DM Sans"','sans-serif']}, spacing:{'18':'4.5rem','22':'5.5rem'}, boxShadow:{'card':'0 8px 32px rgba(0,0,0,0.2)','card-hover':'0 12px 40px rgba(87,90,208,0.15)'}, borderRadius:{'xl':'1rem','2xl':'1.5rem'}}}
+};
+</script>
+
+<!-- Scrollbar -->
+    <style>
+    /* Modal and main scrollable containers */
+    .scrollbar-custom::-webkit-scrollbar {
+        width: 8px;
+    }
+    .scrollbar-custom::-webkit-scrollbar-track {
+        background: #0a0721;
+        border-radius: 4px;
+    }
+    .scrollbar-custom::-webkit-scrollbar-thumb {
+        background-color: #1e1d42;
+        border-radius: 4px;
+        border: 2px solid #0a0721;
+    }
+    .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+        background-color: #35325f;
+    }
+    .scrollbar-custom {
+        scrollbar-width: thin;
+        scrollbar-color: #1e1d42 #0a0721;
+    }
+
+    /* Global page scrollbar */
+    body::-webkit-scrollbar {
+        width: 8px;
+    }
+    body::-webkit-scrollbar-track {
+        background: #0a0721;
+        border-radius: 4px;
+    }
+    body::-webkit-scrollbar-thumb {
+        background-color: #1e1d42;
+        border-radius: 4px;
+        border: 2px solid #0a0721;
+    }
+    body::-webkit-scrollbar-thumb:hover {
+        background-color: #35325f;
+    }
+
+    /* Firefox support for global scrollbar */
+    body {
+        scrollbar-width: thin;
+        scrollbar-color: #1e1d42 #0a0721;
+    }
+    </style>
+
+<style type="text/tailwindcss">
+@layer utilities {
+  .glass-effect { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .sidebar-item { @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 cursor-pointer; }
+  .sidebar-item.active { @apply bg-accent/20 text-accent; }
+  .sidebar-item:not(.active):hover { @apply bg-white/5; }
+  .card { @apply bg-card-bg rounded-xl p-6 shadow-card border border-card-border transition-all duration-300 hover:shadow-card-hover; }
+  .progress-bar { @apply h-2 rounded-full overflow-hidden bg-white/10; }
+  .progress-value { @apply h-full rounded-full bg-accent transition-all duration-1000 ease-out; }
+}
+</style>
+</head>
+<body class="bg-bg-main font-dm-sans text-text-primary min-h-screen flex overflow-hidden">
+
+<!-- Sidebar -->
+  <aside class="bg-bg-sidebar w-64 flex flex-col h-screen fixed left-0 top-0 z-10">
+
+    <!-- Logo -->
+    <div class="p-4 border-b border-white/10 flex justify-center">
+      <img src="../static/images/logo.png" alt="Metronix Logo" class="w-40 object-contain">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 overflow-y-auto py-6 px-3">
+        <ul class="space-y-1">
+            {% set sidebar_items = [
+            {'icon':'fas fa-chart-line','label':'Dashboard','page':'dashboard'},
+            {'icon':'fas fa-exchange-alt','label':'Transaction','page':'transaction'},
+            {'icon':'fas fa-credit-card','label':'Account','page':'account'},
+            {'icon':'fas fa-piggy-bank','label':'Budget','page':'budget'},
+            {'icon':'fas fa-bullseye','label':'Goals','page':'goals'},
+            {'icon':'fas fa-balance-scale','label':'Balance','page':'balance'},
+            {'icon':'fas fa-chart-pie','label':'Investment','page':'investment'},
+            {'icon':'fas fa-chart-bar','label':'Analytics','page':'analytics'},
+            {'icon':'fas fa-file-alt','label':'Report','page':'report'}
+            ] %}
+
+            {% set existing_pages = {
+                'dashboard': 'dashboard.dashboard',
+                'transaction': 'transaction.transaction_page',
+                'account': 'account.account_dashboard',
+                'budget': 'budget.budget_page',
+                'goals': 'goals.goals_page',
+                'balance': 'balance.balance_page'
+            } %}
+
+            {% for item in sidebar_items %}
+            <li>
+            {% if item.page in existing_pages %}
+                <a href="{{ url_for(existing_pages[item.page]) }}" 
+                class="sidebar-item {% if current_page == item.page %}active{% endif %}" 
+                style="color: #E2E8F0;">
+                <i class="{{ item.icon }} w-5 text-center"></i>
+                <span>{{ item.label }}</span>
+                </a>
+            {% else %}
+                <div class="sidebar-item" style="color: #A0AEC0; cursor: default;">
+                <i class="{{ item.icon }} w-5 text-center"></i>
+                <span>{{ item.label }}</span>
+                </div>
+            {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </nav>
+
+    <!-- Logout -->
+    <div class="p-4 border-t border-white/10 mt-auto">
+        <a href="{{ url_for('auth.logout') }}" class="sidebar-item">
+            <i class="fas fa-sign-out-alt w-5 text-center"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+
+  </aside>
+
+<!-- Main -->
+<main class="flex-1 ml-64 p-8 overflow-y-auto h-screen">
+<header class="mb-8 flex justify-between items-center">
+  <div>
+    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold">Financial Dashboard</h2>
+    <p class="text-text-secondary mt-1">Welcome back, here's your financial overview for this month</p>
+  </div>
+  <div class="flex items-center gap-4">
+    <!-- Placeholder for top right profile -->
+  </div>
+</header>
+
+<!-- Top Dashboard Cards -->
+<div class="grid grid-cols-3 grid-rows-5 gap-6">
+
+  <!-- Total Balance Card -->
+  <div class="card col-span-2 row-span-2 glass-effect">
+    <div class="flex justify-between items-start mb-6">
+      <div>
+        <h3 class="text-text-secondary text-sm font-medium">Total Balance</h3>
+        <p class="text-4xl font-bold">RM {{ '{:,.2f}'.format(total_balance) }}</p>
+      </div>
+      <div class="bg-white/5 px-4 py-2 rounded-lg">
+        <div class="flex items-center gap-1 text-xs {% if percent_change < 0 %}text-expense{% else %}text-income{% endif %}">
+          {% if percent_change is not none %}
+            <i class="fas {% if percent_change >= 0 %}fa-arrow-up{% else %}fa-arrow-down{% endif %}"></i>
+            <span>{{ percent_change }}% from last month</span>
+          {% else %}<span>--</span>{% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Income & Expense -->
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <p class="text-text-secondary text-sm">Income</p>
+        <p class="text-2xl font-bold text-income mt-1">RM {{ '{:,.2f}'.format(income) }}</p>
+        {% if income_change is not none %}
+        <div class="flex items-center gap-1 text-xs text-[#94A3B8] mt-1">
+          <i class="fas {% if income_change >= 0 %}fa-arrow-up{% else %}fa-arrow-down{% endif %}"></i>
+          <span>{{ income_change }}% from last month</span>
+        </div>{% endif %}
+      </div>
+      <div>
+        <p class="text-text-secondary text-sm">Expense</p>
+        <p class="text-2xl font-bold text-expense mt-1">RM {{ '{:,.2f}'.format(expense) }}</p>
+        {% if expense_change is not none %}
+        <div class="flex items-center gap-1 text-xs text-[#94A3B8] mt-1">
+          <i class="fas {% if expense_change >= 0 %}fa-arrow-up{% else %}fa-arrow-down{% endif %}"></i>
+          <span>{{ expense_change }}% from last month</span>
+        </div>{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Budget Utilization -->
+  <div class="card row-span-5 ">
+    <h3 class="font-bold text-lg mb-4">Budget Utilization</h3>
+    <div id="budgetChart" class="w-full h-56"></div>
+
+    <div class="mt-4 space-y-3">
+      {% for c in budget_categories %}
+      <div>
+        <div class="flex justify-between text-sm mb-1">
+          <span class="text-text-secondary">{{ c.name }}</span>
+          <span>RM{{ '{:,.2f}'.format(c.budget - c.spent) }} | {{ c.remaining_percent | round(0) }}%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-value" style="width:{{ c.remaining_percent }}%; background-color:#575AD0"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Income vs Expense Line Chart -->
+  <div class="card col-span-2 row-span-3">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="font-bold text-lg">Income vs Expense</h3>
+
+      <!-- Year Dropdown (backend reload) -->
+      <div class="relative inline-block w-32">
+        <button id="yearDropdownBtn" class="w-full bg-card-bg text-white border border-accent rounded px-3 py-1 flex justify-between items-center">
+          <span>{{ selected_year }}</span>
+          <i class="fas fa-chevron-down text-sm"></i>
+        </button>
+        <ul id="yearDropdown" class="absolute left-0 w-full mt-1 bg-card-bg border border-accent rounded shadow-lg z-20 hidden">
+          {% for y in years %}
+          <li class="px-3 py-1 hover:bg-accent/20 cursor-pointer text-white">
+            <a href="{{ url_for('dashboard.dashboard', year=y) }}" class="w-full block">{{ y }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div id="incomeExpenseChart" class="w-full h-64"></div>
+  </div>
+</div>
+
+<!-- Recent Transactions & Goals -->
+<div class="grid grid-cols-3 gap-6 mt-6">
+  <div class="card col-span-2">
+    <h3 class="font-bold text-lg mb-6">Recent Transactions</h3>
+    <table class="w-full text-left text-sm">
+      <thead>
+        <tr class="text-text-secondary border-b border-white/10">
+          <th class="py-3">Date</th>
+          <th class="py-3">Category</th>
+          <th class="py-3">Description</th>
+          <th class="py-3">Amount</th>
+          <th class="py-3">Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for txn in transactions %}
+        <tr class="border-b border-white/10">
+          <td class="py-3">{{ txn.date }}</td>
+          <td class="py-3 flex items-center gap-2">
+            <i class="fas fa-tag text-accent text-lg"></i>
+            <span>{{ txn.category }}</span>
+          </td>
+          <td class="py-3">{{ txn.description }}</td>
+          <td class="py-3 
+              {% if txn.type == 'income' %}text-income
+              {% elif txn.type == 'expense' %}text-expense
+              {% elif txn.type == 'transfer' %}text-[#575ad0]
+              {% else %}text-blue-400{% endif %}">
+              {% if txn.type == 'expense' %}-{% endif %} RM {{ "{:,.2f}".format(txn.amount) }}
+          </td>
+          <td class="py-3">
+            {% if txn.type == 'income' %}
+              <span class="px-2 py-1 text-xs rounded-full bg-income/20 text-income font-medium">Income</span>
+            {% elif txn.type == 'expense' %}
+              <span class="px-2 py-1 text-xs rounded-full bg-expense/20 text-expense font-medium">Expense</span>
+            {% else %}
+              <span class="px-2 py-1 text-xs rounded-full bg-[#1f1d51] text-[#575ad0] font-medium">Transfer</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="py-3">No transactions found</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Goals-->
+  <div class="card">
+    <h3 class="font-bold text-lg mb-6">Saving Goals</h3>
+    <div class="space-y-6">
+      {% for goal in goals %}
+      <div>
+        <div class="flex justify-between text-sm mb-1">
+          <span class="text-text-secondary">{{ goal.name }}</span>
+          <span>{{ ((goal.current_amount/goal.target_amount)*100) | round(0) }}%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-value" style="width:{{ ((goal.current_amount/goal.target_amount)*100) | round(0) }}%"></div>
+        </div>
+        <div class="flex justify-between text-xs text-text-secondary mt-1">
+          <span>RM {{ "{:,.2f}".format(goal.current_amount) }} raised</span>
+          <span>RM {{ "{:,.2f}".format(goal.target_amount) }} goal</span>
+        </div>
+      </div>
+      {% else %}
+      <div>No goals found</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+window.addEventListener('load', function(){
+  var incomeExpenseChart = echarts.init(document.getElementById('incomeExpenseChart'));
+
+  var months = [{% for item in income_expense %}'{{ item.month }}',{% endfor %}];
+  var incomeData = [{% for item in income_expense %}{{ item.income }},{% endfor %}];
+  var expenseData = [{% for item in income_expense %}{{ item.expense }},{% endfor %}];
+
+  incomeExpenseChart.setOption({
+    grid: { left: '5%', right: '5%', top: '10%', bottom: '10%', containLabel: true },
+    tooltip: {
+      trigger: 'axis',
+      formatter: function(params) {
+        var result = params[0].axisValue + '<br/>';
+        params.forEach(function(p) { result += p.marker + ' ' + p.seriesName + ': RM ' + Math.round(p.data) + '<br/>'; });
+        return result;
+      }
+    },
+    xAxis: { type: 'category', data: months, boundaryGap: false, axisLine: { lineStyle: { color: '#ccc' } }, axisTick: { show: false } },
+    yAxis: { type: 'value', axisLabel: { formatter: function(value) { return 'RM ' + Math.round(value); } }, splitLine: { lineStyle: { color: '#ccc', opacity: 0.2 } } },
+    series: [
+      { name: 'Income', type: 'line', data: incomeData, smooth: true, lineStyle: { color: '#00C896', width: 3 }, areaStyle: { color: 'rgba(0,200,150,0.2)' }, symbol: 'circle', symbolSize: 6, itemStyle: { color: '#00C896' } },
+      { name: 'Expense', type: 'line', data: expenseData, smooth: true, lineStyle: { color: '#FF5757', width: 3 }, areaStyle: { color: 'rgba(255,87,87,0.2)' }, symbol: 'circle', symbolSize: 6, itemStyle: { color: '#FF5757' } }
+    ]
+  });
+
+  window.addEventListener('resize', function() { incomeExpenseChart.resize(); });
+
+  // Year Dropdown
+  const btn = document.getElementById('yearDropdownBtn');
+  const menu = document.getElementById('yearDropdown');
+  btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+  document.addEventListener('click', e => { if (!btn.contains(e.target) && !menu.contains(e.target)) menu.classList.add('hidden'); });
+
+  // Budget Chart
+  var budgetChart = echarts.init(document.getElementById('budgetChart'));
+  var totalBudget = {{ budget_summary.total_budget | default(0) }};
+  var totalSpent = {{ budget_summary.total_spent | default(0) }};
+  var remainingPercent = totalBudget > 0 ? Math.max(0, Math.round(((totalBudget - totalSpent)/totalBudget)*100)) : 0;
+
+  budgetChart.setOption({
+    tooltip: { trigger: 'item', formatter: function(params) { return params.name + ': RM ' + params.value.toFixed(2) + ' (' + params.percent + '%)'; } },
+    graphic: { type: 'text', left: 'center', top: 'middle', style: { text: remainingPercent + '%', fontSize: 28, fontWeight: '700', fill: '#575AD0', align: 'center' } },
+    series: [{
+      type: 'pie',
+      radius: ['65%', '85%'],
+      avoidLabelOverlap: false,
+      label: { show: false },
+      labelLine: { show: false },
+      itemStyle: { borderRadius: 6, borderWidth: 2, borderColor: '#030112' },
+      data: [
+        { value: totalSpent, name: 'Spent', itemStyle: { color: '#272727' } },
+        { value: Math.max(0, totalBudget - totalSpent), name: 'Remaining', itemStyle: { color: '#575AD0' } }
+      ]
+    }]
+  });
+
+  window.addEventListener('resize', function(){ incomeExpenseChart.resize(); budgetChart.resize(); });
+
+  document.querySelectorAll('.progress-value').forEach(bar=>{
+    let width=bar.style.width; bar.style.width='0';
+    setTimeout(()=>{bar.style.width=width;},300);
+  });
+});
+
+// Side nav
+document.querySelectorAll('.sidebar-item').forEach(item=>{
+  item.addEventListener('click', function(){
+    document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

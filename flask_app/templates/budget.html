@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metronix | Budget</title>
+    <link rel="icon" href="/static/images/logo.ico">
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind Config -->
+    <script>
+    tailwind.config = {
+        theme: {
+        extend: {
+            colors: {
+            'bg-main':'#030112',
+            'bg-sidebar':'#0A0621',
+            'accent':'#575AD0',
+            'income':'#00C896',
+            'expense':'#FF5757',
+            'text-primary':'#E2E8F0',
+            'text-secondary':'#94A3B8',
+            'card-bg':'rgba(255,255,255,0.05)',
+            'card-border':'rgba(255,255,255,0.1)',
+            'glass':'rgba(97,93,161,0.15)'
+            },
+            fontFamily:{'dm-sans':['"DM Sans"','sans-serif']},
+            spacing:{'18':'4.5rem','22':'5.5rem'},
+            boxShadow:{'card':'0 8px 32px rgba(0,0,0,0.2)','card-hover':'0 12px 40px rgba(87,90,208,0.15)'},
+            borderRadius:{'xl':'1rem','2xl':'1.5rem'}
+        }
+        }
+    };
+    </script>
+
+    <!-- Scrollbar -->
+    <style>
+    /* Modal and main scrollable containers */
+    .scrollbar-custom::-webkit-scrollbar {
+        width: 8px;
+    }
+    .scrollbar-custom::-webkit-scrollbar-track {
+        background: #0a0721;
+        border-radius: 4px;
+    }
+    .scrollbar-custom::-webkit-scrollbar-thumb {
+        background-color: #1e1d42;
+        border-radius: 4px;
+        border: 2px solid #0a0721;
+    }
+    .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+        background-color: #35325f;
+    }
+    .scrollbar-custom {
+        scrollbar-width: thin;
+        scrollbar-color: #1e1d42 #0a0721;
+    }
+
+    /* Global page scrollbar */
+    body::-webkit-scrollbar {
+        width: 8px;
+    }
+    body::-webkit-scrollbar-track {
+        background: #0a0721;
+        border-radius: 4px;
+    }
+    body::-webkit-scrollbar-thumb {
+        background-color: #1e1d42;
+        border-radius: 4px;
+        border: 2px solid #0a0721;
+    }
+    body::-webkit-scrollbar-thumb:hover {
+        background-color: #35325f;
+    }
+
+    /* Firefox support for global scrollbar */
+    body {
+        scrollbar-width: thin;
+        scrollbar-color: #1e1d42 #0a0721;
+    }
+    </style>
+
+  <style type="text/tailwindcss">
+  @layer utilities {
+    .glass-effect { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    
+    /* Sidebar items */
+    .sidebar-item { 
+      @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 cursor-pointer text-text-secondary; 
+    }
+    .sidebar-item.active { 
+      @apply bg-accent/20 text-accent; 
+    }
+    .sidebar-item:not(.active):hover { 
+      @apply bg-white/5; 
+    }
+
+    /* Other dashboard styles */
+    .card { @apply bg-card-bg rounded-xl p-6 shadow-card border border-card-border transition-all duration-300 hover:shadow-card-hover; }
+    .progress-bar { @apply h-2 rounded-full overflow-hidden bg-white/10; }
+    .progress-value { @apply h-full rounded-full bg-accent transition-all duration-1000 ease-out; }
+  }
+  </style>
+
+
+  <!-- Global styles -->
+  <style>
+    body { font-family: 'DM Sans', sans-serif; }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;      /* same as dashboard */
+      border-radius: 1rem;        /* same as dashboard */
+      color: #94A3B8;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-item:hover {
+      background-color: rgba(87, 90, 208, 0.12);
+      color: #ffffff;
+    }
+
+    .sidebar-item.active {
+      background-color: rgba(87, 90, 208, 0.18);
+      color: #ffffff;
+    }
+
+    .sidebar-item i {
+      width: 1.25rem;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body class="bg-bg-main font-dm-sans text-text-primary min-h-screen flex overflow-hidden">
+
+  <!-- Sidebar -->
+    <aside class="bg-bg-sidebar w-64 flex flex-col h-screen fixed left-0 top-0 z-10">
+
+        <!-- Logo -->
+        <div class="p-4 border-b border-white/10 flex justify-center">
+        <img src="../static/images/logo.png" alt="Metronix Logo" class="w-40 object-contain">
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6 px-3">
+            <ul class="space-y-1">
+                {% set sidebar_items = [
+                {'icon':'fas fa-chart-line','label':'Dashboard','page':'dashboard'},
+                {'icon':'fas fa-exchange-alt','label':'Transaction','page':'transaction'},
+                {'icon':'fas fa-credit-card','label':'Account','page':'account'},
+                {'icon':'fas fa-piggy-bank','label':'Budget','page':'budget'},
+                {'icon':'fas fa-bullseye','label':'Goals','page':'goals'},
+                {'icon':'fas fa-balance-scale','label':'Balance','page':'balance'},
+                {'icon':'fas fa-chart-pie','label':'Investment','page':'investment'},
+                {'icon':'fas fa-chart-bar','label':'Analytics','page':'analytics'},
+                {'icon':'fas fa-file-alt','label':'Report','page':'report'}
+                ] %}
+
+                {% set existing_pages = {
+                    'dashboard': 'dashboard.dashboard',
+                    'transaction': 'transaction.transaction_page',
+                    'account': 'account.account_dashboard',
+                    'budget': 'budget.budget_page',
+                    'goals': 'goals.goals_page',
+                    'balance': 'balance.balance_page'
+                } %}
+
+                {% for item in sidebar_items %}
+                <li>
+                {% if item.page in existing_pages %}
+                    <a href="{{ url_for(existing_pages[item.page]) }}" 
+                    class="sidebar-item {% if current_page == item.page %}active{% endif %}" 
+                    style="color: #E2E8F0;">
+                    <i class="{{ item.icon }} w-5 text-center"></i>
+                    <span>{{ item.label }}</span>
+                    </a>
+                {% else %}
+                    <div class="sidebar-item" style="color: #A0AEC0; cursor: default;">
+                    <i class="{{ item.icon }} w-5 text-center"></i>
+                    <span>{{ item.label }}</span>
+                    </div>
+                {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <!-- Logout -->
+        <div class="p-4 border-t border-white/10 mt-auto">
+            <a href="{{ url_for('auth.logout') }}" class="sidebar-item">
+                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 ml-64 h-screen overflow-y-auto scrollbar-custom">
+
+        <!-- Page Header -->
+        <div class="p-8 mb-2 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-white mb-1">
+                    Budgets
+                </h1>
+                <p class="text-text-secondary">
+                    Monthly budget overview and management
+                </p>
+            </div>
+        </div>
+
+        <!-- Budget Content -->
+        <div class="px-8 pb-8 bg-bg-main">
+
+            <!-- Budget Overview -->
+            <section class="mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                    <!-- Total Budgeted -->
+                    <div class="card">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <p class="text-text-secondary text-sm font-medium">
+                                    Total Budgeted
+                                </p>
+                                <h3 class="text-3xl font-bold text-white mt-1">
+                                    RM {{ "{:,.2f}".format(total_budgeted) }}
+                                </h3>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
+                                <i class="fas fa-money-bill-wave text-accent"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-center text-sm">
+                            <span class="{% if budget_change_percent >= 0 %}text-income{% else %}text-expense{% endif %} flex items-center">
+                                <i
+                                    class="fas {% if budget_change_percent >= 0 %}fa-arrow-up{% else %}fa-arrow-down{% endif %} mr-1">
+                                </i>
+                                {{ budget_change_percent | abs }}%
+                            </span>
+                            <span class="text-text-secondary ml-2">
+                                from last month
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Total Spent -->
+                    <div class="card">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <p class="text-text-secondary text-sm font-medium">
+                                    Total Spent
+                                </p>
+                                <h3 class="text-3xl font-bold text-white mt-1">
+                                    RM {{ "{:,.2f}".format(total_spent) }}
+                                </h3>
+                            </div>
+                            <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
+                                <i class="fas fa-shopping-cart text-accent"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-center text-sm">
+                            <span class="{% if spent_change_percent >= 0 %}text-expense{% else %}text-income{% endif %} flex items-center">
+                                <i
+                                    class="fas {% if spent_change_percent >= 0 %}fa-arrow-up{% else %}fa-arrow-down{% endif %} mr-1">
+                                </i>
+                                {{ spent_change_percent | abs }}%
+                            </span>
+                            <span class="text-text-secondary ml-2">
+                                from last month
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Remaining Budget -->
+                    <div class="card">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <p class="text-text-secondary text-sm font-medium">
+                                    Remaining Budget
+                                </p>
+                                <h3
+                                    class="text-3xl font-bold mt-1
+                                    {% if remaining_budget >= 0 %}
+                                        text-income
+                                    {% else %}
+                                        text-expense
+                                    {% endif %}"
+                                >
+                                    {% if remaining_budget >= 0 %}
+                                        RM {{ "{:,.2f}".format(remaining_budget) }}
+                                    {% else %}
+                                        -RM {{ "{:,.2f}".format(remaining_budget | abs) }}
+                                    {% endif %}
+                                </h3>
+                            </div>
+
+                            <div
+                                class="w-10 h-10 rounded-full flex items-center justify-center
+                                {% if remaining_budget >= 0 %}
+                                    bg-income/10
+                                {% else %}
+                                    bg-expense/10
+                                {% endif %}"
+                            >
+                                <i
+                                    class="fas fa-wallet
+                                    {% if remaining_budget >= 0 %}
+                                        text-income
+                                    {% else %}
+                                        text-expense
+                                    {% endif %}">
+                                </i>
+                            </div>
+                        </div>
+
+                        <div class="progress-bar mt-4">
+                            <div
+                                class="progress-value"
+                                style="width: {{ budget_used_percent }}%">
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-text-secondary mt-2">
+                            {{ budget_used_percent }}% of budget used
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Individual Budgets -->
+            <section>
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-semibold text-dark-text-secondary">
+                        Category Budget List
+                    </h2>
+                </div>
+
+                <!-- Categories Table -->
+                <div class="bg-card-bg rounded-xl border border-card-border overflow-hidden">
+                    <!-- Header -->
+                    <div class="hidden md:grid grid-cols-12 gap-4 px-6 py-4 border-b border-card-border text-text-secondary text-sm font-medium">
+                        <div class="col-span-4">Category</div>
+                        <div class="col-span-2 text-right">Budgeted</div>
+                        <div class="col-span-2 text-right">Spent</div>
+                        <div class="col-span-2 text-right">Remaining</div>
+                        <div class="col-span-1 text-right">Action</div> <!-- Reduced width -->
+                    </div>
+
+                    <!-- Items -->
+                    <div class="divide-y divide-card-border">
+                        {% for cat in category_budgets %}
+                        {% if cat.spent > cat.budgeted %}
+                            {% set spent_class = 'text-expense font-medium' %}
+                        {% else %}
+                            {% set spent_class = 'text-white font-medium' %}
+                        {% endif %}
+
+                        {% if cat.remaining > 0 %}
+                            {% set remaining_class = 'text-income font-medium' %}
+                        {% elif cat.remaining == 0 %}
+                            {% set remaining_class = 'text-white font-medium' %}
+                        {% else %}
+                            {% set remaining_class = 'text-expense font-medium' %}
+                        {% endif %}
+
+                        <div class="p-4 md:p-6 hover:bg-card-bg/10 transition-colors duration-200">
+                            <div class="md:grid md:grid-cols-12 md:gap-4 items-center">
+                                
+                                <!-- Category Info -->
+                                <div class="col-span-4 flex items-center mb-4 md:mb-0">
+                                    <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center mr-3">
+                                        <i class="fas fa-circle text-accent"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-medium text-white">{{ cat.category_name }}</h3>
+                                        <p class="text-xs text-text-secondary">All Accounts</p>
+                                    </div>
+                                </div>
+
+                                <!-- Budgeted -->
+                                <div class="md:col-span-2 mb-4 md:mb-0 md:text-right">
+                                    <p class="text-white font-medium">RM {{ "{:,.2f}".format(cat.budgeted) }}</p>
+                                </div>
+
+                                <!-- Spent -->
+                                <div class="md:col-span-2 mb-4 md:mb-0 md:text-right">
+                                    <p class="{{ spent_class }}">RM {{ "{:,.2f}".format(cat.spent) }}</p>
+                                </div>
+
+                                <!-- Remaining + Progress -->
+                                <div class="md:col-span-2 mb-4 md:mb-0 md:text-right flex flex-col items-end">
+                                    <p class="{{ remaining_class }}">
+                                        {% if cat.remaining < 0 %}-{% endif %}RM {{ "{:,.2f}".format(cat.remaining | abs) }}
+                                    </p>
+                                    <div class="w-1/2 mt-2 md:mt-1 bg-white/10 rounded-full h-1.5"> <!-- container -->
+                                        <div class="h-1.5 rounded-full {{ 'bg-expense' if cat.remaining < 0 else 'bg-accent' }}"
+                                            style="width: {{ cat.used_percent }}%">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Action -->
+                                <div class="md:col-span-1 flex justify-end">
+                                    <button class="edit-budget-btn" data-category-id="{{ cat.category_id }}" data-current-amount="{{ cat.budgeted }}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Edit Budget Popup -->
+            <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden" id="editBudgetModal">
+                <div
+                    class="rounded-xl shadow-2xl border border-gray-700 w-full max-w-md max-h-[90vh] overflow-y-auto transform transition-all-300 scale-95 opacity-0"
+                    id="editBudgetModalContent"
+                    style="background-color:#0a0721;"
+                >
+
+                    <!-- Header -->
+                    <div class="p-6 border-b border-gray-800">
+                        <h2 class="text-xl font-bold text-white">Edit Monthly Budget</h2>
+                        <p class="text-text-secondary text-sm">Update your budget for this category</p>
+                    </div>
+
+                    <!-- Body -->
+                    <div class="p-6">
+                        <form id="editBudgetForm" method="POST" action="{{ url_for('budget.edit_budget') }}">
+
+                            <!-- Monthly Budget Amount -->
+                            <div class="mb-5">
+                                <label class="block text-sm font-medium text-text-secondary mb-2">
+                                    Budget Amount
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-text-secondary">
+                                        RM
+                                    </span>
+                                    <input
+                                        name="amount"
+                                        type="number"
+                                        step="0.01"
+                                        required
+                                        placeholder="0.00"
+                                        style="background-color:#030112;"
+                                        class="w-full border border-gray-700 text-text-primary rounded-lg py-2 pl-14 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all-300"
+                                    >
+                                </div>
+                            </div>
+
+                            <!-- Hidden field to store category id -->
+                            <input type="hidden" name="category_id" id="editBudgetCategoryId">
+
+                        </form>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="p-6 border-t border-gray-800 flex justify-end space-x-4">
+                        <button
+                            class="px-6 py-2 border border-gray-700 text-text-secondary rounded-lg hover:text-white transition-all-300"
+                            style="background-color:#030112;"
+                            id="cancel-edit-budget-btn"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            form="editBudgetForm"
+                            class="px-6 py-2 rounded-lg text-white transition-all-300"
+                            style="background-color:#4f52bf;"
+                            id="saveEditBudgetBtn"
+                        >
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Scripts for Edit popup -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- Elements ---
+        const editBudgetModal = document.getElementById('editBudgetModal');
+        const editBudgetModalContent = document.getElementById('editBudgetModalContent');
+        const editBudgetForm = document.getElementById('editBudgetForm');
+        const cancelEditBtn = document.getElementById('cancel-edit-budget-btn');
+        const saveEditBtn = document.getElementById('saveEditBudgetBtn');
+        const amountInput = editBudgetForm.querySelector('input[name="amount"]');
+        const categoryIdInput = document.getElementById('editBudgetCategoryId');
+
+        // --- Open Modal ---
+        document.querySelectorAll('.edit-budget-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const categoryId = btn.dataset.categoryId;
+                const currentAmount = btn.dataset.currentAmount;
+
+                categoryIdInput.value = categoryId;
+                amountInput.value = currentAmount;
+
+                // Show modal
+                editBudgetModal.classList.remove('hidden');
+                setTimeout(() => {
+                    editBudgetModalContent.classList.remove('scale-95', 'opacity-0');
+                }, 10); // allow DOM update for transition
+            });
+        });
+
+        // --- Close Modal on Cancel ---
+        cancelEditBtn.addEventListener('click', () => {
+            closeModal();
+        });
+
+        // --- Close Modal on outside click ---
+        editBudgetModal.addEventListener('click', (e) => {
+            if (e.target === editBudgetModal) {
+                closeModal();
+            }
+        });
+
+        // --- Submit Form ---
+        editBudgetForm.addEventListener('submit', (e) => {
+            // Optionally add custom validation here
+            // Form will POST to your Flask route as usual
+            closeModal();
+        });
+
+        // --- Close Modal Function ---
+        function closeModal() {
+            editBudgetModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                editBudgetModal.classList.add('hidden');
+            }, 200); // match transition duration
+        }
+
+    });
+    </script>
+
+
+</body>
+</html>

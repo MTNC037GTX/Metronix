@@ -1,0 +1,139 @@
+1. Financial Overview Dashboard + cashflow analytics
+This is the executive summary.
+
+Metrics:
+Total income
+Total expense
+Net cash flow = income - expense
+Savings rate = (income - expense) / income × 100
+Average daily spending
+Cash runway = cash balance / avg monthly expense
+
+How to show:
+KPI cards for all metrics
+Net cash flow trend = mini line chart
+Savings rate = progress bar with threshold markers
+
+2. Income Analytics
+Purpose: income stability and growth tracking.
+
+Metrics:
+Total income per period
+Income by source
+Income growth rate = (current - previous) / previous × 100
+Income volatility = std deviation / mean
+
+How to show:
+Line chart for income trend
+Horizontal bar chart for income by source (ranked)
+Small KPI badge for growth rate
+Text indicator for volatility (low / medium / high)
+
+Insights:
+Best performing income source
+Income dependency risk (single source > 70%)
+
+3. Expense Analytics
+This is where users actually change behavior.
+
+Metrics:
+Total expense
+Expense by category
+Fixed vs variable expense ratio
+Top 5 expense categories
+Expense growth rate
+Expense anomaly detection
+
+How to show:
+Line chart for total expense trend
+Horizontal bar chart for expense by category
+Stacked bar chart for fixed vs variable
+Ranked list for top 5 categories
+Dot marker on line chart for anomaly months
+
+
+4. CATEGORY-LEVEL ANALYTICS
+
+Metrics:
+Category monthly spending
+Category budget utilization = actual / budget × 100
+Category trend slope
+
+How to show:
+Per-category mini line chart
+Progress bar for budget utilization
+
+Color coding:
+< 80% green
+80% to 100% yellow
+100% red
+
+5. Budget Performance Analytics
+This connects planning to reality.
+
+Metrics:
+Total budget vs actual
+Overspend amount
+Underspend amount
+Chronic overspend flag
+
+How to show:
+Grouped bar chart (budget vs actual)
+Heatmap table by category and month
+Warning badge for chronic overspend
+
+Views:
+Budget vs actual per category
+Heat indicator:
+< 80% = green
+80% to 100% = yellow
+100% = red
+
+Insight:
+Chronic overspend categories (3 consecutive months)
+
+6. Asset and Net Worth Analytics
+This is long-term value tracking.
+
+Metrics:
+Net worth = assets - liabilities
+Net worth change
+Net worth growth rate
+
+How to show:
+Line chart for net worth trend
+KPI card for current net worth
+Delta indicator for growth rate
+
+Views:
+Asset class breakdown
+Net worth monthly change
+
+
+7. Financial Goal Analytics
+This drives motivation.
+
+Metrics:
+Goal target
+Current progress
+Remaining amount
+Required monthly contribution
+Forecast completion date
+
+How to show:
+Progress bar per goal
+Line projection chart
+Status badge (on-track / off-track)
+
+
+8. TIME FILTERS (GLOBAL)
+
+Metrics:
+Month
+Quarter
+Year
+Custom range
+
+How to show:
+Dropdown selector
+Persistent filter bar

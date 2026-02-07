@@ -1,0 +1,927 @@
+<html lang='en'>
+        <head >
+        <meta charset='UTF-8'/>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+<title >Budget | Personal Finance</title>
+<link href='https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css' rel='stylesheet'/>
+<script src='https://res.gemcoder.com/js/reload.js'></script>
+<script src='https://cdn.tailwindcss.com'></script>
+<link href='https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap' rel='stylesheet'/>
+<script >tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#575AD0',
+        overspend: '#E53E3E',
+        underspend: '#38A169',
+        warning: '#ED8936',
+        dark: {
+          bg: '#030112',
+          card: '#0B0820',
+          border: '#1A1635',
+          text: {
+            primary: '#F7FAFC',
+            secondary: '#A0AEC0',
+            tertiary: '#718096'
+          }
+        }
+      },
+      fontFamily: {
+        'dm-sans': ['"DM Sans"', 'sans-serif']
+      },
+      spacing: {
+        '18': '4.5rem',
+        '22': '5.5rem'
+      }
+    }
+  }
+};</script>
+<style type='text/tailwindcss'>
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .bg-gradient-dark {
+                background: linear-gradient(135deg, #030112 0%, #0B0820 100%);
+            }
+        }
+    </style>
+    </head>
+<body class='bg-[#030112] font-"dm-sans" text-dark-text-primary min-h-screen flex overflow-hidden'>
+        <!-- [MODULE] nav_Left Navigation -->
+<nav class='w-16 md:w-64 bg-dark-card h-screen fixed left-0 top-0 z-30 transition-all duration-300 ease-in-out border-r border-dark-border flex flex-col'>
+        <!-- [MODULE] logo_Navigation Logo -->
+<div class='flex items-center justify-center md:justify-start p-4 h-16 border-b border-dark-border'>
+        <div class='w-8 h-8 rounded-lg bg-primary flex items-center justify-center'>
+        <i class='fas fa-wallet text-white text-lg'>
+        </i>
+    </div>
+<span class='hidden md:block ml-3 text-xl font-bold text-white'>
+        FinTrack
+    </span>
+    </div>
+<!-- [/MODULE] logo_Navigation Logo -- Logo and application name displayed in the top section of the navigation bar -->
+<!-- [MODULE] menu_Navigation Menu -->
+<div class='flex-1 overflow-y-auto scrollbar-hide py-4'>
+        <ul class='space-y-1 px-2'>
+        <li >
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 rounded-lg text-dark-text-secondary hover:bg-primary/10 hover:text-primary transition-all duration-200'>
+        <i class='fas fa-chart-pie w-5 h-5 text-center'>
+        </i>
+<span class='hidden md:block ml-3'>
+        Dashboard
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 rounded-lg text-dark-text-secondary hover:bg-primary/10 hover:text-primary transition-all duration-200'>
+        <i class='fas fa-exchange-alt w-5 h-5 text-center'>
+        </i>
+<span class='hidden md:block ml-3'>
+        Transaction
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 rounded-lg text-dark-text-secondary hover:bg-primary/10 hover:text-primary transition-all duration-200'>
+        <i class='fas fa-wallet w-5 h-5 text-center'>
+        </i>
+<span class='hidden md:block ml-3'>
+        Account
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 rounded-lg bg-primary/10 text-primary transition-all duration-200'>
+        <i class='fas fa-tasks w-5 h-5 text-center'>
+        </i>
+<span class='hidden md:block ml-3 font-medium'>
+        Budget
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 rounded-lg text-dark-text-secondary hover:bg-primary/10 hover:text-primary transition-all duration-200'>
+        <i class='fas fa-bullseye w-5 h-5 text-center'>
+        </i>
+<span class='hidden md:block ml-3'>
+        Goals
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 rounded-lg text-dark-text-secondary hover:bg-primary/10 hover:text-primary transition-all duration-200'>
+        <i class='fas fa-balance-scale w-5 h-5 text-center'>
+        </i>
+<span class='hidden md:block ml-3'>
+        Balance
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 rounded-lg text-dark-text-secondary hover:bg-primary/10 hover:text-primary transition-all duration-200'>
+        <i class='fas fa-chart-line w-5 h-5 text-center'>
+        </i>
+<span class='hidden md:block ml-3'>
+        Investment
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 rounded-lg text-dark-text-secondary hover:bg-primary/10 hover:text-primary transition-all duration-200'>
+        <i class='fas fa-bar-chart w-5 h-5 text-center'>
+        </i>
+<span class='hidden md:block ml-3'>
+        Analytics
+    </span>
+    </a>
+    </li>
+<li >
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 rounded-lg text-dark-text-secondary hover:bg-primary/10 hover:text-primary transition-all duration-200'>
+        <i class='fas fa-file-alt w-5 h-5 text-center'>
+        </i>
+<span class='hidden md:block ml-3'>
+        Report
+    </span>
+    </a>
+    </li>
+    </ul>
+    </div>
+<!-- [/MODULE] menu_Navigation Menu -- List of navigation items with icons and text, Budget is active -->
+<!-- [MODULE] logout_Navigation Logout -->
+<div class='p-4 border-t border-dark-border'>
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 rounded-lg text-dark-text-secondary hover:bg-primary/10 hover:text-primary transition-all duration-200'>
+        <i class='fas fa-sign-out-alt w-5 h-5 text-center'>
+        </i>
+<span class='hidden md:block ml-3'>
+        Logout
+    </span>
+    </a>
+    </div>
+<!-- [/MODULE] logout_Navigation Logout -- Logout option fixed at the bottom of the navigation bar -->
+    </nav>
+<!-- [/MODULE] nav_Left Navigation -- Fixed left sidebar with navigation items, active on Budget -->
+<!-- [MODULE] main_Budget Main Content -->
+<main class='flex-1 ml-16 md:ml-64 h-screen overflow-hidden flex flex-col'>
+        <!-- [MODULE] top_Budget Top Header -->
+<header class='h-16 bg-dark-card border-b border-dark-border flex items-center justify-between px-6 sticky top-0 z-20'>
+        <div class='flex items-center'>
+        <h1 class='text-2xl font-bold text-white'>
+        Budget
+    </h1>
+    </div>
+<div class='flex items-center space-x-4'>
+        <!-- [MODULE] month_Budget Month Selector -->
+<div class='relative'>
+        <button id='month-selector' class='flex items-center space-x-2 bg-dark-bg border border-dark-border rounded-lg px-4 py-2 text-dark-text-primary hover:bg-dark-card transition-colors duration-200'>
+        <i class='fas fa-calendar-alt text-primary'>
+        </i>
+<span id='current-month'>
+        September 2023
+    </span>
+<i class='fas fa-chevron-down text-xs text-dark-text-secondary'>
+        </i>
+    </button>
+    </div>
+<!-- [/MODULE] month_Budget Month Selector -- Dropdown to select the current budget month -->
+<!-- [MODULE] actions_Budget Actions -->
+<div class='flex items-center space-x-3'>
+        <button id='add-budget-btn' class='flex items-center space-x-2 bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200'>
+        <i class='fas fa-plus'>
+        </i>
+<span >
+        Add Budget
+    </span>
+    </button>
+    </div>
+<!-- [/MODULE] actions_Budget Actions -- Main action buttons for budget management -->
+    </div>
+    </header>
+<!-- [/MODULE] top_Budget Top Header -- Page title, month selector, and action buttons -->
+<!-- [MODULE] content_Budget Main Content Area -->
+<div class='flex-1 overflow-y-auto p-6 bg-[#030112]'>
+        <!-- [MODULE] overview_Budget Overview -->
+<section class='mb-8'>
+        <h2 class='text-lg font-semibold text-dark-text-secondary mb-6'>
+        Monthly Budget Overview
+    </h2>
+<div class='grid grid-cols-1 md:grid-cols-3 gap-6'>
+        <!-- [MODULE] total_Budgeted Total Budgeted -->
+<div class='bg-dark-card rounded-xl p-6 border border-dark-border transition-all duration-300 hover:shadow-lg hover:shadow-primary/5'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <p class='text-dark-text-secondary text-sm font-medium'>
+        Total Budgeted
+    </p>
+<h3 class='text-3xl font-bold text-white mt-1'>
+        $2,850.00
+    </h3>
+    </div>
+<div class='w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center'>
+        <i class='fas fa-money-bill-wave text-primary'>
+        </i>
+    </div>
+    </div>
+<div class='flex items-center text-sm'>
+        <span class='text-underspend flex items-center'>
+        <i class='fas fa-arrow-up mr-1'>
+        </i>
+12%
+    </span>
+<span class='text-dark-text-secondary ml-2'>
+        from last month
+    </span>
+    </div>
+    </div>
+<!-- [/MODULE] total_Budgeted Total Budgeted -- Card showing total amount budgeted for the month -->
+<!-- [MODULE] total_Spent Total Spent -->
+<div class='bg-dark-card rounded-xl p-6 border border-dark-border transition-all duration-300 hover:shadow-lg hover:shadow-primary/5'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <p class='text-dark-text-secondary text-sm font-medium'>
+        Total Spent
+    </p>
+<h3 class='text-3xl font-bold text-white mt-1'>
+        $2,375.50
+    </h3>
+    </div>
+<div class='w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center'>
+        <i class='fas fa-shopping-cart text-primary'>
+        </i>
+    </div>
+    </div>
+<div class='flex items-center text-sm'>
+        <span class='text-overspend flex items-center'>
+        <i class='fas fa-arrow-up mr-1'>
+        </i>
+8%
+    </span>
+<span class='text-dark-text-secondary ml-2'>
+        from last month
+    </span>
+    </div>
+    </div>
+<!-- [/MODULE] total_Spent Total Spent -- Card showing total amount spent for the month -->
+<!-- [MODULE] remaining_Budget Remaining Budget -->
+<div class='bg-dark-card rounded-xl p-6 border border-dark-border transition-all duration-300 hover:shadow-lg hover:shadow-primary/5'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <p class='text-dark-text-secondary text-sm font-medium'>
+        Remaining Budget
+    </p>
+<h3 class='text-3xl font-bold text-underspend mt-1'>
+        $474.50
+    </h3>
+    </div>
+<div class='w-10 h-10 rounded-full bg-underspend/10 flex items-center justify-center'>
+        <i class='fas fa-wallet text-underspend'>
+        </i>
+    </div>
+    </div>
+<div class='w-full bg-dark-bg rounded-full h-2.5 mt-4'>
+        <div class='bg-gradient-to-r from-primary to-primary/70 h-2.5 rounded-full' style='width: 83%'>
+        </div>
+    </div>
+<p class='text-xs text-dark-text-secondary mt-2'>
+        83% of budget used
+    </p>
+    </div>
+<!-- [/MODULE] remaining_Budget Remaining Budget -- Card showing remaining budget with progress bar -->
+    </div>
+    </section>
+<!-- [/MODULE] overview_Budget Overview -- Summary cards showing total budgeted, spent, and remaining amounts -->
+<!-- [MODULE] categories_Budget Categories -->
+<section >
+        <div class='flex justify-between items-center mb-6'>
+        <h2 class='text-lg font-semibold text-dark-text-secondary'>
+        Category Budget List
+    </h2>
+<div class='relative'>
+        <input type='text' placeholder='Search categories...' class='bg-dark-card border border-dark-border rounded-lg py-2 pl-10 pr-4 text-sm text-dark-text-primary w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-primary/50'/>
+<i class='fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-text-secondary'>
+        </i>
+    </div>
+    </div>
+<!-- [MODULE] list_Categories Budget Categories List -->
+<div class='bg-dark-card rounded-xl border border-dark-border overflow-hidden'>
+        <!-- [MODULE] header_Categories List Header -->
+<div class='hidden md:grid grid-cols-12 gap-4 px-6 py-4 border-b border-dark-border text-dark-text-secondary text-sm font-medium'>
+        <div class='col-span-4'>
+        Category
+    </div>
+<div class='col-span-2 text-right'>
+        Budgeted
+    </div>
+<div class='col-span-2 text-right'>
+        Spent
+    </div>
+<div class='col-span-2 text-right'>
+        Remaining
+    </div>
+<div class='col-span-2'>
+        </div>
+    </div>
+<!-- [/MODULE] header_Categories List Header -- Table header for category budget list -->
+<!-- [MODULE] items_Categories List Items -->
+<div class='divide-y divide-dark-border'>
+        <!-- [MODULE] item_Housing Housing Category -->
+<div class='p-4 md:p-6 hover:bg-dark-bg/50 transition-colors duration-200'>
+        <div class='md:grid md:grid-cols-12 md:gap-4 items-center'>
+        <div class='col-span-4 flex items-center mb-4 md:mb-0'>
+        <div class='w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3'>
+        <i class='fas fa-home text-primary'>
+        </i>
+    </div>
+<div >
+        <h3 class='font-medium text-white'>
+        Housing
+    </h3>
+<p class='text-xs text-dark-text-secondary'>
+        All Accounts
+    </p>
+    </div>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-dark-text-primary font-medium'>
+        $1,200.00
+    </p>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-dark-text-primary font-medium'>
+        $1,200.00
+    </p>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-dark-text-primary font-medium'>
+        $0.00
+    </p>
+    </div>
+<div class='md:col-span-2 flex flex-col md:flex-row md:items-center'>
+        <div class='w-full md:w-24 mb-2 md:mb-0'>
+        <div class='w-full bg-dark-bg rounded-full h-2.5'>
+        <div class='bg-primary h-2.5 rounded-full' style='width: 100%'>
+        </div>
+    </div>
+    </div>
+<div class='flex justify-end space-x-2'>
+        <button class='edit-budget-btn p-2 rounded-lg text-dark-text-secondary hover:text-primary hover:bg-primary/10 transition-colors duration-200' data-category='Housing'>
+        <i class='fas fa-edit'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] item_Housing Housing Category -- Housing budget item with progress bar at 100% -->
+<!-- [MODULE] item_Food Food Category -->
+<div class='p-4 md:p-6 hover:bg-dark-bg/50 transition-colors duration-200'>
+        <div class='md:grid md:grid-cols-12 md:gap-4 items-center'>
+        <div class='col-span-4 flex items-center mb-4 md:mb-0'>
+        <div class='w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3'>
+        <i class='fas fa-utensils text-primary'>
+        </i>
+    </div>
+<div >
+        <h3 class='font-medium text-white'>
+        Food
+    </h3>
+<p class='text-xs text-dark-text-secondary'>
+        Cash only
+    </p>
+    </div>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-dark-text-primary font-medium'>
+        $400.00
+    </p>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-overspend font-medium'>
+        $450.50
+    </p>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-overspend font-medium'>
+        -$50.50
+    </p>
+    </div>
+<div class='md:col-span-2 flex flex-col md:flex-row md:items-center'>
+        <div class='w-full md:w-24 mb-2 md:mb-0'>
+        <div class='w-full bg-dark-bg rounded-full h-2.5'>
+        <div class='bg-overspend h-2.5 rounded-full' style='width: 113%'>
+        </div>
+    </div>
+    </div>
+<div class='flex justify-end space-x-2'>
+        <button class='edit-budget-btn p-2 rounded-lg text-dark-text-secondary hover:text-primary hover:bg-primary/10 transition-colors duration-200' data-category='Food'>
+        <i class='fas fa-edit'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] item_Food Food Category -- Food budget item showing overspend with red indicator -->
+<!-- [MODULE] item_Transportation Transportation Category -->
+<div class='p-4 md:p-6 hover:bg-dark-bg/50 transition-colors duration-200'>
+        <div class='md:grid md:grid-cols-12 md:gap-4 items-center'>
+        <div class='col-span-4 flex items-center mb-4 md:mb-0'>
+        <div class='w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3'>
+        <i class='fas fa-car text-primary'>
+        </i>
+    </div>
+<div >
+        <h3 class='font-medium text-white'>
+        Transportation
+    </h3>
+<p class='text-xs text-dark-text-secondary'>
+        All Accounts
+    </p>
+    </div>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-dark-text-primary font-medium'>
+        $300.00
+    </p>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-dark-text-primary font-medium'>
+        $180.00
+    </p>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-underspend font-medium'>
+        $120.00
+    </p>
+    </div>
+<div class='md:col-span-2 flex flex-col md:flex-row md:items-center'>
+        <div class='w-full md:w-24 mb-2 md:mb-0'>
+        <div class='w-full bg-dark-bg rounded-full h-2.5'>
+        <div class='bg-primary h-2.5 rounded-full' style='width: 60%'>
+        </div>
+    </div>
+    </div>
+<div class='flex justify-end space-x-2'>
+        <button class='edit-budget-btn p-2 rounded-lg text-dark-text-secondary hover:text-primary hover:bg-primary/10 transition-colors duration-200' data-category='Transportation'>
+        <i class='fas fa-edit'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] item_Transportation Transportation Category -- Transportation budget item with underspend -->
+<!-- [MODULE] item_Entertainment Entertainment Category -->
+<div class='p-4 md:p-6 hover:bg-dark-bg/50 transition-colors duration-200'>
+        <div class='md:grid md:grid-cols-12 md:gap-4 items-center'>
+        <div class='col-span-4 flex items-center mb-4 md:mb-0'>
+        <div class='w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3'>
+        <i class='fas fa-film text-primary'>
+        </i>
+    </div>
+<div >
+        <h3 class='font-medium text-white'>
+        Entertainment
+    </h3>
+<p class='text-xs text-dark-text-secondary'>
+        Credit Card
+    </p>
+    </div>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-dark-text-primary font-medium'>
+        $200.00
+    </p>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-dark-text-primary font-medium'>
+        $195.00
+    </p>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-underspend font-medium'>
+        $5.00
+    </p>
+    </div>
+<div class='md:col-span-2 flex flex-col md:flex-row md:items-center'>
+        <div class='w-full md:w-24 mb-2 md:mb-0'>
+        <div class='w-full bg-dark-bg rounded-full h-2.5'>
+        <div class='bg-warning h-2.5 rounded-full' style='width: 98%'>
+        </div>
+    </div>
+    </div>
+<div class='flex justify-end space-x-2'>
+        <button class='edit-budget-btn p-2 rounded-lg text-dark-text-secondary hover:text-primary hover:bg-primary/10 transition-colors duration-200' data-category='Entertainment'>
+        <i class='fas fa-edit'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] item_Entertainment Entertainment Category -- Entertainment budget item near limit with warning color -->
+<!-- [MODULE] item_Utilities Utilities Category -->
+<div class='p-4 md:p-6 hover:bg-dark-bg/50 transition-colors duration-200'>
+        <div class='md:grid md:grid-cols-12 md:gap-4 items-center'>
+        <div class='col-span-4 flex items-center mb-4 md:mb-0'>
+        <div class='w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3'>
+        <i class='fas fa-bolt text-primary'>
+        </i>
+    </div>
+<div >
+        <h3 class='font-medium text-white'>
+        Utilities
+    </h3>
+<p class='text-xs text-dark-text-secondary'>
+        All Accounts
+    </p>
+    </div>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-dark-text-primary font-medium'>
+        $250.00
+    </p>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-dark-text-primary font-medium'>
+        $220.00
+    </p>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-underspend font-medium'>
+        $30.00
+    </p>
+    </div>
+<div class='md:col-span-2 flex flex-col md:flex-row md:items-center'>
+        <div class='w-full md:w-24 mb-2 md:mb-0'>
+        <div class='w-full bg-dark-bg rounded-full h-2.5'>
+        <div class='bg-primary h-2.5 rounded-full' style='width: 88%'>
+        </div>
+    </div>
+    </div>
+<div class='flex justify-end space-x-2'>
+        <button class='edit-budget-btn p-2 rounded-lg text-dark-text-secondary hover:text-primary hover:bg-primary/10 transition-colors duration-200' data-category='Utilities'>
+        <i class='fas fa-edit'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] item_Utilities Utilities Category -- Utilities budget item with 88% usage -->
+<!-- [MODULE] item_Shopping Shopping Category -->
+<div class='p-4 md:p-6 hover:bg-dark-bg/50 transition-colors duration-200'>
+        <div class='md:grid md:grid-cols-12 md:gap-4 items-center'>
+        <div class='col-span-4 flex items-center mb-4 md:mb-0'>
+        <div class='w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3'>
+        <i class='fas fa-shopping-bag text-primary'>
+        </i>
+    </div>
+<div >
+        <h3 class='font-medium text-white'>
+        Shopping
+    </h3>
+<p class='text-xs text-dark-text-secondary'>
+        Credit Card
+    </p>
+    </div>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-dark-text-primary font-medium'>
+        $150.00
+    </p>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-overspend font-medium'>
+        $180.00
+    </p>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-overspend font-medium'>
+        -$30.00
+    </p>
+    </div>
+<div class='md:col-span-2 flex flex-col md:flex-row md:items-center'>
+        <div class='w-full md:w-24 mb-2 md:mb-0'>
+        <div class='w-full bg-dark-bg rounded-full h-2.5'>
+        <div class='bg-overspend h-2.5 rounded-full' style='width: 120%'>
+        </div>
+    </div>
+    </div>
+<div class='flex justify-end space-x-2'>
+        <button class='edit-budget-btn p-2 rounded-lg text-dark-text-secondary hover:text-primary hover:bg-primary/10 transition-colors duration-200' data-category='Shopping'>
+        <i class='fas fa-edit'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] item_Shopping Shopping Category -- Shopping budget item showing overspend -->
+<!-- [MODULE] item_Miscellaneous Miscellaneous Category -->
+<div class='p-4 md:p-6 hover:bg-dark-bg/50 transition-colors duration-200'>
+        <div class='md:grid md:grid-cols-12 md:gap-4 items-center'>
+        <div class='col-span-4 flex items-center mb-4 md:mb-0'>
+        <div class='w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3'>
+        <i class='fas fa-ellipsis-h text-primary'>
+        </i>
+    </div>
+<div >
+        <h3 class='font-medium text-white'>
+        Miscellaneous
+    </h3>
+<p class='text-xs text-dark-text-secondary'>
+        All Accounts
+    </p>
+    </div>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-dark-text-primary font-medium'>
+        $350.00
+    </p>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-dark-text-primary font-medium'>
+        $155.00
+    </p>
+    </div>
+<div class='md:col-span-2 mb-4 md:mb-0 md:text-right'>
+        <p class='text-underspend font-medium'>
+        $195.00
+    </p>
+    </div>
+<div class='md:col-span-2 flex flex-col md:flex-row md:items-center'>
+        <div class='w-full md:w-24 mb-2 md:mb-0'>
+        <div class='w-full bg-dark-bg rounded-full h-2.5'>
+        <div class='bg-primary h-2.5 rounded-full' style='width: 44%'>
+        </div>
+    </div>
+    </div>
+<div class='flex justify-end space-x-2'>
+        <button class='edit-budget-btn p-2 rounded-lg text-dark-text-secondary hover:text-primary hover:bg-primary/10 transition-colors duration-200' data-category='Miscellaneous'>
+        <i class='fas fa-edit'>
+        </i>
+    </button>
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] item_Miscellaneous Miscellaneous Category -- Miscellaneous budget item with significant underspend -->
+    </div>
+<!-- [/MODULE] items_Categories Budget Categories List -- List of budget categories with details -->
+    </div>
+    </section>
+<!-- [/MODULE] categories_Budget Categories -- List of budget categories with budget vs actual tracking -->
+    </div>
+<!-- [/MODULE] content_Budget Main Content Area -- Contains overview and category budget sections -->
+    </main>
+<!-- [/MODULE] main_Budget Main Content -- Main content area with budget management interface -->
+<!-- [MODULE] modal_Add Budget Modal -->
+<div id='budget-modal' class='fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300'>
+        <div class='bg-dark-card rounded-xl border border-dark-border w-full max-w-md mx-4 transform scale-95 transition-transform duration-300'>
+        <div class='p-6 border-b border-dark-border flex justify-between items-center'>
+        <h3 id='modal-title' class='text-xl font-bold text-white'>
+        Add New Budget
+    </h3>
+<button id='close-modal' class='text-dark-text-secondary hover:text-white transition-colors duration-200'>
+        <i class='fas fa-times'>
+        </i>
+    </button>
+    </div>
+<div class='p-6'>
+        <form id='budget-form'>
+        <input type='hidden' id='budget-action' value='add'/>
+<input type='hidden' id='current-category' value/>
+<div class='mb-4'>
+        <label for='category' class='block text-sm font-medium text-dark-text-secondary mb-2'>
+        Category
+    </label>
+<div class='relative'>
+        <select id='category' name='category' class='w-full bg-dark-bg border border-dark-border rounded-lg py-3 px-4 text-dark-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 appearance-none'>
+        <option value>
+        Select a category
+    </option>
+<option value='Housing'>
+        Housing
+    </option>
+<option value='Food'>
+        Food
+    </option>
+<option value='Transportation'>
+        Transportation
+    </option>
+<option value='Entertainment'>
+        Entertainment
+    </option>
+<option value='Utilities'>
+        Utilities
+    </option>
+<option value='Shopping'>
+        Shopping
+    </option>
+<option value='Miscellaneous'>
+        Miscellaneous
+    </option>
+    </select>
+<div class='absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none'>
+        <i class='fas fa-chevron-down text-dark-text-secondary'>
+        </i>
+    </div>
+    </div>
+    </div>
+<div class='mb-4'>
+        <label for='amount' class='block text-sm font-medium text-dark-text-secondary mb-2'>
+        Monthly Budget Amount
+    </label>
+<div class='relative'>
+        <span class='absolute left-4 top-1/2 transform -translate-y-1/2 text-dark-text-secondary'>
+        $
+    </span>
+<input type='number' id='amount' name='amount' min='0.01' step='0.01' class='w-full bg-dark-bg border border-dark-border rounded-lg py-3 pl-10 pr-4 text-dark-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50' placeholder='0.00'/>
+    </div>
+    </div>
+<div class='mb-6'>
+        <label for='account' class='block text-sm font-medium text-dark-text-secondary mb-2'>
+        Account (Optional)
+    </label>
+<div class='relative'>
+        <select id='account' name='account' class='w-full bg-dark-bg border border-dark-border rounded-lg py-3 px-4 text-dark-text-primary focus:outline-none focus:ring-2 focus:ring-primary/50 appearance-none'>
+        <option value='all'>
+        All Accounts
+    </option>
+<option value='cash'>
+        Cash
+    </option>
+<option value='credit'>
+        Credit Card
+    </option>
+<option value='debit'>
+        Debit Card
+    </option>
+    </select>
+<div class='absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none'>
+        <i class='fas fa-chevron-down text-dark-text-secondary'>
+        </i>
+    </div>
+    </div>
+    </div>
+<div class='flex space-x-3'>
+        <button type='button' id='cancel-btn' class='flex-1 py-3 px-4 border border-dark-border rounded-lg text-dark-text-primary hover:bg-dark-bg transition-colors duration-200'>
+        Cancel
+    </button>
+<button type='submit' class='flex-1 py-3 px-4 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg transition-colors duration-200'>
+        Save Budget
+    </button>
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] modal_Add Budget Modal -- Modal for adding or editing budget categories -->
+<!-- [JSMOD] modal_Budget Modal Functionality -->
+<script id='modal-script'>document.addEventListener('DOMContentLoaded', function () {
+  var modal = document.getElementById('budget-modal');
+  var addBtn = document.getElementById('add-budget-btn');
+  var closeBtn = document.getElementById('close-modal');
+  var cancelBtn = document.getElementById('cancel-btn');
+  var form = document.getElementById('budget-form');
+  var modalTitle = document.getElementById('modal-title');
+  var budgetAction = document.getElementById('budget-action');
+  var currentCategory = document.getElementById('current-category');
+  var editButtons = document.querySelectorAll('.edit-budget-btn');
+
+  // Open modal for adding budget
+  addBtn.addEventListener('click', function () {
+    modalTitle.textContent = 'Add New Budget';
+    budgetAction.value = 'add';
+    currentCategory.value = '';
+    form.reset();
+    openModal();
+  });
+
+  // Open modal for editing budget
+  editButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      var category = this.getAttribute('data-category');
+      modalTitle.textContent = "Edit".concat(category, "Budget");
+      budgetAction.value = 'edit';
+      currentCategory.value = category;
+
+      // Populate form with dummy data for the selected category
+      populateFormData(category);
+      openModal();
+    });
+  });
+
+  // Close modal
+  closeBtn.addEventListener('click', closeModal);
+  cancelBtn.addEventListener('click', closeModal);
+
+  // Close modal when clicking outside
+  modal.addEventListener('click', function (e) {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Form submission
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    // In a real application, this would submit to a server
+    alert('Budget saved successfully!');
+    closeModal();
+  });
+
+  // Open modal with animation
+  function openModal() {
+    modal.classList.remove('hidden');
+    setTimeout(function () {
+      modal.classList.add('opacity-100');
+      modal.querySelector('div').classList.remove('scale-95');
+      modal.querySelector('div').classList.add('scale-100');
+    }, 10);
+  }
+
+  // Close modal with animation
+  function closeModal() {
+    modal.classList.remove('opacity-100');
+    modal.querySelector('div').classList.remove('scale-100');
+    modal.querySelector('div').classList.add('scale-95');
+    setTimeout(function () {
+      modal.classList.add('hidden');
+    }, 300);
+  }
+
+  // Populate form with dummy data for editing
+  function populateFormData(category) {
+    var categorySelect = document.getElementById('category');
+    var amountInput = document.getElementById('amount');
+    var accountSelect = document.getElementById('account');
+
+    // Dummy data based on category
+    var categoryData = {
+      'Housing': {
+        amount: '1200.00',
+        account: 'all'
+      },
+      'Food': {
+        amount: '400.00',
+        account: 'cash'
+      },
+      'Transportation': {
+        amount: '300.00',
+        account: 'all'
+      },
+      'Entertainment': {
+        amount: '200.00',
+        account: 'credit'
+      },
+      'Utilities': {
+        amount: '250.00',
+        account: 'all'
+      },
+      'Shopping': {
+        amount: '150.00',
+        account: 'credit'
+      },
+      'Miscellaneous': {
+        amount: '350.00',
+        account: 'all'
+      }
+    };
+    if (categoryData[category]) {
+      categorySelect.value = category;
+      amountInput.value = categoryData[category].amount;
+      accountSelect.value = categoryData[category].account;
+    }
+  }
+});</script>
+<!-- [/JSMOD] modal_Budget Modal Functionality -- Handles opening, closing, and form submission for the budget modal -->
+<!-- [JSMOD] month_Budget Month Selector Functionality -->
+<script id='month-script'>document.addEventListener('DOMContentLoaded', function () {
+  var monthSelector = document.getElementById('month-selector');
+  var currentMonthEl = document.getElementById('current-month');
+
+  // Get current month and year
+  var now = new Date();
+  var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  currentMonthEl.textContent = "".concat(months[now.getMonth()], "").concat(now.getFullYear());
+
+  // In a real application, this would open a date picker
+  monthSelector.addEventListener('click', function () {
+    alert('Month selector would open a calendar picker in a real application');
+  });
+});</script>
+<!-- [/JSMOD] month_Budget Month Selector Functionality -- Handles month selection functionality -->
+    </body>
+    </html>

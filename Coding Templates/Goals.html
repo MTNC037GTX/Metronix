@@ -1,0 +1,978 @@
+<html lang='en'>
+        <head >
+        <meta charset='UTF-8'/>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+<title >Financial Goals</title>
+<link rel='stylesheet' href='https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css'/>
+<script src='https://res.gemcoder.com/js/reload.js'></script>
+<script src='https://cdn.tailwindcss.com'></script>
+<script src='https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js'></script>
+<link href='https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap' rel='stylesheet'/>
+<script >tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#575AD0',
+        success: '#00C48C',
+        danger: '#FF5630',
+        warning: '#FFAB00',
+        neutral: '#8A8F98',
+        'neutral-dark': '#3E4250',
+        'bg-dark': '#030112',
+        'card-dark': '#0A071E',
+        'border-dark': '#1E1A35'
+      },
+      fontFamily: {
+        'dm-sans': ['"DM Sans"', 'sans-serif']
+      },
+      spacing: {
+        '18': '4.5rem',
+        '22': '5.5rem'
+      }
+    }
+  }
+};</script>
+<style type='text/tailwindcss'>
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .progress-reverse {
+                transform: scaleX(-1);
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 10px 25px -5px rgba(87, 90, 208, 0.1), 0 8px 10px -6px rgba(87, 90, 208, 0.1);
+            }
+        }
+    </style>
+    </head>
+<body class='bg-bg-dark font-dm-sans text-white min-h-screen flex overflow-hidden'>
+        <!-- [MODULE] abc_主内容区域 -->
+<div class='flex flex-col md:flex-row w-full h-screen overflow-hidden'>
+        <!-- [MODULE] def_左侧导航栏 -->
+<aside class='w-16 md:w-64 bg-card-dark border-r border-border-dark flex flex-col h-full transition-all duration-300 ease-in-out z-20'>
+        <div class='flex items-center justify-center md:justify-start p-4 h-16 border-b border-border-dark'>
+        <div class='w-8 h-8 bg-primary rounded-lg flex items-center justify-center'>
+        <i class='fas fa-wallet text-white'>
+        </i>
+    </div>
+<span class='ml-3 text-lg font-semibold hidden md:block'>
+        FinTrack
+    </span>
+    </div>
+<nav class='flex-1 overflow-y-auto scrollbar-hide py-4'>
+        <ul class='px-2'>
+        <li class='mb-1'>
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 text-neutral hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-chart-pie w-5 h-5 text-center'>
+        </i>
+<span class='ml-3 hidden md:block'>
+        Dashboard
+    </span>
+    </a>
+    </li>
+<li class='mb-1'>
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 text-neutral hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-exchange-alt w-5 h-5 text-center'>
+        </i>
+<span class='ml-3 hidden md:block'>
+        Transaction
+    </span>
+    </a>
+    </li>
+<li class='mb-1'>
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 text-neutral hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-credit-card w-5 h-5 text-center'>
+        </i>
+<span class='ml-3 hidden md:block'>
+        Account
+    </span>
+    </a>
+    </li>
+<li class='mb-1'>
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 text-neutral hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-piggy-bank w-5 h-5 text-center'>
+        </i>
+<span class='ml-3 hidden md:block'>
+        Budget
+    </span>
+    </a>
+    </li>
+<li class='mb-1'>
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 bg-primary/10 text-primary rounded-lg transition-colors'>
+        <i class='fas fa-bullseye w-5 h-5 text-center'>
+        </i>
+<span class='ml-3 hidden md:block font-medium'>
+        Goals
+    </span>
+    </a>
+    </li>
+<li class='mb-1'>
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 text-neutral hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-balance-scale w-5 h-5 text-center'>
+        </i>
+<span class='ml-3 hidden md:block'>
+        Balance
+    </span>
+    </a>
+    </li>
+<li class='mb-1'>
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 text-neutral hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-chart-line w-5 h-5 text-center'>
+        </i>
+<span class='ml-3 hidden md:block'>
+        Investment
+    </span>
+    </a>
+    </li>
+<li class='mb-1'>
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 text-neutral hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-chart-bar w-5 h-5 text-center'>
+        </i>
+<span class='ml-3 hidden md:block'>
+        Analytics
+    </span>
+    </a>
+    </li>
+<li class='mb-1'>
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 text-neutral hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-file-alt w-5 h-5 text-center'>
+        </i>
+<span class='ml-3 hidden md:block'>
+        Report
+    </span>
+    </a>
+    </li>
+    </ul>
+    </nav>
+<div class='p-4 border-t border-border-dark mt-auto'>
+        <a href='javascript:void(0);' class='flex items-center px-3 py-3 text-neutral hover:text-white rounded-lg transition-colors'>
+        <i class='fas fa-sign-out-alt w-5 h-5 text-center'>
+        </i>
+<span class='ml-3 hidden md:block'>
+        Logout
+    </span>
+    </a>
+    </div>
+    </aside>
+<!-- [/MODULE] def_左侧导航栏 -- 包含系统主要功能导航菜单，当前激活项为Goals -->
+<!-- [MODULE] ghi_右侧主内容区域 -->
+<main class='flex-1 flex flex-col overflow-hidden'>
+        <!-- [MODULE] jkl_顶部区域 -->
+<header class='h-16 bg-card-dark border-b border-border-dark flex items-center justify-between px-6'>
+        <div class='flex items-center'>
+        <h1 class='text-[clamp(1.25rem,3vw,1.75rem)] font-bold'>
+        Financial Goals
+    </h1>
+    </div>
+<div class='flex items-center space-x-4'>
+        <button id='add-goal-btn' class='bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg flex items-center transition-colors'>
+        <i class='fas fa-plus mr-2'>
+        </i>
+<span >
+        Add Goal
+    </span>
+    </button>
+<div class='relative'>
+        <button class='w-10 h-10 rounded-full bg-border-dark flex items-center justify-center overflow-hidden'>
+        <img src='https://design.gemcoder.com/staticResource/echoAiSystemImages/651f437f1211cce428c3fb331146ff83.png' alt='User Profile' class='w-full h-full object-cover'/>
+    </button>
+    </div>
+    </div>
+    </header>
+<!-- [/MODULE] jkl_顶部区域 -- 包含页面标题和添加目标按钮 -->
+<!-- [MODULE] mno_Goals 主体内容 -->
+<div class='flex-1 overflow-y-auto p-6 space-y-6'>
+        <!-- [MODULE] pqr_Goals Overview 概览区 -->
+<section class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+        <div class='bg-card-dark rounded-xl p-6 border border-border-dark card-hover'>
+        <div class='flex items-start justify-between'>
+        <div >
+        <p class='text-neutral text-sm mb-1'>
+        Total Goals
+    </p>
+<h3 class='text-2xl font-bold'>
+        8
+    </h3>
+    </div>
+<div class='w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary'>
+        <i class='fas fa-bullseye'>
+        </i>
+    </div>
+    </div>
+<div class='mt-4 text-xs text-neutral'>
+        <span class='text-success flex items-center'>
+        <i class='fas fa-arrow-up mr-1'>
+        </i>
+2 goals this month
+    </span>
+    </div>
+    </div>
+<div class='bg-card-dark rounded-xl p-6 border border-border-dark card-hover'>
+        <div class='flex items-start justify-between'>
+        <div >
+        <p class='text-neutral text-sm mb-1'>
+        On Track
+    </p>
+<h3 class='text-2xl font-bold text-success'>
+        5
+    </h3>
+    </div>
+<div class='w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center text-success'>
+        <i class='fas fa-check-circle'>
+        </i>
+    </div>
+    </div>
+<div class='mt-4 text-xs text-neutral'>
+        <span class='text-success flex items-center'>
+        <i class='fas fa-arrow-up mr-1'>
+        </i>
+62.5% of total
+    </span>
+    </div>
+    </div>
+<div class='bg-card-dark rounded-xl p-6 border border-border-dark card-hover'>
+        <div class='flex items-start justify-between'>
+        <div >
+        <p class='text-neutral text-sm mb-1'>
+        At Risk
+    </p>
+<h3 class='text-2xl font-bold text-warning'>
+        2
+    </h3>
+    </div>
+<div class='w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center text-warning'>
+        <i class='fas fa-exclamation-triangle'>
+        </i>
+    </div>
+    </div>
+<div class='mt-4 text-xs text-neutral'>
+        <span class='text-warning flex items-center'>
+        <i class='fas fa-minus mr-1'>
+        </i>
+25% of total
+    </span>
+    </div>
+    </div>
+<div class='bg-card-dark rounded-xl p-6 border border-border-dark card-hover'>
+        <div class='flex items-start justify-between'>
+        <div >
+        <p class='text-neutral text-sm mb-1'>
+        Completed
+    </p>
+<h3 class='text-2xl font-bold text-primary'>
+        1
+    </h3>
+    </div>
+<div class='w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary'>
+        <i class='fas fa-trophy'>
+        </i>
+    </div>
+    </div>
+<div class='mt-4 text-xs text-neutral'>
+        <span class='text-success flex items-center'>
+        <i class='fas fa-arrow-up mr-1'>
+        </i>
+12.5% of total
+    </span>
+    </div>
+    </div>
+    </section>
+<!-- [/MODULE] pqr_Goals Overview 概览区 -- 显示财务目标总体状态，包括总目标数、正常进行中、风险中及已完成的目标数量 -->
+<!-- [MODULE] stu_Goals List 核心区域 -->
+<section class='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+        <!-- Savings Goal Card -->
+<div class='bg-card-dark rounded-xl border border-border-dark overflow-hidden card-hover cursor-pointer goal-card' data-goal-type='savings'>
+        <div class='p-6'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <h3 class='text-lg font-semibold'>
+        Emergency Fund
+    </h3>
+<div class='flex items-center mt-1'>
+        <span class='text-xs px-2 py-1 bg-primary/10 text-primary rounded-full'>
+        Savings Goal
+    </span>
+<span class='ml-2 text-xs text-neutral'>
+        • Linked to: Main Account
+    </span>
+    </div>
+    </div>
+<span class='px-2 py-1 bg-success/10 text-success text-xs rounded-full'>
+        On Track
+    </span>
+    </div>
+<div class='mb-4'>
+        <div class='flex justify-between text-sm mb-1'>
+        <span class='text-neutral'>
+        $12,500.00
+    </span>
+<span class='font-medium'>
+        $20,000.00
+    </span>
+    </div>
+<div class='w-full bg-border-dark rounded-full h-2.5'>
+        <div class='bg-success h-2.5 rounded-full' style='width: 62.5%'>
+        </div>
+    </div>
+<div class='text-right text-xs text-neutral mt-1'>
+        62.5% complete
+    </div>
+    </div>
+<div class='flex justify-between items-center text-sm'>
+        <div class='flex items-center text-neutral'>
+        <i class='fas fa-calendar-alt mr-1'>
+        </i>
+<span >
+        Target: Dec 2023
+    </span>
+    </div>
+<div class='text-success font-medium'>
+        +$1,200 this month
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- Expense Limit Goal Card -->
+<div class='bg-card-dark rounded-xl border border-border-dark overflow-hidden card-hover cursor-pointer goal-card' data-goal-type='expense'>
+        <div class='p-6'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <h3 class='text-lg font-semibold'>
+        Entertainment Budget
+    </h3>
+<div class='flex items-center mt-1'>
+        <span class='text-xs px-2 py-1 bg-warning/10 text-warning rounded-full'>
+        Expense Limit
+    </span>
+<span class='ml-2 text-xs text-neutral'>
+        • Linked to: Entertainment
+    </span>
+    </div>
+    </div>
+<span class='px-2 py-1 bg-warning/10 text-warning text-xs rounded-full'>
+        At Risk
+    </span>
+    </div>
+<div class='mb-4'>
+        <div class='flex justify-between text-sm mb-1'>
+        <span class='text-neutral'>
+        $450.00 spent
+    </span>
+<span class='font-medium'>
+        of $500.00
+    </span>
+    </div>
+<div class='w-full bg-border-dark rounded-full h-2.5 relative'>
+        <div class='absolute right-0 top-0 bg-warning h-2.5 rounded-full progress-reverse' style='width: 90%'>
+        </div>
+<div class='absolute right-0 top-0 bg-success h-2.5 rounded-full progress-reverse' style='width: 10%'>
+        </div>
+    </div>
+<div class='text-right text-xs text-neutral mt-1'>
+        90% of limit used
+    </div>
+    </div>
+<div class='flex justify-between items-center text-sm'>
+        <div class='flex items-center text-neutral'>
+        <i class='fas fa-calendar-alt mr-1'>
+        </i>
+<span >
+        Monthly limit
+    </span>
+    </div>
+<div class='text-warning font-medium'>
+        10% remaining
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- Debt Reduction Goal Card -->
+<div class='bg-card-dark rounded-xl border border-border-dark overflow-hidden card-hover cursor-pointer goal-card' data-goal-type='debt'>
+        <div class='p-6'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <h3 class='text-lg font-semibold'>
+        Credit Card Payoff
+    </h3>
+<div class='flex items-center mt-1'>
+        <span class='text-xs px-2 py-1 bg-primary/10 text-primary rounded-full'>
+        Debt Reduction
+    </span>
+<span class='ml-2 text-xs text-neutral'>
+        • Linked to: Visa Card
+    </span>
+    </div>
+    </div>
+<span class='px-2 py-1 bg-danger/10 text-danger text-xs rounded-full'>
+        At Risk
+    </span>
+    </div>
+<div class='mb-4'>
+        <div class='flex justify-between text-sm mb-1'>
+        <span class='text-neutral'>
+        $3,250.00
+    </span>
+<span class='font-medium'>
+        $2,800.00
+    </span>
+    </div>
+<div class='w-full bg-border-dark rounded-full h-2.5'>
+        <div class='bg-danger h-2.5 rounded-full' style='width: 116%'>
+        </div>
+    </div>
+<div class='text-right text-xs text-neutral mt-1'>
+        Balance increased by $450
+    </div>
+    </div>
+<div class='flex justify-between items-center text-sm'>
+        <div class='flex items-center text-neutral'>
+        <i class='fas fa-calendar-alt mr-1'>
+        </i>
+<span >
+        Target: Jun 2024
+    </span>
+    </div>
+<div class='text-danger font-medium'>
+        Balance increasing
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- Net Worth Goal Card -->
+<div class='bg-card-dark rounded-xl border border-border-dark overflow-hidden card-hover cursor-pointer goal-card' data-goal-type='networth'>
+        <div class='p-6'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <h3 class='text-lg font-semibold'>
+        Net Worth Growth
+    </h3>
+<div class='flex items-center mt-1'>
+        <span class='text-xs px-2 py-1 bg-primary/10 text-primary rounded-full'>
+        Net Worth Goal
+    </span>
+<span class='ml-2 text-xs text-neutral'>
+        • Global calculation
+    </span>
+    </div>
+    </div>
+<span class='px-2 py-1 bg-success/10 text-success text-xs rounded-full'>
+        On Track
+    </span>
+    </div>
+<div class='mb-4'>
+        <div class='flex justify-between text-sm mb-1'>
+        <span class='text-neutral'>
+        $125,750.00
+    </span>
+<span class='font-medium'>
+        $150,000.00
+    </span>
+    </div>
+<div class='w-full bg-border-dark rounded-full h-2.5'>
+        <div class='bg-success h-2.5 rounded-full' style='width: 83.8%'>
+        </div>
+    </div>
+<div class='text-right text-xs text-neutral mt-1'>
+        83.8% complete
+    </div>
+    </div>
+<div class='flex justify-between items-center text-sm'>
+        <div class='flex items-center text-neutral'>
+        <i class='fas fa-calendar-alt mr-1'>
+        </i>
+<span >
+        Target: Dec 2024
+    </span>
+    </div>
+<div class='text-success font-medium'>
+        +$5,250 this quarter
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- Investment Goal Card -->
+<div class='bg-card-dark rounded-xl border border-border-dark overflow-hidden card-hover cursor-pointer goal-card' data-goal-type='investment'>
+        <div class='p-6'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <h3 class='text-lg font-semibold'>
+        Retirement Fund
+    </h3>
+<div class='flex items-center mt-1'>
+        <span class='text-xs px-2 py-1 bg-primary/10 text-primary rounded-full'>
+        Investment Goal
+    </span>
+<span class='ml-2 text-xs text-neutral'>
+        • Linked to: 401(k) Account
+    </span>
+    </div>
+    </div>
+<span class='px-2 py-1 bg-success/10 text-success text-xs rounded-full'>
+        On Track
+    </span>
+    </div>
+<div class='mb-4'>
+        <div class='flex justify-between text-sm mb-1'>
+        <span class='text-neutral'>
+        $185,250.00
+    </span>
+<span class='font-medium'>
+        $500,000.00
+    </span>
+    </div>
+<div class='w-full bg-border-dark rounded-full h-2.5'>
+        <div class='bg-success h-2.5 rounded-full' style='width: 37.1%'>
+        </div>
+    </div>
+<div class='text-right text-xs text-neutral mt-1'>
+        37.1% complete
+    </div>
+    </div>
+<div class='flex justify-between items-center text-sm'>
+        <div class='flex items-center text-neutral'>
+        <i class='fas fa-calendar-alt mr-1'>
+        </i>
+<span >
+        Target: Dec 2040
+    </span>
+    </div>
+<div class='text-success font-medium'>
+        +8.2% YTD return
+    </div>
+    </div>
+    </div>
+    </div>
+<!-- Completed Goal Card -->
+<div class='bg-card-dark rounded-xl border border-border-dark overflow-hidden card-hover cursor-pointer goal-card' data-goal-type='savings'>
+        <div class='p-6'>
+        <div class='flex justify-between items-start mb-4'>
+        <div >
+        <h3 class='text-lg font-semibold'>
+        New Laptop Fund
+    </h3>
+<div class='flex items-center mt-1'>
+        <span class='text-xs px-2 py-1 bg-primary/10 text-primary rounded-full'>
+        Savings Goal
+    </span>
+<span class='ml-2 text-xs text-neutral'>
+        • Linked to: Main Account
+    </span>
+    </div>
+    </div>
+<span class='px-2 py-1 bg-primary/10 text-primary text-xs rounded-full'>
+        Completed
+    </span>
+    </div>
+<div class='mb-4'>
+        <div class='flex justify-between text-sm mb-1'>
+        <span class='text-neutral'>
+        $1,800.00
+    </span>
+<span class='font-medium'>
+        $1,800.00
+    </span>
+    </div>
+<div class='w-full bg-border-dark rounded-full h-2.5'>
+        <div class='bg-primary h-2.5 rounded-full' style='width: 100%'>
+        </div>
+    </div>
+<div class='text-right text-xs text-neutral mt-1'>
+        100% complete
+    </div>
+    </div>
+<div class='flex justify-between items-center text-sm'>
+        <div class='flex items-center text-neutral'>
+        <i class='fas fa-calendar-alt mr-1'>
+        </i>
+<span >
+        Achieved: May 2023
+    </span>
+    </div>
+<div class='text-primary font-medium'>
+        Completed
+    </div>
+    </div>
+    </div>
+    </div>
+    </section>
+<!-- [/MODULE] stu_Goals List 核心区域 -- 以卡片形式展示所有财务目标，包括储蓄目标、支出控制目标、负债减少目标、净资产目标和投资目标 -->
+    </div>
+<!-- [/MODULE] mno_Goals 主体内容 -- 包含财务目标概览和目标列表 -->
+    </main>
+<!-- [/MODULE] ghi_右侧主内容区域 -- 财务目标页面主内容 -->
+    </div>
+<!-- [/MODULE] abc_主内容区域 -- 财务目标页面完整布局 -->
+<!-- [MODULE] vwx_Goal Detail Modal -->
+<div id='goal-detail-modal' class='fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden'>
+        <div class='bg-card-dark rounded-xl border border-border-dark w-full max-w-2xl max-h-[90vh] overflow-y-auto m-4 transform transition-all'>
+        <div class='p-6 border-b border-border-dark flex justify-between items-center sticky top-0 bg-card-dark z-10'>
+        <h2 class='text-xl font-bold' id='modal-title'>
+        Goal Details
+    </h2>
+<button id='close-modal-btn' class='text-neutral hover:text-white transition-colors'>
+        <i class='fas fa-times'>
+        </i>
+    </button>
+    </div>
+<div class='p-6'>
+        <div id='modal-content'>
+        <!-- Modal content will be dynamically inserted here -->
+    </div>
+    </div>
+<div class='p-6 border-t border-border-dark flex justify-end space-x-3 sticky bottom-0 bg-card-dark z-10'>
+        <button id='archive-goal-btn' class='px-4 py-2 border border-border-dark text-neutral hover:bg-border-dark rounded-lg transition-colors'>
+        Archive
+    </button>
+<button id='edit-goal-btn' class='px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg transition-colors'>
+        Edit Goal
+    </button>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] vwx_Goal Detail Modal -- 目标详情弹窗，包含目标摘要、进度计算说明、趋势图表和操作按钮 -->
+<!-- [MODULE] yz1_Add Goal Modal -->
+<div id='add-goal-modal' class='fixed inset-0 bg-black/50 z-50 flex items-center justify-center hidden'>
+        <div class='bg-card-dark rounded-xl border border-border-dark w-full max-w-2xl max-h-[90vh] overflow-y-auto m-4 transform transition-all'>
+        <div class='p-6 border-b border-border-dark flex justify-between items-center sticky top-0 bg-card-dark z-10'>
+        <h2 class='text-xl font-bold'>
+        Add New Goal
+    </h2>
+<button id='close-add-modal-btn' class='text-neutral hover:text-white transition-colors'>
+        <i class='fas fa-times'>
+        </i>
+    </button>
+    </div>
+<div class='p-6'>
+        <form id='add-goal-form'>
+        <div class='mb-4'>
+        <label class='block text-sm font-medium text-neutral mb-1'>
+        Goal Name
+    </label>
+<input type='text' class='w-full bg-border-dark border border-border-dark rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary/50' placeholder='Enter goal name' required/>
+    </div>
+<div class='mb-4'>
+        <label class='block text-sm font-medium text-neutral mb-1'>
+        Goal Type
+    </label>
+<select id='goal-type-select' class='w-full bg-border-dark border border-border-dark rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary/50' required>
+        <option value>
+        Select goal type
+    </option>
+<option value='savings'>
+        Savings Goal
+    </option>
+<option value='expense'>
+        Expense Limit Goal
+    </option>
+<option value='debt'>
+        Debt Reduction Goal
+    </option>
+<option value='networth'>
+        Net Worth Goal
+    </option>
+<option value='investment'>
+        Investment Goal
+    </option>
+    </select>
+    </div>
+<div id='linked-entity-container' class='mb-4 hidden'>
+        <label class='block text-sm font-medium text-neutral mb-1' id='linked-entity-label'>
+        Linked Account
+    </label>
+<select id='linked-entity-select' class='w-full bg-border-dark border border-border-dark rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary/50'>
+        <option value>
+        Select linked entity
+    </option>
+<!-- Options will be dynamically populated based on goal type -->
+    </select>
+    </div>
+<div class='mb-4'>
+        <label class='block text-sm font-medium text-neutral mb-1'>
+        Target Value
+    </label>
+<input type='number' step='0.01' class='w-full bg-border-dark border border-border-dark rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary/50' placeholder='Enter target value' required/>
+    </div>
+<div class='mb-4'>
+        <label class='block text-sm font-medium text-neutral mb-1'>
+        Target Date
+    </label>
+<input type='date' class='w-full bg-border-dark border border-border-dark rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-primary/50' required/>
+    </div>
+    </form>
+    </div>
+<div class='p-6 border-t border-border-dark flex justify-end space-x-3 sticky bottom-0 bg-card-dark z-10'>
+        <button id='cancel-add-goal-btn' class='px-4 py-2 border border-border-dark text-neutral hover:bg-border-dark rounded-lg transition-colors'>
+        Cancel
+    </button>
+<button id='save-goal-btn' class='px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg transition-colors'>
+        Save Goal
+    </button>
+    </div>
+    </div>
+    </div>
+<!-- [/MODULE] yz1_Add Goal Modal -- 添加新财务目标的弹窗表单，包含目标名称、类型、关联实体、目标值和目标日期等字段 -->
+<!-- [JSMOD] bcd_Modal Handling -->
+<script id='modal-handling'>document.addEventListener('DOMContentLoaded', function () {
+  var goalDetailModal = document.getElementById('goal-detail-modal');
+  var addGoalModal = document.getElementById('add-goal-modal');
+  var closeModalBtn = document.getElementById('close-modal-btn');
+  var closeAddModalBtn = document.getElementById('close-add-modal-btn');
+  var addGoalBtn = document.getElementById('add-goal-btn');
+  var cancelAddGoalBtn = document.getElementById('cancel-add-goal-btn');
+  var goalTypeSelect = document.getElementById('goal-type-select');
+  var linkedEntityContainer = document.getElementById('linked-entity-container');
+  var linkedEntityLabel = document.getElementById('linked-entity-label');
+  var linkedEntitySelect = document.getElementById('linked-entity-select');
+  var goalCards = document.querySelectorAll('.goal-card');
+
+  // Open goal detail modal when clicking on a goal card
+  goalCards.forEach(function (card) {
+    card.addEventListener('click', function () {
+      var goalType = this.getAttribute('data-goal-type');
+      openGoalDetailModal(goalType);
+      goalDetailModal.classList.remove('hidden');
+    });
+  });
+
+  // Close modals
+  closeModalBtn.addEventListener('click', function () {
+    goalDetailModal.classList.add('hidden');
+  });
+  closeAddModalBtn.addEventListener('click', function () {
+    addGoalModal.classList.add('hidden');
+  });
+  cancelAddGoalBtn.addEventListener('click', function () {
+    addGoalModal.classList.add('hidden');
+  });
+
+  // Open add goal modal
+  addGoalBtn.addEventListener('click', function () {
+    addGoalModal.classList.remove('hidden');
+  });
+
+  // Close modals when clicking outside
+  window.addEventListener('click', function (event) {
+    if (event.target === goalDetailModal) {
+      goalDetailModal.classList.add('hidden');
+    }
+    if (event.target === addGoalModal) {
+      addGoalModal.classList.add('hidden');
+    }
+  });
+
+  // Handle goal type selection for add goal form
+  goalTypeSelect.addEventListener('change', function () {
+    var selectedType = this.value;
+    if (selectedType === 'networth') {
+      linkedEntityContainer.classList.add('hidden');
+      return;
+    }
+    linkedEntityContainer.classList.remove('hidden');
+
+    // Clear previous options
+    linkedEntitySelect.innerHTML = '<option value="">Select linked entity</option>';
+
+    // Set label and populate options based on selected goal type
+    switch (selectedType) {
+      case 'savings':
+        linkedEntityLabel.textContent = 'Linked Account';
+        populateSelectOptions(linkedEntitySelect, ['Main Account', 'Savings Account', 'Emergency Fund', 'Secondary Account']);
+        break;
+      case 'expense':
+        linkedEntityLabel.textContent = 'Linked Category';
+        populateSelectOptions(linkedEntitySelect, ['Entertainment', 'Dining', 'Shopping', 'Transportation', 'Utilities']);
+        break;
+      case 'debt':
+        linkedEntityLabel.textContent = 'Linked Liability';
+        populateSelectOptions(linkedEntitySelect, ['Visa Card', 'MasterCard', 'Car Loan', 'Student Loan', 'Mortgage']);
+        break;
+      case 'investment':
+        linkedEntityLabel.textContent = 'Linked Investment';
+        populateSelectOptions(linkedEntitySelect, ['401(k) Account', 'Stocks Portfolio', 'Retirement Fund', 'Crypto Investments']);
+        break;
+    }
+  });
+
+  // Helper function to populate select options
+  function populateSelectOptions(selectElement, options) {
+    options.forEach(function (option) {
+      var optionElement = document.createElement('option');
+      optionElement.value = option.toLowerCase().replace(/\s+/g, '-');
+      optionElement.textContent = option;
+      selectElement.appendChild(optionElement);
+    });
+  }
+
+  // Function to open goal detail modal with appropriate content
+  function openGoalDetailModal(goalType) {
+    var modalTitle = document.getElementById('modal-title');
+    var modalContent = document.getElementById('modal-content');
+
+    // Set title and content based on goal type
+    switch (goalType) {
+      case 'savings':
+        modalTitle.textContent = 'Emergency Fund - Details';
+        modalContent.innerHTML = generateSavingsGoalContent();
+        break;
+      case 'expense':
+        modalTitle.textContent = 'Entertainment Budget - Details';
+        modalContent.innerHTML = generateExpenseGoalContent();
+        break;
+      case 'debt':
+        modalTitle.textContent = 'Credit Card Payoff - Details';
+        modalContent.innerHTML = generateDebtGoalContent();
+        break;
+      case 'networth':
+        modalTitle.textContent = 'Net Worth Growth - Details';
+        modalContent.innerHTML = generateNetWorthGoalContent();
+        break;
+      case 'investment':
+        modalTitle.textContent = 'Retirement Fund - Details';
+        modalContent.innerHTML = generateInvestmentGoalContent();
+        break;
+    }
+
+    // Initialize chart if content includes a chart container
+    if (document.getElementById('goal-trend-chart')) {
+      initGoalTrendChart();
+    }
+  }
+
+  // Helper functions to generate modal content for different goal types
+  function generateSavingsGoalContent() {
+    return "<div class=\"mb-6\">\n                        <div class=\"flex justify-between items-center mb-4\">\n                            <div>\n                                <h3 class=\"text-lg font-semibold\">Emergency Fund</h3>\n                                <div class=\"flex items-center mt-1\">\n                                    <span class=\"text-xs px-2 py-1 bg-primary/10 text-primary rounded-full\">Savings Goal</span>\n                                    <span class=\"ml-2 text-xs text-neutral\">\u2022 Linked to: Main Account</span>\n                                </div>\n                            </div>\n                            <span class=\"px-2 py-1 bg-success/10 text-success text-xs rounded-full\">On Track</span>\n                        </div>\n                        <div class=\"mb-6\">\n                            <div class=\"flex justify-between text-sm mb-1\">\n                                <span class=\"text-neutral\">$12,500.00</span>\n                                <span class=\"font-medium\">$20,000.00</span>\n                            </div>\n                            <div class=\"w-full bg-border-dark rounded-full h-2.5\">\n                                <div class=\"bg-success h-2.5 rounded-full\" style=\"width: 62.5%\"></div>\n                            </div>\n                            <div class=\"text-right text-xs text-neutral mt-1\">62.5% complete</div>\n                        </div>\n                    </div>\n                    <div class=\"mb-6\">\n                        <h4 class=\"text-sm font-medium mb-3\">Progress Calculation</h4>\n                        <p class=\"text-sm text-neutral\">\n                            Progress is calculated as the sum of income minus expenses for the linked account (Main Account) within the selected period.\n                        </p>\n                    </div>\n                    <div class=\"mb-6\">\n                        <h4 class=\"text-sm font-medium mb-3\">Trend Over Time</h4>\n                        <div id=\"goal-trend-chart\" class=\"w-full h-64\"></div>\n                    </div>\n                    <div class=\"grid grid-cols-2 gap-4 mb-6\">\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Target Date</p>\n                            <p class=\"font-medium\">December 2023</p>\n                        </div>\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Monthly Contribution</p>\n                            <p class=\"font-medium text-success\">+$1,200.00</p>\n                        </div>\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Time Remaining</p>\n                            <p class=\"font-medium\">6 months</p>\n                        </div>\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Required Monthly</p>\n                            <p class=\"font-medium\">$1,250.00</p>\n                        </div>\n                    </div>";
+  }
+  function generateExpenseGoalContent() {
+    return "<div class=\"mb-6\">\n                        <div class=\"flex justify-between items-center mb-4\">\n                            <div>\n                                <h3 class=\"text-lg font-semibold\">Entertainment Budget</h3>\n                                <div class=\"flex items-center mt-1\">\n                                    <span class=\"text-xs px-2 py-1 bg-warning/10 text-warning rounded-full\">Expense Limit</span>\n                                    <span class=\"ml-2 text-xs text-neutral\">\u2022 Linked to: Entertainment</span>\n                                </div>\n                            </div>\n                            <span class=\"px-2 py-1 bg-warning/10 text-warning text-xs rounded-full\">At Risk</span>\n                        </div>\n                        <div class=\"mb-6\">\n                            <div class=\"flex justify-between text-sm mb-1\">\n                                <span class=\"text-neutral\">$450.00 spent</span>\n                                <span class=\"font-medium\">of $500.00</span>\n                            </div>\n                            <div class=\"w-full bg-border-dark rounded-full h-2.5 relative\">\n                                <div class=\"absolute right-0 top-0 bg-warning h-2.5 rounded-full progress-reverse\" style=\"width: 90%\"></div>\n                                <div class=\"absolute right-0 top-0 bg-success h-2.5 rounded-full progress-reverse\" style=\"width: 10%\"></div>\n                            </div>\n                            <div class=\"text-right text-xs text-neutral mt-1\">90% of limit used</div>\n                        </div>\n                    </div>\n                    <div class=\"mb-6\">\n                        <h4 class=\"text-sm font-medium mb-3\">Progress Calculation</h4>\n                        <p class=\"text-sm text-neutral\">\n                            Progress is calculated based on total expenses for the linked category (Entertainment). Lower is better, and exceeding the limit indicates failure.\n                        </p>\n                    </div>\n                    <div class=\"mb-6\">\n                        <h4 class=\"text-sm font-medium mb-3\">Trend Over Time</h4>\n                        <div id=\"goal-trend-chart\" class=\"w-full h-64\"></div>\n                    </div>\n                    <div class=\"grid grid-cols-2 gap-4 mb-6\">\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Budget Period</p>\n                            <p class=\"font-medium\">Monthly</p>\n                        </div>\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Remaining Budget</p>\n                            <p class=\"font-medium text-warning\">$50.00</p>\n                        </div>\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Days Remaining</p>\n                            <p class=\"font-medium\">5 days</p>\n                        </div>\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Avg. Daily Spend</p>\n                            <p class=\"font-medium text-warning\">$10.00</p>\n                        </div>\n                    </div>";
+  }
+  function generateDebtGoalContent() {
+    return "<div class=\"mb-6\">\n                        <div class=\"flex justify-between items-center mb-4\">\n                            <div>\n                                <h3 class=\"text-lg font-semibold\">Credit Card Payoff</h3>\n                                <div class=\"flex items-center mt-1\">\n                                    <span class=\"text-xs px-2 py-1 bg-primary/10 text-primary rounded-full\">Debt Reduction</span>\n                                    <span class=\"ml-2 text-xs text-neutral\">\u2022 Linked to: Visa Card</span>\n                                </div>\n                            </div>\n                            <span class=\"px-2 py-1 bg-danger/10 text-danger text-xs rounded-full\">At Risk</span>\n                        </div>\n                        <div class=\"mb-6\">\n                            <div class=\"flex justify-between text-sm mb-1\">\n                                <span class=\"text-neutral\">$3,250.00</span>\n                                <span class=\"font-medium\">$2,800.00</span>\n                            </div>\n                            <div class=\"w-full bg-border-dark rounded-full h-2.5\">\n                                <div class=\"bg-danger h-2.5 rounded-full\" style=\"width: 116%\"></div>\n                            </div>\n                            <div class=\"text-right text-xs text-neutral mt-1\">Balance increased by $450</div>\n                        </div>\n                    </div>\n                    <div class=\"mb-6\">\n                        <h4 class=\"text-sm font-medium mb-3\">Progress Calculation</h4>\n                        <p class=\"text-sm text-neutral\">\n                            Progress is calculated as the reduction in liability balance for the linked account (Visa Card). The goal is to reduce the balance over time.\n                        </p>\n                    </div>\n                    <div class=\"mb-6\">\n                        <h4 class=\"text-sm font-medium mb-3\">Trend Over Time</h4>\n                        <div id=\"goal-trend-chart\" class=\"w-full h-64\"></div>\n                    </div>\n                    <div class=\"grid grid-cols-2 gap-4 mb-6\">\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Target Date</p>\n                            <p class=\"font-medium\">June 2024</p>\n                        </div>\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Current Balance</p>\n                            <p class=\"font-medium text-danger\">$3,250.00</p>\n                        </div>\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Monthly Payment</p>\n                            <p class=\"font-medium\">$250.00</p>\n                        </div>\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Interest Rate</p>\n                            <p class=\"font-medium\">18.99%</p>\n                        </div>\n                    </div>";
+  }
+  function generateNetWorthGoalContent() {
+    return "<div class=\"mb-6\">\n                        <div class=\"flex justify-between items-center mb-4\">\n                            <div>\n                                <h3 class=\"text-lg font-semibold\">Net Worth Growth</h3>\n                                <div class=\"flex items-center mt-1\">\n                                    <span class=\"text-xs px-2 py-1 bg-primary/10 text-primary rounded-full\">Net Worth Goal</span>\n                                    <span class=\"ml-2 text-xs text-neutral\">\u2022 Global calculation</span>\n                                </div>\n                            </div>\n                            <span class=\"px-2 py-1 bg-success/10 text-success text-xs rounded-full\">On Track</span>\n                        </div>\n                        <div class=\"mb-6\">\n                            <div class=\"flex justify-between text-sm mb-1\">\n                                <span class=\"text-neutral\">$125,750.00</span>\n                                <span class=\"font-medium\">$150,000.00</span>\n                            </div>\n                            <div class=\"w-full bg-border-dark rounded-full h-2.5\">\n                                <div class=\"bg-success h-2.5 rounded-full\" style=\"width: 83.8%\"></div>\n                            </div>\n                            <div class=\"text-right text-xs text-neutral mt-1\">83.8% complete</div>\n                        </div>\n                    </div>\n                    <div class=\"mb-6\">\n                        <h4 class=\"text-sm font-medium mb-3\">Progress Calculation</h4>\n                        <p class=\"text-sm text-neutral\">\n                            Progress is calculated based on net worth derived from balance snapshots. Net worth is calculated as total assets minus total liabilities.\n                        </p>\n                    </div>\n                    <div class=\"mb-6\">\n                        <h4 class=\"text-sm font-medium mb-3\">Trend Over Time</h4>\n                        <div id=\"goal-trend-chart\" class=\"w-full h-64\"></div>\n                    </div>\n                    <div class=\"grid grid-cols-2 gap-4 mb-6\">\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Target Date</p>\n                            <p class=\"font-medium\">December 2024</p>\n                        </div>\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Quarterly Growth</p>\n                            <p class=\"font-medium text-success\">$5,250.00</p>\n                        </div>\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Annual Growth</p>\n                            <p class=\"font-medium text-success\">$18,750.00</p>\n                        </div>\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Growth Rate</p>\n                            <p class=\"font-medium text-success\">17.4%</p>\n                        </div>\n                    </div>";
+  }
+  function generateInvestmentGoalContent() {
+    return "<div class=\"mb-6\">\n                        <div class=\"flex justify-between items-center mb-4\">\n                            <div>\n                                <h3 class=\"text-lg font-semibold\">Retirement Fund</h3>\n                                <div class=\"flex items-center mt-1\">\n                                    <span class=\"text-xs px-2 py-1 bg-primary/10 text-primary rounded-full\">Investment Goal</span>\n                                    <span class=\"ml-2 text-xs text-neutral\">\u2022 Linked to: 401(k) Account</span>\n                                </div>\n                            </div>\n                            <span class=\"px-2 py-1 bg-success/10 text-success text-xs rounded-full\">On Track</span>\n                        </div>\n                        <div class=\"mb-6\">\n                            <div class=\"flex justify-between text-sm mb-1\">\n                                <span class=\"text-neutral\">$185,250.00</span>\n                                <span class=\"font-medium\">$500,000.00</span>\n                            </div>\n                            <div class=\"w-full bg-border-dark rounded-full h-2.5\">\n                                <div class=\"bg-success h-2.5 rounded-full\" style=\"width: 37.1%\"></div>\n                            </div>\n                            <div class=\"text-right text-xs text-neutral mt-1\">37.1% complete</div>\n                        </div>\n                    </div>\n                    <div class=\"mb-6\">\n                        <h4 class=\"text-sm font-medium mb-3\">Progress Calculation</h4>\n                        <p class=\"text-sm text-neutral\">\n                            Progress is calculated by comparing the current value of the linked investment (401(k) Account) to the target value.\n                        </p>\n                    </div>\n                    <div class=\"mb-6\">\n                        <h4 class=\"text-sm font-medium mb-3\">Trend Over Time</h4>\n                        <div id=\"goal-trend-chart\" class=\"w-full h-64\"></div>\n                    </div>\n                    <div class=\"grid grid-cols-2 gap-4 mb-6\">\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Target Date</p>\n                            <p class=\"font-medium\">December 2040</p>\n                        </div>\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">YTD Return</p>\n                            <p class=\"font-medium text-success\">+8.2%</p>\n                        </div>\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Annual Contribution</p>\n                            <p class=\"font-medium\">$12,500.00</p>\n                        </div>\n                        <div class=\"bg-border-dark/50 rounded-lg p-4\">\n                            <p class=\"text-xs text-neutral mb-1\">Employer Match</p>\n                            <p class=\"font-medium\">$5,000.00</p>\n                        </div>\n                    </div>";
+  }
+
+  // Initialize ECharts instance for goal trend chart
+  function initGoalTrendChart() {
+    var chartDom = document.getElementById('goal-trend-chart');
+    var myChart = echarts.init(chartDom);
+
+    // Sample data - in a real application, this would come from an API
+    var option = {
+      backgroundColor: 'transparent',
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        },
+        backgroundColor: '#0A071E',
+        borderColor: '#1E1A35',
+        borderWidth: 1,
+        textStyle: {
+          color: '#fff'
+        }
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+        axisLine: {
+          lineStyle: {
+            color: '#3E4250'
+          }
+        },
+        axisLabel: {
+          color: '#8A8F98'
+        }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: {
+          lineStyle: {
+            color: '#3E4250'
+          }
+        },
+        axisLabel: {
+          color: '#8A8F98',
+          formatter: '${value}'
+        },
+        splitLine: {
+          lineStyle: {
+            color: '#1E1A35'
+          }
+        }
+      },
+      series: [{
+        data: [8500, 9200, 9800, 10500, 11200, 11800, 12100, 12300, 12500],
+        type: 'line',
+        smooth: true,
+        lineStyle: {
+          color: '#00C48C',
+          width: 2
+        },
+        symbol: 'circle',
+        symbolSize: 6,
+        itemStyle: {
+          color: '#00C48C',
+          borderColor: '#0A071E',
+          borderWidth: 2
+        },
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: 'rgba(0 , 196, 140, 0.2)'
+          }, {
+            offset: 1,
+            color: 'rgba(0 , 196, 140, 0)'
+          }])
+        }
+      }]
+    };
+    option && myChart.setOption(option);
+
+    // Handle window resize
+    window.addEventListener('resize', function () {
+      myChart.resize();
+    });
+  }
+});</script>
+<!-- [/JSMOD] bcd_Modal Handling -- 处理目标详情弹窗和添加目标弹窗的显示、隐藏和内容动态生成 -->
+<!-- [JSMOD] efg_Goal Form Handling -->
+<script id='goal-form-handling'>document.addEventListener('DOMContentLoaded', function () {
+  var saveGoalBtn = document.getElementById('save-goal-btn');
+  saveGoalBtn.addEventListener('click', function () {
+    // In a real application, this would validate and submit the form data
+    // For this demo, we'll just show an alert and close the modal
+    alert('Goal saved successfully!');
+    document.getElementById('add-goal-modal').classList.add('hidden');
+    // Reset form
+    document.getElementById('add-goal-form').reset();
+    document.getElementById('linked-entity-container').classList.add('hidden');
+  });
+});</script>
+<!-- [/JSMOD] efg_Goal Form Handling -- 处理添加目标表单的提交和保存功能 -->
+    </body>
+    </html>

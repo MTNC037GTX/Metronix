@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metronix | Personal Balance</title>
+    <link rel="icon" href="/static/images/logo.ico">
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- ECharts Library -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+    tailwind.config = {
+        theme: {
+        extend: {
+            colors: {
+            'bg-main':'#030112',
+            'bg-sidebar':'#0A0621',
+            'accent':'#575AD0',
+            'income':'#00C896',
+            'expense':'#FF5757',
+            'text-primary':'#E2E8F0',
+            'text-secondary':'#94A3B8',
+            'card-bg':'rgba(255,255,255,0.05)',
+            'card-border':'rgba(255,255,255,0.1)',
+            'glass':'rgba(97,93,161,0.15)'
+            },
+            fontFamily:{'dm-sans':['"DM Sans"','sans-serif']},
+            spacing:{'18':'4.5rem','22':'5.5rem'},
+            boxShadow:{'card':'0 8px 32px rgba(0,0,0,0.2)','card-hover':'0 12px 40px rgba(87,90,208,0.15)'},
+            borderRadius:{'xl':'1rem','2xl':'1.5rem'}
+        }
+        }
+    };
+    </script>
+
+    <!-- Scrollbar -->
+    <style>
+    /* Modal and main scrollable containers */
+    .scrollbar-custom::-webkit-scrollbar {
+        width: 8px;
+    }
+    .scrollbar-custom::-webkit-scrollbar-track {
+        background: #0a0721;
+        border-radius: 4px;
+    }
+    .scrollbar-custom::-webkit-scrollbar-thumb {
+        background-color: #1e1d42;
+        border-radius: 4px;
+        border: 2px solid #0a0721;
+    }
+    .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+        background-color: #35325f;
+    }
+    .scrollbar-custom {
+        scrollbar-width: thin;
+        scrollbar-color: #1e1d42 #0a0721;
+    }
+
+    /* Global page scrollbar */
+    body::-webkit-scrollbar {
+        width: 8px;
+    }
+    body::-webkit-scrollbar-track {
+        background: #0a0721;
+        border-radius: 4px;
+    }
+    body::-webkit-scrollbar-thumb {
+        background-color: #1e1d42;
+        border-radius: 4px;
+        border: 2px solid #0a0721;
+    }
+    body::-webkit-scrollbar-thumb:hover {
+        background-color: #35325f;
+    }
+
+    /* Firefox support for global scrollbar */
+    body {
+        scrollbar-width: thin;
+        scrollbar-color: #1e1d42 #0a0721;
+    }
+    </style>
+
+  <style type="text/tailwindcss">
+  @layer utilities {
+    .glass-effect { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    
+    /* Sidebar items */
+    .sidebar-item { 
+      @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 cursor-pointer text-text-secondary; 
+    }
+    .sidebar-item.active { 
+      @apply bg-accent/20 text-accent; 
+    }
+    .sidebar-item:not(.active):hover { 
+      @apply bg-white/5; 
+    }
+
+    /* Other dashboard styles */
+    .card { @apply bg-card-bg rounded-xl p-6 shadow-card border border-card-border transition-all duration-300 hover:shadow-card-hover; }
+    .progress-bar { @apply h-2 rounded-full overflow-hidden bg-white/10; }
+    .progress-value { @apply h-full rounded-full bg-accent transition-all duration-1000 ease-out; }
+  }
+  </style>
+
+
+  <!-- Global styles -->
+  <style>
+    body { font-family: 'DM Sans', sans-serif; }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;      /* same as dashboard */
+      border-radius: 1rem;        /* same as dashboard */
+      color: #94A3B8;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-item:hover {
+      background-color: rgba(87, 90, 208, 0.12);
+      color: #ffffff;
+    }
+
+    .sidebar-item.active {
+      background-color: rgba(87, 90, 208, 0.18);
+      color: #ffffff;
+    }
+
+    .sidebar-item i {
+      width: 1.25rem;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body class="bg-bg-main font-dm-sans text-text-primary min-h-screen flex overflow-hidden">
+
+  <!-- Sidebar -->
+    <aside class="bg-bg-sidebar w-64 flex flex-col h-screen fixed left-0 top-0 z-10">
+
+        <!-- Logo -->
+        <div class="p-4 border-b border-white/10 flex justify-center">
+        <img src="../static/images/logo.png" alt="Metronix Logo" class="w-40 object-contain">
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6 px-3">
+            <ul class="space-y-1">
+                {% set sidebar_items = [
+                {'icon':'fas fa-chart-line','label':'Dashboard','page':'dashboard'},
+                {'icon':'fas fa-exchange-alt','label':'Transaction','page':'transaction'},
+                {'icon':'fas fa-credit-card','label':'Account','page':'account'},
+                {'icon':'fas fa-piggy-bank','label':'Budget','page':'budget'},
+                {'icon':'fas fa-bullseye','label':'Goals','page':'goals'},
+                {'icon':'fas fa-balance-scale','label':'Balance','page':'balance'},
+                {'icon':'fas fa-chart-pie','label':'Investment','page':'investment'},
+                {'icon':'fas fa-chart-bar','label':'Analytics','page':'analytics'},
+                {'icon':'fas fa-file-alt','label':'Report','page':'report'}
+                ] %}
+
+                {% set existing_pages = {
+                    'dashboard': 'dashboard.dashboard',
+                    'transaction': 'transaction.transaction_page',
+                    'account': 'account.account_dashboard',
+                    'budget': 'budget.budget_page',
+                    'goals': 'goals.goals_page',
+                    'balance': 'balance.balance_page'
+                } %}
+
+                {% for item in sidebar_items %}
+                <li>
+                {% if item.page in existing_pages %}
+                    <a href="{{ url_for(existing_pages[item.page]) }}" 
+                    class="sidebar-item {% if current_page == item.page %}active{% endif %}" 
+                    style="color: #E2E8F0;">
+                    <i class="{{ item.icon }} w-5 text-center"></i>
+                    <span>{{ item.label }}</span>
+                    </a>
+                {% else %}
+                    <div class="sidebar-item" style="color: #A0AEC0; cursor: default;">
+                    <i class="{{ item.icon }} w-5 text-center"></i>
+                    <span>{{ item.label }}</span>
+                    </div>
+                {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <!-- Logout -->
+        <div class="p-4 border-t border-white/10 mt-auto">
+            <a href="{{ url_for('auth.logout') }}" class="sidebar-item">
+                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+
+    </aside>
+
+  <!-- Main -->
+    <main class="flex-1 ml-64 p-8 overflow-y-auto h-screen">
+        <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
+            <div>
+                <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-white mb-2">
+                    Personal Balance
+                </h1>
+                <p class="text-text-secondary">
+                    Assets, Liabilities and Net Worth Overview
+                </p>
+            </div>
+        </div>
+
+
+        <!-- Balance Table -->
+        <section class="bg-card-bg rounded-xl p-6 border border-card-border">
+            <!-- Tables: Assets & Liabilities -->
+            <div class="flex gap-6 mb-6">
+                <!-- Assets Table -->
+                <div class="bg-dark-secondary rounded-xl w-full max-w-[50%] flex flex-col justify-between">
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-[300px]">
+                            <thead>
+                                <tr class="border-b" style="border-color: #292735;">
+                                    <th class="text-left py-4 px-4 font-bold text-green-500 text-xl">Assets</th>
+                                    <th class="text-right py-4 px-4 font-semibold text-xl">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cat in assets %}
+                                <tr class="hover:bg-dark-hover">
+                                    <td class="py-4 px-4 font-medium text-text-primary" colspan="2">{{ cat.category }}</td>
+                                </tr>
+                                {% for acc in cat.accounts %}
+                                <tr class="hover:bg-dark-hover">
+                                    <td class="py-3 px-8 text-text-secondary">{{ acc.name }}</td>
+                                    <td class="py-3 px-4 text-right">RM {{ "{:,.2f}".format(acc.amount or 0) }}</td>
+                                </tr>
+                                {% endfor %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Total Assets at bottom -->
+                    <div class="mt-2">
+                        <table class="w-full border-t font-bold" style="border-color: #292735;">
+                            <tbody>
+                                <tr>
+                                    <td class="py-4 px-4 text-xl font-bold">Total Assets</td>
+                                    <td class="py-4 px-4 text-right text-xl font-bold">RM {{ "{:,.2f}".format(total_assets) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Liabilities Table -->
+                <div class="bg-dark-secondary rounded-xl w-full max-w-[50%] flex flex-col justify-between">
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-[300px]">
+                            <thead>
+                                <tr class="border-b" style="border-color: #292735;">
+                                    <th class="text-left py-4 px-4 font-semibold text-red-500 text-xl">Liabilities</th>
+                                    <th class="text-right py-4 px-4 font-semibold text-xl">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cat in liabilities %}
+                                <tr class="hover:bg-dark-hover">
+                                    <td class="py-4 px-4 font-medium text-text-primary" colspan="2">{{ cat.category }}</td>
+                                </tr>
+                                {% for acc in cat.accounts %}
+                                <tr class="hover:bg-dark-hover">
+                                    <td class="py-3 px-8 text-text-secondary">{{ acc.name }}</td>
+                                    <td class="py-3 px-4 text-right">RM {{ "{:,.2f}".format(acc.amount or 0) }}</td>
+                                </tr>
+                                {% endfor %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Total Liabilities at bottom -->
+                    <div class="mt-2">
+                        <table class="w-full border-t font-bold" style="border-color: #292735;">
+                            <tbody>
+                                <tr>
+                                    <td class="py-4 px-4 text-xl font-bold">Total Liabilities</td>
+                                    <td class="py-4 px-4 text-right text-xl font-bold">RM {{ "{:,.2f}".format(total_liabilities) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Net Worth -->
+            <div class="border-t p-4 text-right font-bold" style="border-color: #292735; font-size: 26px;">
+                Net Worth:
+                <span class="{% if net_worth >= 0 %}text-green-500{% else %}text-red-500{% endif %}">
+                    RM {{ "{:,.2f}".format(net_worth) }}
+                </span>
+            </div>
+
+        </section>
+
+
+        <!-- Assets, Liabilities & Net Worth Line Chart -->
+        <section class="bg-card-bg rounded-xl p-6 border border-card-border mt-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg">Assets, Liabilities & Net Worth</h3>
+
+                <!-- Year Dropdown -->
+                <div class="relative inline-block w-32">
+                    <button id="yearDropdownBtn" class="w-full bg-card-bg text-white border border-accent rounded px-3 py-1 flex justify-between items-center">
+                        <span>{{ selected_year }}</span>
+                        <i class="fas fa-chevron-down text-sm"></i>
+                    </button>
+                    <ul id="yearDropdown" class="absolute left-0 w-full mt-1 bg-card-bg border border-accent rounded shadow-lg z-20 hidden">
+                        {% for y in years %}
+                        <li class="px-3 py-1 hover:bg-accent/20 cursor-pointer text-white">
+                            <a href="{{ url_for('balance.balance_page', year=y) }}" class="w-full block">{{ y }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div id="balanceChart" class="w-full h-[500px]"></div> <!-- increased height -->
+        </section>
+
+
+        <!-- Assets and Liabilities pie chart -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <!-- Asset Breakdown -->
+            <div class="bg-card-bg rounded-xl shadow-card p-6 border border-card-border">
+                <h2 class="text-xl font-semibold mb-6">
+                    Asset Breakdown
+                </h2>
+                <div class="h-[500px]">
+                    <div id="assetChart" class="w-full h-full"></div>
+                </div>
+            </div>
+
+            <!-- Liability Breakdown -->
+            <div class="bg-card-bg rounded-xl shadow-card p-6 border border-card-border">
+                <h2 class="text-xl font-semibold mb-6">
+                    Liability Breakdown
+                </h2>
+                <div class="h-[500px]">
+                    <div id="liabilityChart" class="w-full h-full"></div>
+                </div>
+            </div>
+        </section>
+
+
+
+    </main>
+
+
+    <!-- Line Chart-->
+    <script>
+    window.addEventListener('load', function() {
+        var balanceChart = echarts.init(document.getElementById('balanceChart'));
+
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+        var assetsData = [
+            {% for item in balance_history %}
+                {{ item.total_assets|default(0) }}{{ "," if not loop.last }}
+            {% endfor %}
+        ];
+        var liabilitiesData = [
+            {% for item in balance_history %}
+                {{ item.total_liabilities|default(0) }}{{ "," if not loop.last }}
+            {% endfor %}
+        ];
+        var netWorthData = [
+            {% for item in balance_history %}
+                {{ item.net_worth|default(0) }}{{ "," if not loop.last }}
+            {% endfor %}
+        ];
+
+        // HARD STOP at current month
+        var currentMonthIndex = new Date().getMonth(); // 0 = Jan
+
+        assetsData = assetsData.map(function(v, i) {
+            return i > currentMonthIndex ? null : v;
+        });
+        liabilitiesData = liabilitiesData.map(function(v, i) {
+            return i > currentMonthIndex ? null : v;
+        });
+        netWorthData = netWorthData.map(function(v, i) {
+            return i > currentMonthIndex ? null : v;
+        });
+
+        balanceChart.setOption({
+            grid: { left: '5%', right: '5%', top: '10%', bottom: '10%', containLabel: true },
+            tooltip: {
+                trigger: 'axis',
+                formatter: function(params) {
+                    var result = params[0].axisValue + '<br/>';
+                    params.forEach(function(p) {
+                        if (p.data !== null) {
+                            result += p.marker + ' ' + p.seriesName + ': RM ' + Math.round(p.data) + '<br/>';
+                        }
+                    });
+                    return result;
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: months,
+                boundaryGap: false,
+                axisLine: { lineStyle: { color: '#ccc' } },
+                axisTick: { show: false }
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: { formatter: function(value) { return 'RM ' + Math.round(value); } },
+                splitLine: { lineStyle: { color: '#ccc', opacity: 0.2 } },
+                splitNumber: 18
+            },
+            series: [
+                {
+                    name: 'Assets',
+                    type: 'line',
+                    data: assetsData,
+                    smooth: true,
+                    lineStyle: { color: '#00C896', width: 3 },
+                    areaStyle: { color: 'rgba(0,200,150,0.2)' },
+                    symbol: 'circle',
+                    symbolSize: 6,
+                    itemStyle: { color: '#00C896' }
+                },
+                {
+                    name: 'Liabilities',
+                    type: 'line',
+                    data: liabilitiesData,
+                    smooth: true,
+                    lineStyle: { color: '#FF5757', width: 3 },
+                    areaStyle: { color: 'rgba(255,87,87,0.2)' },
+                    symbol: 'circle',
+                    symbolSize: 6,
+                    itemStyle: { color: '#FF5757' }
+                },
+                {
+                    name: 'Net Worth',
+                    type: 'line',
+                    data: netWorthData,
+                    smooth: true,
+                    lineStyle: { color: '#FFD700', width: 3 },
+                    areaStyle: { color: 'rgba(255,215,0,0.2)' },
+                    symbol: 'circle',
+                    symbolSize: 6,
+                    itemStyle: { color: '#FFD700' }
+                }
+            ]
+
+        });
+
+        window.addEventListener('resize', function() {
+            balanceChart.resize();
+        });
+    });
+    </script>
+
+
+    <!-- Pie Chart Script -->
+    <script>
+        window.addEventListener('load', function () {
+
+            const assetSeries = [
+                {% for item in asset_pie_data %}
+                { name: "{{ item.name }}", value: {{ item.value }} }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ];
+
+            const liabilitySeries = [
+                {% for item in liability_pie_data %}
+                { name: "{{ item.name }}", value: {{ item.value }} }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ];
+
+            // Asset colors (cold: blue, purple, green, cyan)
+            const assetColors = [
+                ['#3B82F6', '#1E3A8A'],  // Blue
+                ['#2563EB', '#1E40AF'],  // Darker Blue
+                ['#8B5CF6', '#5B21B6'],  // Purple
+                ['#A78BFA', '#6D28D9'],  // Light Purple
+                ['#10B981', '#065F46'],  // Green
+                ['#22C55E', '#15803D'],  // Darker Green
+                ['#06B6D4', '#0E7490'],  // Cyan
+                ['#0891B2', '#055E75'],  // Darker Cyan
+            ];
+
+            // Liability colors (warm: red, yellow, orange, brown)
+            const liabilityColors = [
+                ['#EF4444', '#B91C1C'],  // Red
+                ['#DC2626', '#991B1B'],  // Dark Red
+                ['#F97316', '#C2410C'],  // Orange
+                ['#EA580C', '#7C2D12'],  // Darker Orange
+                ['#FBBF24', '#B45309'],  // Yellow
+                ['#F59E0B', '#78350F'],  // Dark Yellow/Orange
+                ['#D97706', '#78350F'],  // Brown
+                ['#92400E', '#451A03'],  // Dark Brown
+            ];
+
+
+            const basePieStyle = {
+                radius: ['50%', '80%'],
+                avoidLabelOverlap: false,
+                label: { show: false },
+                labelLine: { show: false },
+                emphasis: {
+                    scale: true,
+                    scaleSize: 6,
+                    label: {
+                        show: true,
+                        fontSize: 18,
+                        fontWeight: '600',
+                        color: '#E5E7EB'
+                    }
+                },
+                itemStyle: {
+                    borderRadius: 0,                 // sharp edges
+                    borderWidth: 3,                  // slightly thicker border for spacing
+                    borderColor: 'rgba(0,0,0,0.2)', // dark semi-transparent gap between slices
+                    shadowBlur: 16,
+                    shadowColor: 'rgba(0,0,0,0.45)'
+                },
+                minAngle: 5  // ensures small slices are visible and separated
+            };
+
+            // Asset Pie
+            const assetChart = echarts.init(document.getElementById('assetChart'));
+            assetChart.setOption({
+                backgroundColor: 'transparent',
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}<br/>${c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 12,
+                    top: 'center',
+                    itemGap: 14,
+                    textStyle: {
+                        color: '#94A3B8',
+                        fontSize: 13
+                    }
+                },
+                series: [{
+                    name: 'Assets',
+                    type: 'pie',
+                    ...basePieStyle,
+                    center: ['60%', '50%'],
+                    data: assetSeries.map((item, index) => {
+                        const colors = assetColors[index % assetColors.length];
+                        return {
+                            ...item,
+                            itemStyle: {
+                                color: {
+                                    type: 'linear',
+                                    x: 0,
+                                    y: 0,
+                                    x2: 1,
+                                    y2: 1,
+                                    colorStops: [
+                                        { offset: 0, color: colors[0] },
+                                        { offset: 1, color: colors[1] }
+                                    ]
+                                }
+                            }
+                        };
+                    })
+                }]
+            });
+
+            // Liability Pie
+            const liabilityChart = echarts.init(document.getElementById('liabilityChart'));
+            liabilityChart.setOption({
+                backgroundColor: 'transparent',
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}<br/>${c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 12,
+                    top: 'center',
+                    itemGap: 14,
+                    textStyle: {
+                        color: '#94A3B8',
+                        fontSize: 13
+                    }
+                },
+                series: [{
+                    name: 'Liabilities',
+                    type: 'pie',
+                    ...basePieStyle,
+                    center: ['60%', '50%'],
+                    data: liabilitySeries.map((item, index) => {
+                        const colors = liabilityColors[index % liabilityColors.length];
+                        return {
+                            ...item,
+                            itemStyle: {
+                                color: {
+                                    type: 'linear',
+                                    x: 0,
+                                    y: 0,
+                                    x2: 1,
+                                    y2: 1,
+                                    colorStops: [
+                                        { offset: 0, color: colors[0] },
+                                        { offset: 1, color: colors[1] }
+                                    ]
+                                }
+                            }
+                        };
+                    })
+                }]
+            });
+
+        });
+    </script>
+
+
+
+
+
+
+</body>
+</html>

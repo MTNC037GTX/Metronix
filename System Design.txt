@@ -1,0 +1,197 @@
+UPDATED METRONIX MODULE BLUEPRINT
+
+1. ACCOUNT (WALLET) MODULE
+    This becomes the cash flow anchor of the system.
+
+    Purpose:
+        Represent where money actually lives.
+
+    Features:
+        1. Multiple accounts (cash, bank, e-wallet, savings)
+        2. Opening balance per account
+        3. Account type classification
+        4. Current balance (derived, not manually edited)
+        5. Account status (active or archived)
+
+    Rules:
+        1. Every income and expense must belong to exactly one account
+        2. Transfers between accounts are first class transactions
+        3. Account balance = opening balance + inflows - outflows
+
+    Hard stance:
+        1. No misc account
+        2. No negative balances unless explicitly allowed (overdraft)
+
+
+2. INCOME AND EXPENSE TRACKING (REFINED)
+    Now formally tied to accounts.
+
+    Features:
+        1. Monthly income recording
+        2. Monthly expense recording
+        3. Category based classification
+        4. Date driven entries
+        5. Manual entry only (no bank sync, no automation fantasy)
+        6. Edit and delete entries
+        7. Monthly summary (total income, total expense, net cash flow)
+
+    Additions:
+        1. Account selection required per transaction
+        2. Transfer transaction type (account to account)
+        3. Monthly account level summaries
+
+    Result:
+        Cash flow becomes traceable and auditable.
+
+
+3. BALANCE SHEET MODULE (REFINED)
+    Accounts roll up into assets.
+    
+    Features:
+        1. Asset tracking (cash, savings, investments, property, others)
+        2. Liability tracking (loans, credit cards, personal debt)
+        3. Current balance per asset or liability
+        4. Automatic net worth calculation
+        5. Snapshot by date (monthly at minimum)
+
+    Rules:
+        1. Accounts, Investment are short-term assets
+        2. Property and other assets such as retirement plan are long-term assets
+        3. Liabilities are tracked separately
+        4. Net worth = total assets - total liabilities
+
+    Snapshots:
+        1. Monthly snapshot generated automatically
+        2. Snapshot is immutable once generated
+
+
+4. INVESTMENT TRACKING MODULE (UNCHANGED CORE, BETTER INTEGRATION)
+    This is tracking, not trading. Keep it boring and clean.
+        
+    Features:
+        1. Investment type (stock, ETF, crypto, other)
+        2. Quantity held
+        3. Cost basis
+        4. Manual value update (optional)
+        5. Gain or loss calculation based on last recorded value
+        6. Group investments as assets for balance sheet integration
+
+    Refinements:
+        1. Investments can be linked to a funding account
+        2. Investment value contributes to asset total
+        3. Optional realized vs unrealized gain tracking
+
+    Investment types:
+        1. Stocks
+        2. ETF
+        3. Money Market Fund MMF
+        4. REITs
+        5. Crpyto
+        6. Real Estate
+        7. Gold
+        8. Others
+
+
+5. BUDGETING MODULE
+    This is where most personal finance apps fail. Keep it disciplined.
+
+    Features:
+        1. Monthly budgets by category
+        2. Optional account specific budgets
+        3. Budget period = month only
+        4. Budget vs actual tracking
+        5. Overspend and underspend visibility
+
+    Rules:
+        1. Budget is advisory, not enforcement
+        2. Budgets do not block transactions
+        3. Historical budgets are immutable
+
+    KPIs:
+        1. Budget utilization percentage
+        2. Variance amount
+
+
+6. ANALYTICS MODULE
+    This is insight, not charts-for-fun.
+
+    Features:
+        1. Monthly and yearly trend analysis
+        2. Category spending trends
+        3. Income vs expense trend over time
+        4. Net worth growth rate
+        5. Savings rate
+
+    Design stance:
+        1. Analytics is read-only
+        2. Heavy queries are pre-aggregated where possible
+        3. Year based and month based views only
+
+
+7. DASHBOARD MODULE
+    Now powered by accounts, budgets, and analytics.
+
+    Core widgets:
+        1. Total account balance (all wallets)
+        2. Total income/expense
+        3. Current month cash flow (Income/Expense)
+        4. Budget utilization summary
+        5. Recent transactions
+        6. Saving goals
+
+
+8. YEARLY REPORT MODULE (PDF)
+    Expanded but still controlled.
+
+    Features:
+        1. Yearly income summary
+        2. Yearly expense breakdown
+        3. Net worth at start vs end of year
+        4. Investment summary
+        5. Simple charts embedded in PDF
+        6. Generated on demand
+
+
+9.DATA EXPORT AND ARCHIVE MODULE
+    Features:
+        1. Export yearly data as CSV or JSON
+        2. Separate exports for transactions, assets, liabilities, investments
+        3. File naming standardized by year
+        4. No cloud sync, local archive only
+
+
+10. FINANCIAL GOALS MODULE
+    Savings goals:
+        Progress = sum of income minus expense for linked account within period
+
+    Expense limit goals:
+        Progress = total expense for linked category
+        Completion logic inverted (less is better)
+
+    Debt reduction goals:
+        Progress = reduction in liability balance
+
+    Net worth goals:
+        Progress = net worth from balance_snapshots
+
+    Investment goals:
+        Progress = investment current_value vs target
+
+    Usage examples:
+        Savings goal: link to account
+        Expense control goal: link to category
+        Debt reduction: link to liability
+        Net worth goal: no direct link, derived globally
+
+
+===============================================
+CROSS CUTTING SYSTEM CONCERNS
+    These are not modules, but they are mandatory.
+
+        1. Authentication: minimal, single user, password protected
+        2. Validation: backend enforced, frontend assisted
+        3. Auditability: timestamps everywhere
+        4. Performance: optimized for monthly and yearly queries
+        5. Configuration: environment driven
+
+==============================================
